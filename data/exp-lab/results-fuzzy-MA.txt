@@ -1,0 +1,207 @@
+EXPERIMENT
+==========
+2023-10-03 19:53:29
+
+Mamdami-Assilan neuro-fuzzy system with gaussian fuzzy sets in premises and product t-norm
+answers of a fuzzy system
+data file: C:/Users/kwnuk/source/repos/vnuczek/neuro-fuzzy-library/data/exp-lab/train.txt
+normalisation:   false
+RMSE: 0.0935068
+MAE:  0.0554391
+
+
+fuzzy rule base
+RULE 1
+
+rule
+t-norm: Lukasiewicz t-norm
+premise: 
+premise
+desciptors
+1: 
+descriptor: sigmoidal
+   crosspoint == 2
+   slope      == -5.35
+
+2: 
+descriptor: sigmoidal
+   crosspoint == 2
+   slope      == -5.35
+
+
+consequence: 
+(-0.35, 0.85, 2.25)
+quality: -1
+
+RULE 2
+
+rule
+t-norm: Dubois-Prade (s = 0.001) t-norm
+premise: 
+premise
+desciptors
+1: 
+descriptor: sigmoidal
+   crosspoint == 3.2
+   slope      == 4.1
+
+2: 
+descriptor: sigmoidal
+   crosspoint == 3.2
+   slope      == 4.1
+
+
+consequence: 
+(-0.25, 0.85, 2.25)
+quality: -1
+
+RULE 3
+
+rule
+t-norm: Dubois-Prade (s = 0.001) t-norm
+premise: 
+premise
+desciptors
+1: 
+descriptor: gaussian
+   c == -1.4
+   s == 1.6
+
+2: 
+descriptor: gaussian
+   c == 9.3
+   s == 2.8
+
+
+consequence: 
+(7.75, 9.05, 10.2)
+quality: -1
+
+RULE 4
+
+rule
+t-norm: product t-norm
+premise: 
+premise
+desciptors
+1: 
+descriptor: gaussian
+   c == 8.9
+   s == 2.8
+
+2: 
+descriptor: gaussian
+   c == -2.4
+   s == 2.3
+
+
+consequence: 
+(7.75, 9.05, 10.2)
+quality: -1
+
+
+
+
+data
+excepted	elaborated
+===========================
+9	8.99316
+9	8.98799
+8.99909	8.98375
+1.00148	1.10241
+1	0.960956
+8.99945	8.98143
+1	0.950672
+1.3369	1.40397
+8.99894	8.98699
+1	0.950718
+9	8.99646
+8.99755	8.98551
+9	8.981
+1.23	1.29296
+8.99992	8.99237
+1	0.95
+1	0.95
+8.77177	8.85616
+6.41724	6.68675
+1	0.95001
+1	0.95002
+9	8.99945
+9	8.99863
+1.4865	1.77374
+1	0.950663
+1.00019	1.03625
+2.62244	2.50157
+1.0813	1.12746
+1	0.944389
+9	8.98273
+8.99998	8.99153
+9	8.99705
+1	0.950011
+9	8.97789
+9	8.97796
+1.00017	0.962342
+8.27446	8.31016
+9	8.97873
+8.95605	8.96541
+8.9944	8.97169
+1.00006	0.96458
+7.95099	8.25199
+8.56425	8.62151
+8.99999	8.98082
+9	8.98741
+9	8.99527
+1.89493	1.79881
+8.99797	8.9867
+9	8.99538
+8.24969	8.28564
+6.25655	6.36473
+1.00878	1.02023
+9	8.99719
+1	0.95
+3.33438	2.83061
+3.31678	3.25168
+9	8.98647
+1.04735	1.18828
+1	0.945159
+1	0.935918
+1	0.950005
+1	0.950018
+1	0.949224
+1	0.950311
+9	8.97826
+8.99987	8.97962
+1.1597	1.33613
+1	0.950006
+1.00001	0.96002
+9	8.9968
+8.99996	8.99556
+9	8.99747
+9	8.99086
+1	0.95
+8.98843	8.97526
+1	0.950212
+1	0.95
+8.05521	8.09122
+9	8.99594
+1.00001	1.01004
+1	0.926582
+1	0.935036
+4.06323	3.73489
+1.00046	1.06179
+1	0.95
+1	0.961036
+7.05361	6.93046
+1	0.950717
+8.5784	8.5994
+8.99997	8.98658
+1	0.951553
+1.00002	0.96694
+1.00343	1.07094
+1	0.92015
+9	8.99815
+8.9463	8.88736
+1	0.951767
+9	8.97877
+9	8.98641
+4.34881	4.21117
