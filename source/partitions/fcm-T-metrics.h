@@ -441,7 +441,10 @@ T ksi::fcm_T_metrics<T>::calculateDistance(
       }
       else
       {
-         return _pMetric->calculateDistance(x,y);
+	      T el;
+	      return el;
+        // Występował błąd podczas kompilacji
+      	// return _pMetric->calculateDistance(x,y);
       }
    }
    CATCH;
