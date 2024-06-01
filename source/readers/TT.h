@@ -19,24 +19,24 @@ namespace ksi
    {
 
         /**
-         * @class Iterator
+         * @class iterator
          * A nested class for iterating over TT elements.
          *
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
-        class Iterator;
+        class iterator;
 
         /**
-         * @class ConstIterator
+         * @class const_iterator
          * A nested class for read-only iteration over TT elements.
          *
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
-        class ConstIterator;
+        class const_iterator;
 
         /**
          * Clones the current reader object.
@@ -44,7 +44,7 @@ namespace ksi
          * @return A shared pointer to the cloned reader object.
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
         std::shared_ptr<reader> clone() const override;
 
@@ -54,7 +54,7 @@ namespace ksi
          * @param n The number of subsets to split the data into. Default is 10.
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
         void split(const int n = 10) override;
 
@@ -64,7 +64,7 @@ namespace ksi
          * @param directory The directory where the data will be saved.
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
         void save(const std::filesystem::path& directory) const override;
 
@@ -75,7 +75,7 @@ namespace ksi
          * @return A dataset containing the data read from the file.
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
         dataset read_file(const std::filesystem::path& file_name) override;
 
@@ -86,70 +86,69 @@ namespace ksi
          * @return A dataset containing the data read from the directory.
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
         dataset read_directory(const std::filesystem::path& directory) override;
 
         /**
          * Returns an iterator to the beginning of the TT elements.
          *
-         * @return An Iterator to the beginning of the TT elements.
+         * @return An iterator to the beginning of the TT elements.
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
-        Iterator begin();
+        iterator begin();
 
         /**
          * Returns an iterator to the end of the TT elements.
          *
-         * @return An Iterator to the end of the TT elements.
+         * @return An iterator to the end of the TT elements.
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
-        Iterator end();
+        iterator end();
 
         /**
          * Returns a const iterator to the beginning of the TT elements.
          *
-         * @return A ConstIterator to the beginning of the TT elements.
+         * @return A const_iterator to the beginning of the TT elements.
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
-        ConstIterator begin() const;
+        const_iterator cbegin() const;
 
         /**
          * Returns a const iterator to the end of the TT elements.
          *
-         * @return A ConstIterator to the end of the TT elements.
+         * @return A const_iterator to the end of the TT elements.
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
-        ConstIterator end() const;
+        const_iterator cend() const;
     };
 
     /**
-     * @class TT::Iterator
+     * @class TT::iterator
      * A class for iterating over TT elements.
      *
      * @date 2024-05-30
      * @author Konrad Wnuk
      */
-    class TT::Iterator   // KS: <--- Klasy iteratorow w cpp maja nazwy pisane malymi literami. 
-    {
+    class TT::iterator {
     public:
 
         /**
-         * Constructs a new Iterator.
+         * Constructs a new iterator.
          *
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
-        Iterator();
+        iterator();
 
         /**
          * Advances the iterator to the next element.
@@ -157,9 +156,9 @@ namespace ksi
          * @return A reference to the advanced iterator.
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
-        Iterator& operator++();
+        iterator& operator++();
 
         /**
          * Advances the iterator to the next element (post-increment).
@@ -168,7 +167,7 @@ namespace ksi
          * @date 2024-05-30
          * @author Konrad Wnuk
          */
-        Iterator operator++(int);
+        iterator operator++(int);
 
         /**
          * Checks if two iterators are equal.
@@ -177,9 +176,9 @@ namespace ksi
          * @return True if the iterators are equal, false otherwise.
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
-        bool operator==(const Iterator& other) const;
+        bool operator==(const iterator& other) const;
 
         /**
          * Checks if two iterators are not equal.
@@ -189,7 +188,7 @@ namespace ksi
          * @date 2024-05-30
          * @author Konrad Wnuk
          */
-        bool operator!=(const Iterator& other) const;
+        bool operator!=(const iterator& other) const;
 
         /**
          * Compares two iterators.
@@ -198,9 +197,9 @@ namespace ksi
          * @return The result of the comparison.
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
-        auto operator<=>(const Iterator& other) const;
+        auto operator<=>(const iterator& other) const;
 
         /**
          * Dereferences the iterator to access the current TT element.
@@ -208,7 +207,7 @@ namespace ksi
          * @return A reference to the current TT element.
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
         TT& operator*() const;
 
@@ -218,29 +217,29 @@ namespace ksi
          * @return A pointer to the current TT element.
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
         TT* operator->() const;
     };
 
     /**
-     * @class TT::ConstIterator
+     * @class TT::const_iterator
      * A class for read-only iteration over TT elements.
      *
      * @date 2024-05-30
      * @author Konrad Wnuk
      */
-    class TT::ConstIterator {
+    class TT::const_iterator {
     public:
 
         /**
-         * Constructs a new ConstIterator.
+         * Constructs a new const_iterator.
          *
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
-        ConstIterator();
+        const_iterator();
 
         /**
          * Advances the const iterator to the next element.
@@ -248,9 +247,9 @@ namespace ksi
          * @return A reference to the advanced const iterator.
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
-        ConstIterator& operator++();
+        const_iterator& operator++();
 
         /**
          * Advances the const iterator to the next element (post-increment).
@@ -259,7 +258,7 @@ namespace ksi
          * @date 2024-05-30
          * @author Konrad Wnuk
          */
-        ConstIterator operator++(int);
+        const_iterator operator++(int);
 
         /**
          * Checks if two const iterators are equal.
@@ -268,9 +267,9 @@ namespace ksi
          * @return True if the const iterators are equal, false otherwise.
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
-        bool operator==(const ConstIterator& other) const;
+        bool operator==(const const_iterator& other) const;
 
         /**
          * Checks if two const iterators are not equal.
@@ -279,9 +278,9 @@ namespace ksi
          * @return True if the const iterators are not equal, false otherwise.
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
-        bool operator!=(const ConstIterator& other) const;
+        bool operator!=(const const_iterator& other) const;
 
         /**
          * Compares two const iterators.
@@ -290,9 +289,9 @@ namespace ksi
          * @return The result of the comparison.
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
-        auto operator<=>(const ConstIterator& other) const;
+        auto operator<=>(const const_iterator& other) const;
 
         /**
          * Dereferences the const iterator to access the current TT element.
@@ -300,7 +299,7 @@ namespace ksi
          * @return A reference to the current TT element.
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
         TT& operator*() const;
 
@@ -310,7 +309,7 @@ namespace ksi
          * @return A pointer to the current TT element.
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @note This method is not yet implemented.
+         * @warning This method is not yet implemented.
          */
         TT* operator->() const;
     };

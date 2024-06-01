@@ -1,25 +1,25 @@
 #include "TT.h"
 
-ksi::TT::Iterator ksi::TT::Iterator::operator++(int)
+ksi::TT::iterator ksi::TT::iterator::operator++(int)
 {
-    Iterator temp = *this;
+    iterator temp = *this;
     ++(*this);
     return temp;
 }
 
-bool ksi::TT::Iterator::operator!=(const Iterator& other) const
+bool ksi::TT::iterator::operator!=(const iterator& other) const
 {
     return !(*this == other);
 }
 
-ksi::TT::ConstIterator ksi::TT::ConstIterator::operator++(int)
+ksi::TT::const_iterator ksi::TT::const_iterator::operator++(int)
 {
-    ConstIterator temp = *this;
+    const_iterator temp = *this;
     ++(*this);
     return temp;
 }
 
-bool ksi::TT::ConstIterator::operator!=(const ConstIterator& other) const
+bool ksi::TT::const_iterator::operator!=(const const_iterator& other) const
 {
     return !(*this == other);
 }

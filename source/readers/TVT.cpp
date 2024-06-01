@@ -1,25 +1,25 @@
 #include "TVT.h"
 
-ksi::TVT::Iterator ksi::TVT::Iterator::operator++(int)
+ksi::TVT::iterator ksi::TVT::iterator::operator++(int)
 {
-    Iterator temp = *this;
+    iterator temp = *this;
     ++(*this);
     return temp;
 }
 
-bool ksi::TVT::Iterator::operator!=(const Iterator& other) const
+bool ksi::TVT::iterator::operator!=(const iterator& other) const
 {
     return !(*this == other);
 }
 
-ksi::TVT::ConstIterator ksi::TVT::ConstIterator::operator++(int)
+ksi::TVT::const_iterator ksi::TVT::const_iterator::operator++(int)
 {
-    ConstIterator temp = *this;
+    const_iterator temp = *this;
     ++(*this);
     return temp;
 }
 
-bool ksi::TVT::ConstIterator::operator!=(const ConstIterator& other) const
+bool ksi::TVT::const_iterator::operator!=(const const_iterator& other) const
 {
     return !(*this == other);
 }
