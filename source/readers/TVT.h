@@ -5,7 +5,8 @@
 
 #include "CV.h"
 
-namespace ksi {
+namespace ksi 
+{
 
     /**
      * @class TVT
@@ -14,7 +15,8 @@ namespace ksi {
      * @date   2024-05-30
      * @author Konrad Wnuk
      */
-    class TVT : public CV {
+    class TVT : public CV 
+   {
 
         /**
          * @class Iterator
@@ -24,7 +26,7 @@ namespace ksi {
 		 * @author Konrad Wnuk
 		 * @note This method is not yet implemented.
          */
-        class Iterator;
+        class Iterator; // KS: Klasa iteratora mala litera.
 
         /**
          * @class ConstIterator
@@ -136,7 +138,8 @@ namespace ksi {
      * @date 2024-05-30
 	 * @author Konrad Wnuk
      */
-    class TVT::Iterator {
+    class TVT::Iterator 
+    {
     public:
 
         /**
@@ -207,7 +210,7 @@ namespace ksi {
 		 * @author Konrad Wnuk
 		 * @note This method is not yet implemented.
          */
-        TVT& operator*() const;
+        TVT& operator*() const; // KS: Czy ten operator na pewno bedzie zwracal TVT&?
 
         /**
          * Dereferences the iterator to access the current TVT element.
@@ -227,7 +230,8 @@ namespace ksi {
      * @date 2024-05-30
 	 * @author Konrad Wnuk
      */
-    class TVT::ConstIterator {
+    class TVT::ConstIterator 
+    {
     public:
 
         /**

@@ -5,7 +5,8 @@
 
 #include "CV.h"
 
-namespace ksi {
+namespace ksi 
+{
 
     /**
      * @class TT
@@ -14,7 +15,8 @@ namespace ksi {
      * @date   2024-05-30
      * @author Konrad Wnuk
      */
-    class TT : public CV {
+    class TT : public CV 
+   {
 
         /**
          * @class Iterator
@@ -136,7 +138,8 @@ namespace ksi {
      * @date 2024-05-30
      * @author Konrad Wnuk
      */
-    class TT::Iterator {
+    class TT::Iterator   // KS: <--- Klasy iteratorow w cpp maja nazwy pisane malymi literami. 
+    {
     public:
 
         /**
