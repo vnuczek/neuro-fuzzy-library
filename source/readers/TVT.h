@@ -83,7 +83,7 @@ namespace ksi
          * Reads data from a specified directory.
          *
          * @param directory The directory to read the data from.
-         * @return A dataset containing the data read from the directory.
+         * @return KS: Musi zwracać coś innego
          * @date 2024-05-30
 		 * @author Konrad Wnuk
 		 * @warning This method is not yet implemented.
