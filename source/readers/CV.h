@@ -6,18 +6,31 @@
 #include "reader.h"
 
 #include <filesystem>
+#include <memory>
 
 namespace ksi
 {
     /**
-     * @class CV
+     * @class CV (cross-validation)
      * An abstract class representing the base class for models.
      *
      * @date   2024-05-30
      * @author Konrad Wnuk
      */
-	class CV : public reader {
+	class CV : public reader 
+	{
+        
+    protected:
+        std::shared_ptr<ksi::reader> pReader = nullptr; 
+        std::vector<ksi::dataset> Datasets;   // n datasetów 
+        
+        
     public:
+        /** 
+           @param r 
+         */
+        CV(const ksi::reader & r);
+        
         virtual ~CV() = default;
 
         /**

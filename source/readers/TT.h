@@ -204,13 +204,23 @@ namespace ksi
         /**
          * Dereferences the iterator to access the current TT element.
          *
-         * @return A reference to the current TT element.
+         * @return ksi::tuple<ksi::dataset, ksi::dataset> 
          * @date 2024-05-30
          * @author Konrad Wnuk
          * @warning This method is not yet implemented.
          */
         TT& operator*() const;
 
+        /*
+        TT tt; 
+        for (auto [train, test] : tt)
+           ; 
+        
+        for (auto it = tt.begin(); ...)
+            it->test 
+            
+        */
+        
         /**
          * Dereferences the iterator to access the current TT element.
          *
