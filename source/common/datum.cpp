@@ -294,7 +294,7 @@ namespace ksi
       //ss << " id == " << d.getID() << ", id_incomplete == " << d.getIDincomplete();
       if (not d._labels.empty())
       {
-          ss << " labels: ";
+          ss << " labels: ";  // " | "
           for (const auto & l : d._labels)
               ss << l << " ";
       }

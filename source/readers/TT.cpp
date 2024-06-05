@@ -1,12 +1,13 @@
 /** @file */
 
 #include "TT.h"
+#include "../service/exception.h"
 
 #include <fstream>
 #include <ranges>
 #include <regex>
 
-void ksi::TT::split(const ksi::dataset dataset, const int n)
+void ksi::TT::split(const ksi::dataset & dataset, const int n)
 {
     datasets.clear();
     datasets.resize(n);
@@ -30,29 +31,33 @@ void ksi::TT::split(const ksi::dataset dataset, const int n)
 
 void ksi::TT::save(const std::filesystem::path& directory) const
 {
-    std::filesystem::create_directories(directory);
-
-    for (auto i = 0; i < datasets.size(); ++i)
+    try  
     {
-        std::ofstream file(directory / ("dataset_" + std::to_string(i) + ".data"));
+        std::filesystem::create_directories(directory);
 
-        if (file.is_open())
+        for (auto i = 0; i < datasets.size(); ++i)
         {
-            for (auto j = 0; j < datasets[i].size(); ++j)
+            std::ofstream file(directory / ("dataset_" + std::to_string(i) + ".data"));   // ksi::to_string (i, 2)    i == 1 -->  "01" 
+
+            if (file.is_open())
             {
-                const datum* d = datasets[i].getDatum(j);
-                if (d)
+                for (auto j = 0; j < datasets[i].size(); ++j)
                 {
-                    file << *d << std::endl;
+                    const datum* d = datasets[i].getDatum(j);
+                    if (d)
+                    {
+                        file << *d << std::endl;   // KS: Czy na pewno zadziała dobrze? Cos w stylu save_print?
+                    }
                 }
+                file.close();
             }
-            file.close();
-        }
-        else
-        {
-            throw std::runtime_error("Unable to open file " + (directory / ("dataset_" + std::to_string(i) + ".data")).string());
+            else
+            {
+                throw ksi::exception("Unable to open file " + (directory / ("dataset_" + std::to_string(i) + ".data")).string());
+            }
         }
     }
+    CATCH; 
 }
 
 ksi::dataset ksi::TT::read_file(const std::filesystem::path& file_directory)
@@ -62,7 +67,7 @@ ksi::dataset ksi::TT::read_file(const std::filesystem::path& file_directory)
 
 void ksi::TT::read_directory(const std::filesystem::path& directory)
 {
-    std::regex data_file_regex(".*\\.data");
+    std::regex data_file_regex(".*\\.data");  // KS: Czy na pewno takie wyrażenie?
 
     const auto data_files = std::filesystem::directory_iterator(directory)
         | std::views::filter([](const auto& entry) { return entry.is_regular_file(); })
@@ -105,6 +110,7 @@ bool ksi::TT::iterator::operator!=(const iterator& other) const
     return !(*this == other);
 }
 
+// std::tuple<ksi::dataset, ksi::dataset> ksi::TT:iterator:: itd
 std::tuple<ksi::dataset&, std::vector<ksi::dataset>>& ksi::TT::iterator::operator*() const {
     std::vector<ksi::dataset> test;
     for (auto i = tt.datasets.begin(); i != tt.datasets.end(); ++i) {
