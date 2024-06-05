@@ -202,8 +202,12 @@ namespace ksi
        @author Krzysztof Siminski */
       std::size_t getNumberOfLabels () const;
       
-      /** Output stream operator
-        @date 2018-05-13
+      /** Output stream operator for datum.
+		* 
+        * @param ss The output stream.
+        * @param d The datum to write to the stream.
+        * @return The output stream with the datum written to it.
+        * @date 2018-05-13
         */
       friend std::ostream & operator << (std::ostream & ss, const datum & d);
    };

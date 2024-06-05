@@ -17,14 +17,12 @@ namespace ksi
      */
     class TVT : public CV 
    {
-
         /**
          * @class iterator
          * A nested class for iterating over TVT elements.
          *
          * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
+         * @author Konrad Wnuk
          */
         class iterator;
 
@@ -33,10 +31,56 @@ namespace ksi
          * A nested class for read-only iteration over TVT elements.
          *
          * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
+         * @author Konrad Wnuk
          */
         class const_iterator;
+
+        /**
+         * Constructor for TVT.
+         *
+         * @param reader The reader object to initialize the base class with.
+         * @date 2024-06-04
+         * @author Konrad Wnuk
+         */
+        TVT(const ksi::reader& reader) : CV(reader) {}
+
+        /**
+         * Splits the data into a specified number of subsets.
+         *
+         * @param dataset The dataset to be split.
+         * @param n The number of subsets to split the data into.
+         * @date 2024-06-04
+         * @author Konrad Wnuk
+         */
+        void split(const ksi::dataset dataset, const int n = 10) override;
+
+        /**
+         * Saves the data to a specified directory.
+         *
+         * @param directory The directory where the data will be saved.
+         * @date 2024-06-04
+         * @author Konrad Wnuk
+         */
+        void save(const std::filesystem::path& directory) const override;
+
+        /**
+         * Reads data from a specified file.
+         *
+         * @param file_directory The path of the file to read the data from.
+         * @return A dataset containing the data read from the file.
+         * @date 2024-06-04
+         * @author Konrad Wnuk
+         */
+        virtual ksi::dataset read_file(const std::filesystem::path& file_directory) override;
+
+        /**
+         * Reads data from a specified directory.
+         *
+         * @param directory The directory to read the data from.
+         * @date 2024-06-04
+         * @author Konrad Wnuk
+         */
+        void read_directory(const std::filesystem::path& directory) override;
 
         /**
          * Clones the current reader object.
@@ -47,48 +91,6 @@ namespace ksi
 		 * @warning This method is not yet implemented.
          */
         std::shared_ptr<reader> clone() const override;
-
-        /**
-         * Splits the data into a specified number of subsets.
-         *
-         * @param n The number of subsets to split the data into. Default is 10.
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
-         */
-        void split(const int n = 10) override;
-
-        /**
-         * Saves the TVT data to a specified directory.
-         *
-         * @param directory The directory where the data will be saved.
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
-         */
-        void save(const std::filesystem::path& directory) const override;
-
-        /**
-         * Reads data from a specified file.
-         *
-         * @param file_name The name of the file to read the data from.
-         * @return A dataset containing the data read from the file.
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
-         */
-        dataset read_file(const std::filesystem::path& file_name) override;
-
-        /**
-         * Reads data from a specified directory.
-         *
-         * @param directory The directory to read the data from.
-         * @return KS: Musi zwracać coś innego
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
-         */
-        dataset read_directory(const std::filesystem::path& directory) override;
 
         /**
          * Returns an iterator to the beginning of the TVT elements.

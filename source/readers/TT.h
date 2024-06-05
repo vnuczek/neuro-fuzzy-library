@@ -5,9 +5,10 @@
 
 #include "CV.h"
 
+#include <tuple>
+
 namespace ksi 
 {
-
     /**
      * @class TT
      * Class representing the TT (Training and Test) model, inheriting from CV.
@@ -17,14 +18,12 @@ namespace ksi
      */
     class TT : public CV 
    {
-
         /**
          * @class iterator
          * A nested class for iterating over TT elements.
          *
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @warning This method is not yet implemented.
          */
         class iterator;
 
@@ -34,9 +33,55 @@ namespace ksi
          *
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @warning This method is not yet implemented.
          */
         class const_iterator;
+
+        /**
+		 * Constructor for TT.
+		 *
+		 * @param reader The reader object to initialize the base class with.
+		 * @date 2024-06-04
+         * @author Konrad Wnuk
+		 */
+        TT(const ksi::reader& reader) : CV(reader) {}
+
+        /**
+	     * Splits the data into a specified number of subsets.
+	     *
+	     * @param dataset The dataset to be split.
+	     * @param n The number of subsets to split the data into.
+	     * @date 2024-06-04
+	     * @author Konrad Wnuk
+	     */
+        void split(const ksi::dataset dataset, const int n = 10) override;
+
+        /**
+	     * Saves the data to a specified directory.
+	     *
+	     * @param directory The directory where the data will be saved.
+	     * @date 2024-06-04
+	     * @author Konrad Wnuk
+	     */
+        void save(const std::filesystem::path& directory) const override;
+
+        /**
+         * Reads data from a specified file.
+         *
+         * @param file_directory The path of the file to read the data from.
+         * @return A dataset containing the data read from the file.
+         * @date 2024-06-04
+         * @author Konrad Wnuk
+         */
+        virtual ksi::dataset read_file(const std::filesystem::path& file_directory) override;
+
+        /**
+         * Reads data from a specified directory.
+         *
+         * @param directory The directory to read the data from.
+         * @date 2024-06-04
+         * @author Konrad Wnuk
+         */
+        void read_directory(const std::filesystem::path& directory) override;
 
         /**
          * Clones the current reader object.
@@ -47,48 +92,6 @@ namespace ksi
          * @warning This method is not yet implemented.
          */
         std::shared_ptr<reader> clone() const override;
-
-        /**
-         * Splits the data into a specified number of subsets.
-         *
-         * @param n The number of subsets to split the data into. Default is 10.
-         * @date 2024-05-30
-         * @author Konrad Wnuk
-         * @warning This method is not yet implemented.
-         */
-        void split(const int n = 10) override;
-
-        /**
-         * Saves the TT data to a specified directory.
-         *
-         * @param directory The directory where the data will be saved.
-         * @date 2024-05-30
-         * @author Konrad Wnuk
-         * @warning This method is not yet implemented.
-         */
-        void save(const std::filesystem::path& directory) const override;
-
-        /**
-         * Reads data from a specified file.
-         *
-         * @param file_name The name of the file to read the data from.
-         * @return A dataset containing the data read from the file.
-         * @date 2024-05-30
-         * @author Konrad Wnuk
-         * @warning This method is not yet implemented.
-         */
-        dataset read_file(const std::filesystem::path& file_name) override;
-
-        /**
-         * Reads data from a specified directory.
-         *
-         * @param directory The directory to read the data from.
-         * @return A dataset containing the data read from the directory.
-         * @date 2024-05-30
-         * @author Konrad Wnuk
-         * @warning This method is not yet implemented.
-         */
-        dataset read_directory(const std::filesystem::path& directory) override;
 
         /**
          * Returns an iterator to the beginning of the TT elements.
@@ -139,6 +142,10 @@ namespace ksi
      * @author Konrad Wnuk
      */
     class TT::iterator {
+    private:
+        std::vector<ksi::dataset>::iterator it;
+        TT& tt;
+
     public:
 
         /**
@@ -204,32 +211,23 @@ namespace ksi
         /**
          * Dereferences the iterator to access the current TT element.
          *
-         * @return ksi::tuple<ksi::dataset, ksi::dataset> 
+         * @return A tuple containing a reference to the training dataset and a vector of test datasets.
          * @date 2024-05-30
          * @author Konrad Wnuk
          * @warning This method is not yet implemented.
+         * @note dose not work
          */
-        TT& operator*() const;
-
-        /*
-        TT tt; 
-        for (auto [train, test] : tt)
-           ; 
-        
-        for (auto it = tt.begin(); ...)
-            it->test 
-            
-        */
+        std::tuple<const ksi::dataset&, std::vector<ksi::dataset>>& operator*() const;
         
         /**
          * Dereferences the iterator to access the current TT element.
          *
-         * @return A pointer to the current TT element.
+         * @return A pointer to the tuple containing the current TT element.
          * @date 2024-05-30
          * @author Konrad Wnuk
          * @warning This method is not yet implemented.
          */
-        TT* operator->() const;
+        std::tuple<const ksi::dataset&, std::vector<ksi::dataset>>* operator->() const;
     };
 
     /**
@@ -240,6 +238,10 @@ namespace ksi
      * @author Konrad Wnuk
      */
     class TT::const_iterator {
+    private:
+        std::vector<ksi::dataset>::const_iterator it;
+        const TT& tt;
+
     public:
 
         /**
@@ -311,7 +313,7 @@ namespace ksi
          * @author Konrad Wnuk
          * @warning This method is not yet implemented.
          */
-        TT& operator*() const;
+        std::tuple<const ksi::dataset&, std::vector<ksi::dataset>>& operator*() const;
 
         /**
          * Dereferences the const iterator to access the current TT element.
