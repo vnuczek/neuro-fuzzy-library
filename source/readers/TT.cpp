@@ -1,6 +1,6 @@
 /** @file */
 
-#include "TT.h"
+#include "../readers/TT.h"
 #include "../service/exception.h"
 
 #include <fstream>
@@ -76,7 +76,7 @@ void ksi::TT::read_directory(const std::filesystem::path& directory)
                 return std::regex_match(entry.path().string(), data_file_regex);
             });
 
-    std::vector<std::thread> threads;
+    std::vector<std::thread> threads; // KS: Trzeba dodać bibliotekę thread
 
     for (const auto& entry : data_files)
     {
@@ -89,7 +89,7 @@ void ksi::TT::read_directory(const std::filesystem::path& directory)
             });
     }
 
-    for (auto& thread : threads)
+    for (auto & thread : threads)
     {
         if (thread.joinable())
         {
