@@ -186,6 +186,14 @@ $(release_folder)/readers-reader-complete.o : readers/reader-complete.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/readers-reader-complete.o : readers/reader-complete.cpp
 	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
+$(release_folder)/readers-TVT.o : readers/TVT.cpp
+	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
+$(debug_folder)/readers-TVT.o : readers/TVT.cpp
+	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
+$(release_folder)/readers-TT.o : readers/TT.cpp
+	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
+$(debug_folder)/readers-TT.o : readers/TT.cpp
+	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
 $(release_folder)/readers-reader.o : readers/reader.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/readers-reader.o : readers/reader.cpp
@@ -193,6 +201,10 @@ $(debug_folder)/readers-reader.o : readers/reader.cpp
 $(release_folder)/readers-weighted_reader_complete.o : readers/weighted_reader_complete.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/readers-weighted_reader_complete.o : readers/weighted_reader_complete.cpp
+	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
+$(release_folder)/readers-CV.o : readers/CV.cpp
+	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
+$(debug_folder)/readers-CV.o : readers/CV.cpp
 	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
 $(release_folder)/readers-reader-incomplete.o : readers/reader-incomplete.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
@@ -941,6 +953,7 @@ $(release_folder)/dissimilarities-dis-log-linear.o \
 $(release_folder)/readers-reader-complete.o \
 $(release_folder)/implications-imp-rescher.o \
 $(release_folder)/main.o \
+$(release_folder)/readers-TVT.o \
 $(release_folder)/owas-sowa.o \
 $(release_folder)/experiments-exp-lab.o \
 $(release_folder)/heuristics-ridders.o \
@@ -1066,6 +1079,7 @@ $(release_folder)/descriptors-descriptor-gaussian.o \
 $(release_folder)/experiments-exp-002.o \
 $(release_folder)/gan-generative_model.o \
 $(release_folder)/experiments-exp-003.o \
+$(release_folder)/readers-TT.o \
 $(release_folder)/granules-set_of_granules.o \
 $(release_folder)/experiments-exp-004.o \
 $(release_folder)/descriptors-descriptor-constant.o \
@@ -1079,6 +1093,7 @@ $(release_folder)/tnorms-t-norm-product.o \
 $(release_folder)/partitions-fcm-T.o \
 $(release_folder)/neuro-fuzzy-granular_subspace_annbfis_classification.o \
 $(release_folder)/neuro-fuzzy-granular_nfs.o \
+$(release_folder)/readers-CV.o \
 $(release_folder)/auxiliary-mathematics.o \
 $(release_folder)/tnorms-t-norm-fodor.o \
 $(release_folder)/neuro-fuzzy-consequence-MA.o \
@@ -1152,6 +1167,7 @@ $(debug_folder)/dissimilarities-dis-log-linear.o \
 $(debug_folder)/readers-reader-complete.o \
 $(debug_folder)/implications-imp-rescher.o \
 $(debug_folder)/main.o \
+$(debug_folder)/readers-TVT.o \
 $(debug_folder)/owas-sowa.o \
 $(debug_folder)/experiments-exp-lab.o \
 $(debug_folder)/heuristics-ridders.o \
@@ -1277,6 +1293,7 @@ $(debug_folder)/descriptors-descriptor-gaussian.o \
 $(debug_folder)/experiments-exp-002.o \
 $(debug_folder)/gan-generative_model.o \
 $(debug_folder)/experiments-exp-003.o \
+$(debug_folder)/readers-TT.o \
 $(debug_folder)/granules-set_of_granules.o \
 $(debug_folder)/experiments-exp-004.o \
 $(debug_folder)/descriptors-descriptor-constant.o \
@@ -1290,6 +1307,7 @@ $(debug_folder)/tnorms-t-norm-product.o \
 $(debug_folder)/partitions-fcm-T.o \
 $(debug_folder)/neuro-fuzzy-granular_subspace_annbfis_classification.o \
 $(debug_folder)/neuro-fuzzy-granular_nfs.o \
+$(debug_folder)/readers-CV.o \
 $(debug_folder)/auxiliary-mathematics.o \
 $(debug_folder)/tnorms-t-norm-fodor.o \
 $(debug_folder)/neuro-fuzzy-consequence-MA.o \
