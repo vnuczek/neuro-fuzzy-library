@@ -47,7 +47,7 @@ namespace ksi
          * Splits the data into a specified number of subsets.
          *
          * @param dataset The dataset to be split.
-         * @param n The number of subsets to split the data into.
+         * @param n The number of subsets to split the data into. Default is 10.
          * @date 2024-05-30
          * @author Konrad Wnuk
          */
