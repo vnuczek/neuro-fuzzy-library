@@ -141,6 +141,8 @@ namespace ksi
     private:
         TT* tt;
         std::vector<ksi::dataset>::iterator train_iterator;
+        
+        /// wszystkie dane z wylaczenie zbioru treningowego 
         ksi::dataset test_dataset;
 
     public:
@@ -183,7 +185,7 @@ namespace ksi
          * @author Konrad Wnuk
          * @warning This method is not yet implemented.
          */
-        bool operator==(const iterator& other) const;
+        bool operator==(const iterator & other) const;
 
         /**
          * Checks if two iterators are not equal.
@@ -223,7 +225,7 @@ namespace ksi
          * @author Konrad Wnuk
          * @warning This method is not yet implemented.
          */
-        std::tuple<ksi::dataset&, ksi::dataset&>* operator->() const;
+        std::tuple<ksi::dataset&, ksi::dataset&> operator->() const;
     };
 
     /**
