@@ -2,7 +2,9 @@
 
 #include "../readers/TT.h"
 #include "../service/exception.h"
+#include "../auxiliary/to_string.h"
 
+#include <thread>
 #include <fstream>
 #include <ranges>
 #include <regex>
@@ -37,7 +39,7 @@ void ksi::TT::save(const std::filesystem::path& directory) const
 
         for (auto i = 0; i < datasets.size(); ++i)
         {
-            std::ofstream file(directory / ("dataset_" + std::to_string(i) + ".data"));   // ksi::to_string (i, 2)    i == 1 -->  "01" 
+            std::ofstream file(directory / ("dataset_" + ksi::to_string(i, 2) + ".data"));
 
             if (file.is_open())
             {
@@ -67,7 +69,7 @@ ksi::dataset ksi::TT::read_file(const std::filesystem::path& file_directory)
 
 void ksi::TT::read_directory(const std::filesystem::path& directory)
 {
-    std::regex data_file_regex(".*\\.data");  // KS: Czy na pewno takie wyrażenie?
+    std::regex data_file_regex(".*\\.data$");
 
     const auto data_files = std::filesystem::directory_iterator(directory)
         | std::views::filter([](const auto& entry) { return entry.is_regular_file(); })
@@ -76,7 +78,7 @@ void ksi::TT::read_directory(const std::filesystem::path& directory)
                 return std::regex_match(entry.path().string(), data_file_regex);
             });
 
-    std::vector<std::thread> threads; // KS: Trzeba dodać bibliotekę thread
+    std::vector<std::thread> threads;
 
     for (const auto& entry : data_files)
     {
@@ -98,6 +100,57 @@ void ksi::TT::read_directory(const std::filesystem::path& directory)
     }
 }
 
+auto ksi::TT::begin() -> ksi::TT::iterator
+{
+    return { this, datasets.begin() };
+}
+
+auto ksi::TT::end() -> ksi::TT::iterator
+{
+    return { this, datasets.end() };
+}
+
+auto ksi::TT::cbegin() const -> ksi::TT::const_iterator
+{
+    return { this, datasets.cbegin() };
+}
+
+auto ksi::TT::cend() const -> ksi::TT::const_iterator
+{
+    return { this, datasets.cend() };
+}
+
+ksi::TT::iterator::iterator(TT* tt, std::vector<ksi::dataset>::iterator it) : tt(tt), train_iterator(it)
+{
+    for (auto iter = tt->datasets.begin(); iter != tt->datasets.end(); ++iter)
+    {
+        if (iter != it)
+        {
+            for (const auto& datum : *iter)
+            {
+                test_dataset.addDatum(datum);
+            }
+        }
+    }
+}
+
+ksi::TT::iterator& ksi::TT::iterator::operator++()
+{
+    ++train_iterator;
+    test_dataset = ksi::dataset();
+    for (auto iter = tt->datasets.begin(); iter != tt->datasets.end(); ++iter)
+    {
+        if (iter != train_iterator)
+        {
+            for (const auto& datum : *iter)
+            {
+                test_dataset.addDatum(datum);
+            }
+        }
+    }
+    return *this;
+}
+
 ksi::TT::iterator ksi::TT::iterator::operator++(int)
 {
     iterator temp = *this;
@@ -110,15 +163,40 @@ bool ksi::TT::iterator::operator!=(const iterator& other) const
     return !(*this == other);
 }
 
-// std::tuple<ksi::dataset, ksi::dataset> ksi::TT:iterator:: itd
-std::tuple<ksi::dataset&, std::vector<ksi::dataset>>& ksi::TT::iterator::operator*() const {
-    std::vector<ksi::dataset> test;
-    for (auto i = tt.datasets.begin(); i != tt.datasets.end(); ++i) {
-        if (i != it) {
-            test.push_back(*i);
+std::tuple<ksi::dataset&, ksi::dataset&> ksi::TT::iterator::operator*() const
+{
+    return std::make_tuple(std::ref(*train_iterator), test_dataset);
+}
+
+ksi::TT::const_iterator::const_iterator(const TT* tt, std::vector<ksi::dataset>::const_iterator it) : tt(tt), train_iterator(it)
+{
+    for (auto iter = tt->datasets.cbegin(); iter != tt->datasets.cend(); ++iter)
+    {
+        if (iter != it)
+        {
+            for (const auto& datum : *iter)
+            {
+                test_dataset.addDatum(datum);
+            }
         }
     }
-    return std::make_tuple(std::ref(*it), test);
+}
+
+ksi::TT::const_iterator& ksi::TT::const_iterator::operator++()
+{
+    ++train_iterator;
+    test_dataset = ksi::dataset();
+    for (auto iter = tt->datasets.cbegin(); iter != tt->datasets.cend(); ++iter)
+    {
+        if (iter != train_iterator)
+        {
+            for (const auto& datum : *iter)
+            {
+                test_dataset.addDatum(datum);
+            }
+        }
+    }
+    return *this;
 }
 
 ksi::TT::const_iterator ksi::TT::const_iterator::operator++(int)
@@ -131,4 +209,9 @@ ksi::TT::const_iterator ksi::TT::const_iterator::operator++(int)
 bool ksi::TT::const_iterator::operator!=(const const_iterator& other) const
 {
     return !(*this == other);
+}
+
+std::tuple<const ksi::dataset&, const ksi::dataset&> ksi::TT::const_iterator::operator*() const
+{
+    return std::make_tuple(std::ref(*train_iterator), test_dataset);
 }

@@ -5,6 +5,8 @@
 
 #include "CV.h"
 
+#include <tuple>
+
 namespace ksi 
 {
 
@@ -52,7 +54,7 @@ namespace ksi
          * @date 2024-06-04
          * @author Konrad Wnuk
          */
-        void split(const ksi::dataset dataset, const int n = 10) override;
+        void split(const ksi::dataset & dataset, const int n = 10) override;
 
         /**
          * Saves the data to a specified directory.
@@ -211,7 +213,7 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @warning This method is not yet implemented.
          */
-        TVT& operator*() const; // KS: Czy ten operator na pewno bedzie zwracal TVT&?
+        TVT& operator*() const;
 
         /**
          * Dereferences the iterator to access the current TVT element.

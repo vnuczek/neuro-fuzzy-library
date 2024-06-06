@@ -1,12 +1,15 @@
 /** @file */
 
-#include "TVT.h"
+#include "..\readers\TVT.h"
+#include "../service/exception.h"
+#include "../auxiliary/to_string.h"
 
+#include <thread>
 #include <fstream>
 #include <ranges>
 #include <regex>
 
-void ksi::TVT::split(const ksi::dataset dataset, const int n)
+void ksi::TVT::split(const ksi::dataset & dataset, const int n)
 {
     datasets.clear();
     datasets.resize(n);

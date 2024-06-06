@@ -51,7 +51,7 @@ namespace ksi
          * @date 2024-05-30
          * @author Konrad Wnuk
          */
-        virtual void split(const ksi::dataset dataset, const int n = 10) = 0;
+        virtual void split(const ksi::dataset & dataset, const int n = 10) = 0;
 
         /**
          * Saves the data to a specified directory.

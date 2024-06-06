@@ -53,7 +53,7 @@ namespace ksi
 	     * @date 2024-06-04
 	     * @author Konrad Wnuk
 	     */
-        void split(const ksi::dataset dataset, const int n = 10) override;
+        void split(const ksi::dataset & dataset, const int n = 10) override;
 
         /**
 	     * Saves the data to a specified directory.
@@ -72,7 +72,7 @@ namespace ksi
          * @date 2024-06-04
          * @author Konrad Wnuk
          */
-        virtual ksi::dataset read_file(const std::filesystem::path& file_directory) override;
+        ksi::dataset read_file(const std::filesystem::path& file_directory) override;
 
         /**
          * Reads data from a specified directory.
@@ -97,9 +97,8 @@ namespace ksi
          * Returns an iterator to the beginning of the TT elements.
          *
          * @return An iterator to the beginning of the TT elements.
-         * @date 2024-05-30
+         * @date 2024-06-05
          * @author Konrad Wnuk
-         * @warning This method is not yet implemented.
          */
         iterator begin();
 
@@ -107,9 +106,8 @@ namespace ksi
          * Returns an iterator to the end of the TT elements.
          *
          * @return An iterator to the end of the TT elements.
-         * @date 2024-05-30
+         * @date 2024-06-05
          * @author Konrad Wnuk
-         * @warning This method is not yet implemented.
          */
         iterator end();
 
@@ -117,9 +115,8 @@ namespace ksi
          * Returns a const iterator to the beginning of the TT elements.
          *
          * @return A const_iterator to the beginning of the TT elements.
-         * @date 2024-05-30
+         * @date 2024-06-05
          * @author Konrad Wnuk
-         * @warning This method is not yet implemented.
          */
         const_iterator cbegin() const;
 
@@ -127,9 +124,8 @@ namespace ksi
          * Returns a const iterator to the end of the TT elements.
          *
          * @return A const_iterator to the end of the TT elements.
-         * @date 2024-05-30
+         * @date 2024-06-05
          * @author Konrad Wnuk
-         * @warning This method is not yet implemented.
          */
         const_iterator cend() const;
     };
@@ -143,25 +139,27 @@ namespace ksi
      */
     class TT::iterator {
     private:
-        std::vector<ksi::dataset>::iterator it;
-        TT& tt;
+        TT* tt;
+        std::vector<ksi::dataset>::iterator train_iterator;
+        ksi::dataset test_dataset;
 
     public:
 
         /**
          * Constructs a new iterator.
          *
-         * @date 2024-05-30
+         * @param tt Pointer to the TT object.
+		 * @param it Iterator pointing to the current test dataset.
+         * @date 2024-06-05
          * @author Konrad Wnuk
-         * @warning This method is not yet implemented.
          */
-        iterator();
+        iterator(TT* tt, std::vector<ksi::dataset>::iterator it);
 
         /**
          * Advances the iterator to the next element.
          *
          * @return A reference to the advanced iterator.
-         * @date 2024-05-30
+         * @date 2024-06-05
          * @author Konrad Wnuk
          * @warning This method is not yet implemented.
          */
@@ -171,7 +169,7 @@ namespace ksi
          * Advances the iterator to the next element (post-increment).
          *
          * @return A copy of the iterator before it was advanced.
-         * @date 2024-05-30
+         * @date 2024-06-05
          * @author Konrad Wnuk
          */
         iterator operator++(int);
@@ -211,13 +209,11 @@ namespace ksi
         /**
          * Dereferences the iterator to access the current TT element.
          *
-         * @return A tuple containing a reference to the training dataset and a vector of test datasets.
-         * @date 2024-05-30
+         * @return A tuple containing the current dataset and the combined test dataset.
+         * @date 2024-06-05
          * @author Konrad Wnuk
-         * @warning This method is not yet implemented.
-         * @note dose not work
          */
-        std::tuple<const ksi::dataset&, std::vector<ksi::dataset>>& operator*() const;
+        std::tuple<ksi::dataset&, ksi::dataset&> operator*() const;
         
         /**
          * Dereferences the iterator to access the current TT element.
@@ -227,7 +223,7 @@ namespace ksi
          * @author Konrad Wnuk
          * @warning This method is not yet implemented.
          */
-        std::tuple<const ksi::dataset&, std::vector<ksi::dataset>>* operator->() const;
+        std::tuple<ksi::dataset&, ksi::dataset&>* operator->() const;
     };
 
     /**
@@ -239,27 +235,28 @@ namespace ksi
      */
     class TT::const_iterator {
     private:
-        std::vector<ksi::dataset>::const_iterator it;
-        const TT& tt;
+        const TT* tt;
+        std::vector<ksi::dataset>::const_iterator train_iterator;
+        ksi::dataset test_dataset;
 
     public:
 
         /**
          * Constructs a new const_iterator.
          *
-         * @date 2024-05-30
+         * @param tt Pointer to TT object
+         * @param it Const iterator to a specific dataset in TT
+         * @date 2024-06-05
          * @author Konrad Wnuk
-         * @warning This method is not yet implemented.
          */
-        const_iterator();
+        const_iterator(const TT* tt, std::vector<ksi::dataset>::const_iterator it);
 
         /**
          * Advances the const iterator to the next element.
          *
          * @return A reference to the advanced const iterator.
-         * @date 2024-05-30
+         * @date 2024-06-05
          * @author Konrad Wnuk
-         * @warning This method is not yet implemented.
          */
         const_iterator& operator++();
 
@@ -267,7 +264,7 @@ namespace ksi
          * Advances the const iterator to the next element (post-increment).
          *
          * @return A copy of the const iterator before it was advanced.
-         * @date 2024-05-30
+         * @date 2024-06-05
          * @author Konrad Wnuk
          */
         const_iterator operator++(int);
@@ -290,7 +287,6 @@ namespace ksi
          * @return True if the const iterators are not equal, false otherwise.
          * @date 2024-05-30
          * @author Konrad Wnuk
-         * @warning This method is not yet implemented.
          */
         bool operator!=(const const_iterator& other) const;
 
@@ -308,12 +304,11 @@ namespace ksi
         /**
          * Dereferences the const iterator to access the current TT element.
          *
-         * @return A reference to the current TT element.
-         * @date 2024-05-30
+         * @return A tuple containing the current dataset and the combined test dataset.
+         * @date 2024-06-05
          * @author Konrad Wnuk
-         * @warning This method is not yet implemented.
          */
-        std::tuple<const ksi::dataset&, std::vector<ksi::dataset>>& operator*() const;
+        std::tuple<const ksi::dataset&, const ksi::dataset&> operator*() const;
 
         /**
          * Dereferences the const iterator to access the current TT element.
