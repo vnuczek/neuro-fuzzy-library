@@ -19,6 +19,7 @@ namespace ksi
      */
     class TVT : public CV 
    {
+   public:
         /**
          * @class iterator
          * A nested class for iterating over TVT elements.
@@ -44,7 +45,45 @@ namespace ksi
          * @date 2024-06-04
          * @author Konrad Wnuk
          */
-        TVT(const ksi::reader& reader) : CV(reader) {}
+        ksi::TVT(const ksi::reader& reader) : CV(reader) {}
+
+        /**
+         * Copy constructor for TVT.
+         *
+         * @param other The TVT object to copy.
+         * @date 2024-06-08
+         * @author Konrad Wnuk
+         */
+        ksi::TVT(const ksi::TVT& other);
+
+        /**
+         * Move constructor for TVT.
+         *
+         * @param other The TVT object to move.
+         * @date 2024-06-08
+         * @author Konrad Wnuk
+         */
+        ksi::TVT(ksi::TVT&& other) noexcept;
+
+        /**
+         * Copy assignment operator for TVT.
+         *
+         * @param other The TVT object to copy.
+         * @return A reference to the copied TVT object.
+         * @date 2024-06-08
+         * @author Konrad Wnuk
+         */
+        ksi::TVT& operator=(const ksi::TVT& other);
+
+        /**
+         * Move assignment operator for TVT.
+         *
+         * @param other The TVT object to move.
+         * @return A reference to the moved TVT object.
+         * @date 2024-06-08
+         * @author Konrad Wnuk
+         */
+        ksi::TVT& operator=(ksi::TVT&& other) noexcept;
 
         /**
          * Splits the data into a specified number of subsets.
@@ -85,6 +124,16 @@ namespace ksi
         void read_directory(const std::filesystem::path& directory) override;
 
         /**
+         * Reads data from a specified file.
+         *
+         * @param filename The path of the file to read the data from.
+         * @return A dataset containing the data read from the file.
+         * @date 2024-06-08
+         * @author Konrad Wnuk
+         */
+        ksi::dataset read(const std::string& filename) override;
+
+        /**
          * Clones the current reader object.
          *
          * @return A shared pointer to the cloned reader object.
@@ -102,7 +151,7 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @warning This method is not yet implemented.
          */
-    	iterator begin();
+        ksi::TVT::iterator begin();
 
         /**
          * Returns an iterator to the end of the TVT elements.
@@ -112,7 +161,7 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @warning This method is not yet implemented.
          */
-    	iterator end();
+        ksi::TVT::iterator end();
 
         /**
          * Returns a const iterator to the beginning of the TVT elements.
@@ -122,7 +171,7 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @warning This method is not yet implemented.
          */
-    	const_iterator cbegin() const;
+        ksi::TVT::const_iterator cbegin() const;
 
         /**
          * Returns a const iterator to the end of the TVT elements.
@@ -132,7 +181,7 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @warning This method is not yet implemented.
          */
-    	const_iterator cend() const;
+        ksi::TVT::const_iterator cend() const;
     };
 
     /**
@@ -143,6 +192,17 @@ namespace ksi
 	 * @author Konrad Wnuk
      */
     class TVT::iterator {
+    private:
+        ksi::TVT* tvt;
+
+        std::vector<ksi::dataset>::iterator train_iterator;
+
+        int validation_size = 1;
+
+        ksi::dataset validation_dataset;
+
+        ksi::dataset test_dataset;
+
     public:
 
         /**
@@ -152,7 +212,45 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @warning This method is not yet implemented.
          */
-        iterator();
+        ksi::TVT::iterator();
+
+        /**
+         * Copy constructor.
+         *
+         * @param other The iterator object to copy.
+         * @date 2024-06-08
+         * @author Konrad Wnuk
+         */
+        ksi::TVT::iterator(const ksi::TVT::iterator& other);
+
+        /**
+         * Move constructor.
+         *
+         * @param other The iterator object to move.
+         * @date 2024-06-08
+         * @author Konrad Wnuk
+         */
+        ksi::TVT::iterator(ksi::TVT::iterator&& other) noexcept;
+
+        /**
+         * Copy assignment operator.
+         *
+         * @param other The iterator object to copy.
+         * @return Reference to the copied iterator object.
+         * @date 2024-06-08
+         * @author Konrad Wnuk
+         */
+        ksi::TVT::iterator& operator=(const ksi::TVT::iterator& other);
+
+        /**
+         * Move assignment operator.
+         *
+         * @param other The iterator object to move.
+         * @return Reference to the moved iterator object.
+         * @date 2024-06-08
+         * @author Konrad Wnuk
+         */
+        ksi::TVT::iterator& operator=(iterator&& other) noexcept;
 
         /**
          * Advances the iterator to the next element.
@@ -162,7 +260,7 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @warning This method is not yet implemented.
          */
-        iterator& operator++();
+        ksi::TVT::iterator& operator++();
 
         /**
          * Advances the iterator to the next element (post-increment).
@@ -171,7 +269,7 @@ namespace ksi
          * @date 2024-05-30
 		 * @author Konrad Wnuk
          */
-        iterator operator++(int);
+        ksi::TVT::iterator operator++(int);
 
         /**
          * Checks if two iterators are equal.
@@ -182,7 +280,7 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @warning This method is not yet implemented.
          */
-        bool operator==(const iterator& other) const;
+        bool operator==(const ksi::TVT::iterator& other) const;
 
         /**
          * Checks if two iterators are not equal.
@@ -192,7 +290,7 @@ namespace ksi
          * @date 2024-05-30
 		 * @author Konrad Wnuk
          */
-        bool operator!=(const iterator& other) const;
+        bool operator!=(const ksi::TVT::iterator& other) const;
 
         /**
          * Compares two iterators.
@@ -203,7 +301,7 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @warning This method is not yet implemented.
          */
-        auto operator<=>(const iterator& other) const;
+        std::strong_ordering operator<=>(const ksi::TVT::iterator& other) const;
 
         /**
          * Dereferences the iterator to access the current TVT element.
@@ -213,7 +311,7 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @warning This method is not yet implemented.
          */
-        TVT& operator*() const;
+        std::tuple<ksi::dataset, ksi::dataset, ksi::dataset> operator*() const;
 
         /**
          * Dereferences the iterator to access the current TVT element.
@@ -223,7 +321,7 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @warning This method is not yet implemented.
          */
-        TVT* operator->() const;
+        std::tuple<ksi::dataset, ksi::dataset, ksi::dataset> operator->() const;
     };
 
     /**
@@ -234,6 +332,17 @@ namespace ksi
 	 * @author Konrad Wnuk
      */
     class TVT::const_iterator {
+    private:
+        ksi::TVT* tvt;
+
+        std::vector<ksi::dataset>::iterator train_iterator;
+
+        int validation_size = 1;
+
+        ksi::dataset validation_dataset;
+
+        ksi::dataset test_dataset;
+
     public:
 
         /**
@@ -243,7 +352,45 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @warning This method is not yet implemented.
          */
-        const_iterator();
+        ksi::TVT::const_iterator();
+
+        /**
+         * Copy constructor.
+         *
+         * @param other The const_iterator object to copy.
+         * @date 2024-06-08
+         * @author Konrad Wnuk
+         */
+        ksi::TVT::const_iterator(const ksi::TVT::const_iterator& other);
+
+        /**
+         * Move constructor.
+         *
+         * @param other The const_iterator object to move.
+         * @date 2024-06-08
+         * @author Konrad Wnuk
+         */
+        ksi::TVT::const_iterator(ksi::TVT::const_iterator&& other) noexcept;
+
+        /**
+         * Copy assignment operator.
+         *
+         * @param other The const_iterator object to copy.
+         * @return Reference to the copied const_iterator object.
+         * @date 2024-06-08
+         * @author Konrad Wnuk
+         */
+        ksi::TVT::const_iterator& operator=(const ksi::TVT::const_iterator& other);
+
+        /**
+         * Move assignment operator.
+         *
+         * @param other The const_iterator object to move.
+         * @return Reference to the moved const_iterator object.
+         * @date 2024-06-08
+         * @author Konrad Wnuk
+         */
+        ksi::TVT::const_iterator& operator=(ksi::TVT::const_iterator&& other) noexcept;
 
         /**
          * Advances the const iterator to the next element.
@@ -253,7 +400,7 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @warning This method is not yet implemented.
          */
-        const_iterator& operator++();
+        ksi::TVT::const_iterator& operator++();
 
         /**
          * Advances the const iterator to the next element (post-increment).
@@ -262,7 +409,7 @@ namespace ksi
          * @date 2024-05-30
 		 * @author Konrad Wnuk
          */
-        const_iterator operator++(int);
+        ksi::TVT::const_iterator operator++(int);
 
         /**
          * Checks if two const iterators are equal.
@@ -273,7 +420,7 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @warning This method is not yet implemented.
          */
-        bool operator==(const const_iterator& other) const;
+        bool operator==(const ksi::TVT::const_iterator& other) const;
 
         /**
          * Checks if two const iterators are not equal.
@@ -284,7 +431,7 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @warning This method is not yet implemented.
          */
-        bool operator!=(const const_iterator& other) const;
+        bool operator!=(const ksi::TVT::const_iterator& other) const;
 
         /**
          * Compares two const iterators.
@@ -295,7 +442,7 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @warning This method is not yet implemented.
          */
-        auto operator<=>(const const_iterator& other) const;
+        std::strong_ordering operator<=>(const ksi::TVT::const_iterator& other) const;
 
         /**
          * Dereferences the const iterator to access the current TVT element.
@@ -305,7 +452,7 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @warning This method is not yet implemented.
          */
-        TVT& operator*() const;
+        std::tuple<const ksi::dataset&, const ksi::dataset&, const ksi::dataset&> operator*() const;
 
         /**
          * Dereferences the const iterator to access the current TVT element.
@@ -315,7 +462,7 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @warning This method is not yet implemented.
          */
-        TVT* operator->() const;
+        std::tuple<const ksi::dataset&, const ksi::dataset&, const ksi::dataset&> operator->() const;
     };
 }
 

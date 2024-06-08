@@ -39,8 +39,49 @@ namespace ksi
          * @date 2024-06-04
          * @author Konrad Wnuk
          */
-        CV(const ksi::reader& reader) : pReader(std::make_shared<ksi::reader>(reader)) {}
+        ksi::CV(const ksi::reader& reader) : pReader(std::make_shared<ksi::reader>(reader)) {}
 
+        /**
+         * Copy constructor.
+         *
+         * @param other The CV object to copy.
+         * @date 2024-06-08
+         * @author Konrad Wnuk
+         */
+        ksi::CV(const CV& other);
+
+        /**
+        * Move constructor.
+        *
+        * @param other The CV object to move.
+        * @date 2024-06-08
+        * @author Konrad Wnuk
+        */
+        ksi::CV(CV&& other) noexcept;
+
+        /**
+         * Copy assignment operator.
+         *
+         * @param other The CV object to copy.
+         * @return Reference to the copied CV object.
+         * @date 2024-06-08
+         * @author Konrad Wnuk
+         */
+        ksi::CV& operator=(const CV& other);
+
+        /**
+         * Move assignment operator.
+         *
+         * @param other The CV object to move.
+         * @return Reference to the moved CV object.
+         * @date 2024-06-08
+         * @author Konrad Wnuk
+         */
+        ksi::CV& operator=(CV&& other) noexcept;
+
+        /**
+         * Virtual destructor for CV.
+         */
         virtual ~CV() = default;
 
         /**
