@@ -39,7 +39,7 @@ namespace ksi
          * @date 2024-06-04
          * @author Konrad Wnuk
          */
-        ksi::CV(const ksi::reader& reader) : pReader(std::make_shared<ksi::reader>(reader)) {}
+        ksi::CV(const ksi::reader& reader);
 
         /**
          * Copy constructor.

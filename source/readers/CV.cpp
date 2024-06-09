@@ -2,6 +2,9 @@
 
 #include "CV.h"
 
+ksi::CV::CV(const ksi::reader& reader)
+	: pReader(std::make_shared<ksi::reader>(reader)) {}
+
 ksi::CV::CV(const CV& other)
 	: pReader(other.pReader)
 {

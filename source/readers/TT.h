@@ -189,11 +189,11 @@ namespace ksi
         /** Pointer to the TT object */
         TT* tt;
 
-        /** Iterator pointing to the current train dataset */
-        std::vector<ksi::dataset>::iterator train_iterator;
+        /** Iterator pointing to the current test dataset */
+        std::vector<ksi::dataset>::iterator test_iterator;
 
-        /** Combined test dataset */
-        ksi::dataset test_dataset;
+        /** Combined train dataset */
+        ksi::dataset train_dataset;
 
     public:
         /**
@@ -309,6 +309,14 @@ namespace ksi
          * @author Konrad Wnuk
          */
         std::tuple<ksi::dataset, ksi::dataset> operator->() const;
+
+        /**
+		 * Initializes the test dataset by combining all datasets except the current training dataset.
+		 *
+		 * @date 2024-06-09
+		 * @autor Konrad Wnuk
+		 */
+        void initialize_test_dataset();
     };
 
     /**
@@ -443,6 +451,14 @@ namespace ksi
          * @author Konrad Wnuk
          */
         std::tuple<const ksi::dataset&, const ksi::dataset&> operator->() const;
+
+        /**
+         * Initializes the test dataset by combining all datasets except the current training dataset.
+         *
+         * @date 2024-06-09
+         * @autor Konrad Wnuk
+         */
+        void initialize_test_dataset();
     };
 }
 
