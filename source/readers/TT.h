@@ -43,7 +43,7 @@ namespace ksi
          * @date 2024-06-04
          * @author Konrad Wnuk
          */
-        TT(const ksi::reader& reader);
+        ksi::TT(const ksi::reader& reader);
 
         /**
          * Copy constructor for TT.
@@ -242,7 +242,7 @@ namespace ksi
          * @date 2024-06-08
          * @author Konrad Wnuk
          */
-        ksi::TT::iterator& operator=(iterator&& other) noexcept;
+        ksi::TT::iterator& operator=(ksi::TT::iterator&& other) noexcept;
 
         /**
          * Advances the iterator to the next element.

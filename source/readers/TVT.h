@@ -45,7 +45,7 @@ namespace ksi
          * @date 2024-06-04
          * @author Konrad Wnuk
          */
-        ksi::TVT(const ksi::reader& reader) : CV(reader) {}
+        ksi::TVT(const ksi::reader& reader);
 
         /**
          * Copy constructor for TVT.
