@@ -39,11 +39,11 @@ namespace ksi
         /**
          * Constructor for TT.
          *
-         * @param reader The reader object to initialize the base class with.
+         * @param source_reader The reader object to initialize the base class with.
          * @date 2024-06-04
          * @author Konrad Wnuk
          */
-        ksi::TT(const ksi::reader& reader);
+        TT(const reader& source_reader);
 
         /**
          * Copy constructor for TT.
@@ -52,7 +52,7 @@ namespace ksi
          * @date 2024-06-08
          * @author Konrad Wnuk
          */
-        ksi::TT(const ksi::TT& other);
+        TT(const TT& other);
 
         /**
          * Move constructor for TT.
@@ -61,7 +61,7 @@ namespace ksi
          * @date 2024-06-08
          * @author Konrad Wnuk
          */
-        ksi::TT(ksi::TT&& other) noexcept;
+        TT(TT&& other) noexcept;
 
         /**
          * Copy assignment operator for TT.
@@ -71,7 +71,7 @@ namespace ksi
          * @date 2024-06-08
          * @author Konrad Wnuk
          */
-        ksi::TT& operator=(const ksi::TT& other);
+        TT& operator=(const TT& other);
 
         /**
          * Move assignment operator for TT.
@@ -81,17 +81,17 @@ namespace ksi
          * @date 2024-06-08
          * @author Konrad Wnuk
          */
-        ksi::TT& operator=(ksi::TT&& other) noexcept;
+        TT& operator=(TT&& other) noexcept;
 
         /**
          * Splits the data into a specified number of subsets.
          *
-         * @param dataset The dataset to be split.
+         * @param base_dataset The dataset to be split.
          * @param n The number of subsets to split the data into. Default is 10.
          * @date 2024-06-04
          * @author Konrad Wnuk
          */
-        void split(const ksi::dataset& dataset, const int n = 10) override;
+        void split(const dataset& base_dataset, const int n = 10) override;
 
         /**
          * Saves the data to a specified directory.
@@ -110,7 +110,7 @@ namespace ksi
          * @date 2024-06-04
          * @author Konrad Wnuk
          */
-        ksi::dataset read_file(const std::filesystem::path& file_directory) override;
+        dataset read_file(const std::filesystem::path& file_directory) override;
 
         /**
          * Reads data from a specified directory.
@@ -129,7 +129,7 @@ namespace ksi
          * @date 2024-06-08
          * @author Konrad Wnuk
          */
-        ksi::dataset read(const std::string& filename) override;
+        dataset read(const std::string& filename) override;
 
         /**
          * Clones the current reader object.
@@ -138,7 +138,7 @@ namespace ksi
          * @date 2024-06-08
          * @author Konrad Wnuk
          */
-        std::shared_ptr<ksi::reader> clone() const override;
+        std::shared_ptr<reader> clone() const override;
 
         /**
          * Returns an iterator to the beginning of the TT elements.
@@ -147,7 +147,7 @@ namespace ksi
          * @date 2024-06-05
          * @author Konrad Wnuk
          */
-        ksi::TT::iterator begin();
+        iterator begin();
 
         /**
          * Returns an iterator to the end of the TT elements.
@@ -156,7 +156,7 @@ namespace ksi
          * @date 2024-06-05
          * @author Konrad Wnuk
          */
-        ksi::TT::iterator end();
+        iterator end();
 
         /**
          * Returns a const iterator to the beginning of the TT elements.
@@ -165,7 +165,7 @@ namespace ksi
          * @date 2024-06-05
          * @author Konrad Wnuk
          */
-        ksi::TT::const_iterator cbegin() const;
+        const_iterator cbegin() const;
 
         /**
          * Returns a const iterator to the end of the TT elements.
@@ -174,7 +174,7 @@ namespace ksi
          * @date 2024-06-05
          * @author Konrad Wnuk
          */
-        ksi::TT::const_iterator cend() const;
+        const_iterator cend() const;
     };
 
     /**
@@ -187,24 +187,24 @@ namespace ksi
     class TT::iterator {
     private:
         /** Pointer to the TT object */
-        TT* tt;
+        TT* pTT;
 
         /** Iterator pointing to the current test dataset */
-        std::vector<ksi::dataset>::iterator test_iterator;
+        std::vector<dataset>::iterator test_iterator;
 
         /** Combined train dataset */
-        ksi::dataset train_dataset;
+        dataset train_dataset;
 
     public:
         /**
          * Constructs a new iterator.
          *
          * @param tt Pointer to the TT object.
-         * @param it Iterator pointing to the current test dataset.
+         * @param test_it Iterator pointing to the current test dataset.
          * @date 2024-06-05
          * @author Konrad Wnuk
          */
-        ksi::TT::iterator(ksi::TT* tt, std::vector<ksi::dataset>::iterator it);
+        iterator(TT* tt, std::vector<dataset>::iterator test_it);
 
         /**
          * Copy constructor.
@@ -213,7 +213,7 @@ namespace ksi
          * @date 2024-06-08
          * @author Konrad Wnuk
          */
-        ksi::TT::iterator(const ksi::TT::iterator& other);
+        iterator(const iterator& other);
 
         /**
          * Move constructor.
@@ -222,7 +222,7 @@ namespace ksi
          * @date 2024-06-08
          * @author Konrad Wnuk
          */
-        ksi::TT::iterator(ksi::TT::iterator&& other) noexcept;
+        iterator(iterator&& other) noexcept;
 
         /**
          * Copy assignment operator.
@@ -232,7 +232,7 @@ namespace ksi
          * @date 2024-06-08
          * @author Konrad Wnuk
          */
-        ksi::TT::iterator& operator=(const ksi::TT::iterator& other);
+        iterator& operator=(const iterator& other);
 
         /**
          * Move assignment operator.
@@ -242,7 +242,7 @@ namespace ksi
          * @date 2024-06-08
          * @author Konrad Wnuk
          */
-        ksi::TT::iterator& operator=(ksi::TT::iterator&& other) noexcept;
+        iterator& operator=(iterator&& other) noexcept;
 
         /**
          * Advances the iterator to the next element.
@@ -251,7 +251,7 @@ namespace ksi
          * @date 2024-06-05
          * @author Konrad Wnuk
          */
-        ksi::TT::iterator& operator++();
+        iterator& operator++();
 
         /**
          * Advances the iterator to the next element (post-increment).
@@ -260,7 +260,7 @@ namespace ksi
          * @date 2024-06-05
          * @author Konrad Wnuk
          */
-        ksi::TT::iterator operator++(int);
+        iterator operator++(int);
 
         /**
          * Checks if two iterators are equal.
@@ -270,7 +270,7 @@ namespace ksi
          * @date 2024-06-08
          * @author Konrad Wnuk
          */
-        bool operator==(const ksi::TT::iterator& other) const;
+        bool operator==(const iterator& other) const;
 
         /**
          * Checks if two iterators are not equal.
@@ -280,7 +280,7 @@ namespace ksi
          * @date 2024-06-08
          * @author Konrad Wnuk
          */
-        bool operator!=(const ksi::TT::iterator& other) const;
+        bool operator!=(const iterator& other) const;
 
         /**
          * Compares two iterators.
@@ -290,7 +290,7 @@ namespace ksi
          * @date 2024-06-08
          * @author Konrad Wnuk
          */
-        std::strong_ordering operator<=>(const ksi::TT::iterator& other) const;
+        std::strong_ordering operator<=>(const iterator& other) const;
 
         /**
          * Dereferences the iterator to access the current TT element.
@@ -299,7 +299,7 @@ namespace ksi
          * @date 2024-06-05
          * @author Konrad Wnuk
          */
-        std::tuple<ksi::dataset, ksi::dataset> operator*() const;
+        std::tuple<dataset, dataset> operator*() const;
 
         /**
          * Dereferences the iterator to access the current TT element.
@@ -308,7 +308,7 @@ namespace ksi
          * @date 2024-06-05
          * @author Konrad Wnuk
          */
-        std::tuple<ksi::dataset, ksi::dataset> operator->() const;
+        std::tuple<dataset, dataset> operator->() const;
 
     private:
         /**
@@ -330,24 +330,24 @@ namespace ksi
     class TT::const_iterator {
     private:
         /** Pointer to the TT object */
-        const TT* tt;
+        const TT* pTT;
 
         /** Const iterator pointing to the current test dataset */
-        std::vector<ksi::dataset>::const_iterator test_iterator;
+        std::vector<dataset>::const_iterator test_iterator;
 
         /** Combined train dataset */
-        ksi::dataset train_dataset;
+        dataset train_dataset;
 
     public:
         /**
          * Constructs a new const_iterator.
          *
          * @param tt Pointer to the TT object.
-         * @param it Const iterator pointing to the current test dataset.
+         * @param test_it Const iterator pointing to the current test dataset.
          * @date 2024-06-05
          * @author Konrad Wnuk
          */
-        ksi::TT::const_iterator(const ksi::TT* tt, std::vector<ksi::dataset>::const_iterator it);
+        const_iterator(const TT* tt, std::vector<dataset>::const_iterator test_it);
 
         /**
          * Copy constructor.
@@ -356,7 +356,7 @@ namespace ksi
          * @date 2024-06-08
          * @author Konrad Wnuk
          */
-        ksi::TT::const_iterator(const ksi::TT::const_iterator& other);
+        const_iterator(const const_iterator& other);
 
         /**
          * Move constructor.
@@ -365,7 +365,7 @@ namespace ksi
          * @date 2024-06-08
          * @author Konrad Wnuk
          */
-        ksi::TT::const_iterator(ksi::TT::const_iterator&& other) noexcept;
+        const_iterator(const_iterator&& other) noexcept;
 
         /**
          * Copy assignment operator.
@@ -375,7 +375,7 @@ namespace ksi
          * @date 2024-06-08
          * @author Konrad Wnuk
          */
-        ksi::TT::const_iterator& operator=(const ksi::TT::const_iterator& other);
+        const_iterator& operator=(const const_iterator& other);
 
         /**
          * Move assignment operator.
@@ -385,7 +385,7 @@ namespace ksi
          * @date 2024-06-08
          * @author Konrad Wnuk
          */
-        ksi::TT::const_iterator& operator=(ksi::TT::const_iterator&& other) noexcept;
+        const_iterator& operator=(const_iterator&& other) noexcept;
 
         /**
          * Advances the const iterator to the next element.
@@ -394,7 +394,7 @@ namespace ksi
          * @date 2024-06-05
          * @author Konrad Wnuk
          */
-        ksi::TT::const_iterator& operator++();
+        const_iterator& operator++();
 
         /**
          * Advances the const iterator to the next element (post-increment).
@@ -403,7 +403,7 @@ namespace ksi
          * @date 2024-06-05
          * @author Konrad Wnuk
          */
-        ksi::TT::const_iterator operator++(int);
+        const_iterator operator++(int);
 
         /**
          * Checks if two const iterators are equal.
@@ -413,7 +413,7 @@ namespace ksi
          * @date 2024-06-08
          * @author Konrad Wnuk
          */
-        bool operator==(const ksi::TT::const_iterator& other) const;
+        bool operator==(const const_iterator& other) const;
 
         /**
          * Checks if two const iterators are not equal.
@@ -423,7 +423,7 @@ namespace ksi
          * @date 2024-06-08
          * @author Konrad Wnuk
          */
-        bool operator!=(const ksi::TT::const_iterator& other) const;
+        bool operator!=(const const_iterator& other) const;
 
         /**
          * Compares two const iterators.
@@ -433,7 +433,7 @@ namespace ksi
          * @date 2024-06-08
          * @author Konrad Wnuk
          */
-        std::strong_ordering operator<=>(const ksi::TT::const_iterator& other) const;
+        std::strong_ordering operator<=>(const const_iterator& other) const;
 
         /**
          * Dereferences the const iterator to access the current TT element.
@@ -442,7 +442,7 @@ namespace ksi
          * @date 2024-06-05
          * @author Konrad Wnuk
          */
-        std::tuple<const ksi::dataset&, const ksi::dataset&> operator*() const;
+        std::tuple<const dataset&, const dataset&> operator*() const;
 
         /**
          * Dereferences the const iterator to access the current TT element.
@@ -451,7 +451,7 @@ namespace ksi
          * @date 2024-06-05
          * @author Konrad Wnuk
          */
-        std::tuple<const ksi::dataset&, const ksi::dataset&> operator->() const;
+        std::tuple<const dataset&, const dataset&> operator->() const;
 
     private:
         /**

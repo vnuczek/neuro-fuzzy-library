@@ -9,8 +9,8 @@
 #include <ranges>
 #include <regex>
 
-ksi::TVT::TVT(const ksi::reader& reader)
-	: CV(reader) {}
+ksi::TVT::TVT(const ksi::reader& source_reader)
+	: CV(source_reader) {}
 
 ksi::TVT::TVT(const ksi::reader& reader, int validation_dataset_size)
     : CV(reader), validation_size(validation_dataset_size) {}
@@ -39,12 +39,12 @@ ksi::TVT& ksi::TVT::operator=(TVT&& other) noexcept
     return *this;
 }
 
-void ksi::TVT::split(const ksi::dataset& dataset, const int n)
+void ksi::TVT::split(const ksi::dataset& base_dataset, const int n)
 {
     datasets.clear();
     datasets.resize(n);
 
-    const auto total_size = dataset.size();
+    const auto total_size = base_dataset.size();
     const auto base_size = total_size / n;
     const auto remainder = total_size % n;
 
@@ -55,7 +55,7 @@ void ksi::TVT::split(const ksi::dataset& dataset, const int n)
 
         for (auto j = 0; j < current_size; ++j)
         {
-            datasets[i].addDatum(*dataset.getDatum(index));
+            datasets[i].addDatum(*base_dataset.getDatum(index));
             ++index;
         }
     }
@@ -160,23 +160,23 @@ auto ksi::TVT::cend() const -> ksi::TVT::const_iterator
     return { this, datasets.cend() };
 }
 
-ksi::TVT::iterator::iterator(TVT* tvt, std::vector<ksi::dataset>::iterator it)
-    : tvt(tvt), test_iterator(it)
+ksi::TVT::iterator::iterator(TVT* tvt, std::vector<ksi::dataset>::iterator test_it)
+    : pTVT(tvt), test_iterator(test_it)
 {
     initialize_train_and_validation_datasets();
 }
 
 ksi::TVT::iterator::iterator(const iterator& other)
-    : tvt(other.tvt), test_iterator(other.test_iterator), validation_dataset(other.validation_dataset), train_dataset(other.train_dataset) {}
+    : pTVT(other.pTVT), test_iterator(other.test_iterator), validation_dataset(other.validation_dataset), train_dataset(other.train_dataset) {}
 
 ksi::TVT::iterator::iterator(iterator&& other) noexcept
-    : tvt(other.tvt), test_iterator(std::move(other.test_iterator)), validation_dataset(std::move(other.validation_dataset)), train_dataset(std::move(other.train_dataset)) {}
+    : pTVT(other.pTVT), test_iterator(std::move(other.test_iterator)), validation_dataset(std::move(other.validation_dataset)), train_dataset(std::move(other.train_dataset)) {}
 
 ksi::TVT::iterator& ksi::TVT::iterator::operator=(const iterator& other)
 {
     if (this != &other)
     {
-        tvt = other.tvt;
+        pTVT = other.pTVT;
         test_iterator = other.test_iterator;
         validation_dataset = other.validation_dataset;
         train_dataset = other.train_dataset;
@@ -188,7 +188,7 @@ ksi::TVT::iterator& ksi::TVT::iterator::operator=(iterator&& other) noexcept
 {
     if (this != &other)
     {
-        tvt = std::move(other.tvt);
+        pTVT = std::move(other.pTVT);
         test_iterator = std::move(other.test_iterator);
         validation_dataset = std::move(other.validation_dataset);
         train_dataset = std::move(other.train_dataset);
@@ -237,26 +237,26 @@ std::tuple<ksi::dataset, ksi::dataset, ksi::dataset> ksi::TVT::iterator::operato
 
 void ksi::TVT::iterator::initialize_train_and_validation_datasets()
 {
-    auto total_datasets = tvt->datasets.size();
-    auto validation_start_index = std::distance(tvt->datasets.begin(), test_iterator) + 1;
+    auto total_datasets = pTVT->datasets.size();
+    auto validation_start_index = std::distance(pTVT->datasets.begin(), test_iterator) + 1;
     auto current_validation_count = 0;
     
-    auto current_iterator = tvt->datasets.begin();
+    auto current_iterator = pTVT->datasets.begin();
     std::advance(current_iterator, validation_start_index % total_datasets);
 
-    for (auto it = tvt->datasets.begin(); it != tvt->datasets.end(); ++it) {
+    for (auto it = pTVT->datasets.begin(); it != pTVT->datasets.end(); ++it) {
         if (it == test_iterator) {
             continue;
         }
 
-        if (current_validation_count < tvt->validation_size && it == current_iterator) {
+        if (current_validation_count < pTVT->validation_size && it == current_iterator) {
             for (std::size_t j = 0; j < it->size(); ++j) {
                 validation_dataset.addDatum(*it->getDatum(j));
             }
             ++current_validation_count;
             ++current_iterator;
-            if (current_iterator == tvt->datasets.end()) {
-                current_iterator = tvt->datasets.begin();
+            if (current_iterator == pTVT->datasets.end()) {
+                current_iterator = pTVT->datasets.begin();
             }
         }
         else {
@@ -267,23 +267,23 @@ void ksi::TVT::iterator::initialize_train_and_validation_datasets()
     }
 }
 
-ksi::TVT::const_iterator::const_iterator(const TVT* tvt, std::vector<ksi::dataset>::const_iterator it)
-    : tvt(tvt), test_iterator(it)
+ksi::TVT::const_iterator::const_iterator(const TVT* tvt, std::vector<ksi::dataset>::const_iterator test_it)
+    : pTVT(tvt), test_iterator(test_it)
 {
     initialize_train_and_validation_datasets();
 }
 
 ksi::TVT::const_iterator::const_iterator(const const_iterator& other)
-    : tvt(other.tvt), test_iterator(other.test_iterator), validation_dataset(other.validation_dataset), train_dataset(other.train_dataset) {}
+    : pTVT(other.pTVT), test_iterator(other.test_iterator), validation_dataset(other.validation_dataset), train_dataset(other.train_dataset) {}
 
 ksi::TVT::const_iterator::const_iterator(const_iterator&& other) noexcept
-    : tvt(other.tvt), test_iterator(std::move(other.test_iterator)), validation_dataset(std::move(other.validation_dataset)), train_dataset(std::move(other.train_dataset)) {}
+    : pTVT(other.pTVT), test_iterator(std::move(other.test_iterator)), validation_dataset(std::move(other.validation_dataset)), train_dataset(std::move(other.train_dataset)) {}
 
 ksi::TVT::const_iterator& ksi::TVT::const_iterator::operator=(const const_iterator& other)
 {
     if (this != &other)
     {
-        tvt = other.tvt;
+        pTVT = other.pTVT;
         test_iterator = other.test_iterator;
         validation_dataset = other.validation_dataset;
         train_dataset = other.train_dataset;
@@ -295,7 +295,7 @@ ksi::TVT::const_iterator& ksi::TVT::const_iterator::operator=(const_iterator&& o
 {
     if (this != &other)
     {
-        tvt = std::move(other.tvt);
+        pTVT = std::move(other.pTVT);
         test_iterator = std::move(other.test_iterator);
         validation_dataset = std::move(other.validation_dataset);
         train_dataset = std::move(other.train_dataset);
@@ -347,26 +347,26 @@ void ksi::TVT::const_iterator::initialize_train_and_validation_datasets()
     train_dataset = ksi::dataset();
     validation_dataset = ksi::dataset();
     
-    auto total_datasets = tvt->datasets.size();
-    auto validation_start_index = std::distance(tvt->datasets.cbegin(), test_iterator) + 1;
+    auto total_datasets = pTVT->datasets.size();
+    auto validation_start_index = std::distance(pTVT->datasets.cbegin(), test_iterator) + 1;
     auto current_validation_count = 0;
     
-    auto current_iterator = tvt->datasets.cbegin();
+    auto current_iterator = pTVT->datasets.cbegin();
     std::advance(current_iterator, validation_start_index % total_datasets);
 
-    for (auto it = tvt->datasets.cbegin(); it != tvt->datasets.cend(); ++it) {
+    for (auto it = pTVT->datasets.cbegin(); it != pTVT->datasets.cend(); ++it) {
         if (it == test_iterator) {
             continue;
         }
 
-        if (current_validation_count < tvt->validation_size && it == current_iterator) {
+        if (current_validation_count < pTVT->validation_size && it == current_iterator) {
             for (std::size_t j = 0; j < it->size(); ++j) {
                 validation_dataset.addDatum(*it->getDatum(j));
             }
             ++current_validation_count;
             ++current_iterator;
-            if (current_iterator == tvt->datasets.cend()) {
-                current_iterator = tvt->datasets.cbegin();
+            if (current_iterator == pTVT->datasets.cend()) {
+                current_iterator = pTVT->datasets.cbegin();
             }
         }
         else {

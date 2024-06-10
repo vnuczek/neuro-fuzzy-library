@@ -9,8 +9,8 @@
 #include <ranges>
 #include <regex>
 
-ksi::TT::TT(const ksi::reader& reader)
-	: CV(reader) {}
+ksi::TT::TT(const ksi::reader& source_reader)
+	: CV(source_reader) {}
 
 ksi::TT::TT(const TT& other)
 	: CV(other) {}
@@ -36,12 +36,12 @@ ksi::TT& ksi::TT::operator=(TT&& other) noexcept
     return *this;
 }
 
-void ksi::TT::split(const ksi::dataset & dataset, const int n)
+void ksi::TT::split(const ksi::dataset & base_dataset, const int n)
 {
     datasets.clear();
     datasets.resize(n);
 
-    const auto total_size = dataset.size();
+    const auto total_size = base_dataset.size();
     const auto base_size = total_size / n;
     const auto remainder = total_size % n;
 
@@ -52,7 +52,7 @@ void ksi::TT::split(const ksi::dataset & dataset, const int n)
 
         for (auto j = 0; j < current_size; ++j)
         {
-            datasets[i].addDatum(*dataset.getDatum(index));
+            datasets[i].addDatum(*base_dataset.getDatum(index));
             ++index;
         }
     }
@@ -157,23 +157,23 @@ auto ksi::TT::cend() const -> ksi::TT::const_iterator
     return { this, datasets.cend() };
 }
 
-ksi::TT::iterator::iterator(TT* tt, std::vector<ksi::dataset>::iterator it)
-	: tt(tt), test_iterator(it)
+ksi::TT::iterator::iterator(TT* tt, std::vector<ksi::dataset>::iterator test_it)
+	: pTT(tt), test_iterator(test_it)
 {
     initialize_test_dataset();
 }
 
 ksi::TT::iterator::iterator(const iterator& other)
-	: tt(other.tt), test_iterator(other.test_iterator), train_dataset(other.train_dataset) {}
+	: pTT(other.pTT), test_iterator(other.test_iterator), train_dataset(other.train_dataset) {}
 
 ksi::TT::iterator::iterator(iterator&& other) noexcept
-	: tt(other.tt), test_iterator(std::move(other.test_iterator)), train_dataset(std::move(other.train_dataset)) {}
+	: pTT(other.pTT), test_iterator(std::move(other.test_iterator)), train_dataset(std::move(other.train_dataset)) {}
 
 ksi::TT::iterator& ksi::TT::iterator::operator=(const iterator& other)
 {
     if (this != &other)
     {
-        tt = other.tt;
+        pTT = other.pTT;
         test_iterator = other.test_iterator;
         train_dataset = other.train_dataset;
     }
@@ -184,7 +184,7 @@ ksi::TT::iterator& ksi::TT::iterator::operator=(iterator&& other) noexcept
 {
     if (this != &other)
     {
-        tt = std::move(tt);
+        pTT = std::move(pTT);
         test_iterator = std::move(other.test_iterator);
         train_dataset = std::move(other.train_dataset);
     }
@@ -234,7 +234,7 @@ void ksi::TT::iterator::initialize_test_dataset()
 {
     train_dataset = ksi::dataset();
 
-    for (auto it = tt->datasets.cbegin(); it != tt->datasets.cend(); ++it) {
+    for (auto it = pTT->datasets.cbegin(); it != pTT->datasets.cend(); ++it) {
         if (it != test_iterator) {
             for (std::size_t j = 0; j < it->size(); ++j) {
                 train_dataset.addDatum(*it->getDatum(j));
@@ -243,23 +243,23 @@ void ksi::TT::iterator::initialize_test_dataset()
     }
 }
 
-ksi::TT::const_iterator::const_iterator(const TT* tt, std::vector<ksi::dataset>::const_iterator it)
-	: tt(tt), test_iterator(it)
+ksi::TT::const_iterator::const_iterator(const TT* tt, std::vector<ksi::dataset>::const_iterator test_it)
+	: pTT(tt), test_iterator(test_it)
 {
     initialize_test_dataset();
 }
 
 ksi::TT::const_iterator::const_iterator(const const_iterator& other)
-    : tt(other.tt), test_iterator(other.test_iterator), train_dataset(other.train_dataset) {}
+    : pTT(other.pTT), test_iterator(other.test_iterator), train_dataset(other.train_dataset) {}
 
 ksi::TT::const_iterator::const_iterator(const_iterator&& other) noexcept
-    : tt(other.tt), test_iterator(std::move(other.test_iterator)), train_dataset(std::move(other.train_dataset)) {}
+    : pTT(other.pTT), test_iterator(std::move(other.test_iterator)), train_dataset(std::move(other.train_dataset)) {}
 
 ksi::TT::const_iterator& ksi::TT::const_iterator::operator=(const const_iterator& other)
 {
     if (this != &other)
     {
-        tt = other.tt;
+        pTT = other.pTT;
         test_iterator = other.test_iterator;
         train_dataset = other.train_dataset;
     }
@@ -270,7 +270,7 @@ ksi::TT::const_iterator& ksi::TT::const_iterator::operator=(const_iterator&& oth
 {
     if (this != &other)
     {
-        tt = std::move(tt);
+        pTT = std::move(pTT);
         test_iterator = std::move(other.test_iterator);
         train_dataset = std::move(other.train_dataset);
     }
@@ -320,7 +320,7 @@ void ksi::TT::const_iterator::initialize_test_dataset()
 {
     train_dataset = ksi::dataset();
 
-    for (auto it = tt->datasets.cbegin(); it != tt->datasets.cend(); ++it) {
+    for (auto it = pTT->datasets.cbegin(); it != pTT->datasets.cend(); ++it) {
         if (it != test_iterator) {
             for (std::size_t j = 0; j < it->size(); ++j) {
                 train_dataset.addDatum(*it->getDatum(j));
