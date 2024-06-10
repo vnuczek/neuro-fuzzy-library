@@ -46,7 +46,7 @@ void ksi::TT::split(const ksi::dataset & dataset, const int n)
     const auto remainder = total_size % n;
 
     std::size_t index = 0;
-    for (auto i = 0; i < n; ++i)
+    for (int i = 0; i < n; ++i)
     {
         const auto current_size = base_size + (i < remainder ? 1 : 0);
 
@@ -110,7 +110,6 @@ void ksi::TT::read_directory(const std::filesystem::path& directory)
     }
 
     std::vector<std::thread> threads;
-
     for (const auto& file_path : filtered_files) {
         threads.emplace_back([this, file_path]()
             {
@@ -234,37 +233,35 @@ std::tuple<ksi::dataset, ksi::dataset> ksi::TT::iterator::operator->() const
 void ksi::TT::iterator::initialize_test_dataset()
 {
     train_dataset = ksi::dataset();
-    for (auto iter = tt->begin(); iter != tt->end(); ++iter)
-    {
-        if (*this != iter)
-        {
-            for (auto i = 0; i < iter.train_dataset.size(); ++i)
-            {
-                train_dataset.addDatum(*iter.train_dataset.getDatum(i));
+
+    for (auto it = tt->datasets.cbegin(); it != tt->datasets.cend(); ++it) {
+        if (it != test_iterator) {
+            for (std::size_t j = 0; j < it->size(); ++j) {
+                train_dataset.addDatum(*it->getDatum(j));
             }
         }
     }
 }
 
 ksi::TT::const_iterator::const_iterator(const TT* tt, std::vector<ksi::dataset>::const_iterator it)
-	: tt(tt), train_iterator(it)
+	: tt(tt), test_iterator(it)
 {
     initialize_test_dataset();
 }
 
 ksi::TT::const_iterator::const_iterator(const const_iterator& other)
-    : tt(other.tt), train_iterator(other.train_iterator), test_dataset(other.test_dataset) {}
+    : tt(other.tt), test_iterator(other.test_iterator), train_dataset(other.train_dataset) {}
 
 ksi::TT::const_iterator::const_iterator(const_iterator&& other) noexcept
-    : tt(other.tt), train_iterator(std::move(other.train_iterator)), test_dataset(std::move(other.test_dataset)) {}
+    : tt(other.tt), test_iterator(std::move(other.test_iterator)), train_dataset(std::move(other.train_dataset)) {}
 
 ksi::TT::const_iterator& ksi::TT::const_iterator::operator=(const const_iterator& other)
 {
     if (this != &other)
     {
         tt = other.tt;
-        train_iterator = other.train_iterator;
-        test_dataset = other.test_dataset;
+        test_iterator = other.test_iterator;
+        train_dataset = other.train_dataset;
     }
     return *this;
 }
@@ -274,15 +271,15 @@ ksi::TT::const_iterator& ksi::TT::const_iterator::operator=(const_iterator&& oth
     if (this != &other)
     {
         tt = std::move(tt);
-        train_iterator = std::move(other.train_iterator);
-        test_dataset = std::move(other.test_dataset);
+        test_iterator = std::move(other.test_iterator);
+        train_dataset = std::move(other.train_dataset);
     }
     return *this;
 }
 
 ksi::TT::const_iterator& ksi::TT::const_iterator::operator++()
 {
-    ++train_iterator;
+    ++test_iterator;
     initialize_test_dataset();
     return *this;
 }
@@ -296,7 +293,7 @@ ksi::TT::const_iterator ksi::TT::const_iterator::operator++(int)
 
 bool ksi::TT::const_iterator::operator==(const ksi::TT::const_iterator& other) const
 {
-    return train_iterator == other.train_iterator;
+    return test_iterator == other.test_iterator;
 }
 
 bool ksi::TT::const_iterator::operator!=(const const_iterator& other) const
@@ -306,29 +303,27 @@ bool ksi::TT::const_iterator::operator!=(const const_iterator& other) const
 
 std::strong_ordering ksi::TT::const_iterator::operator<=>(const ksi::TT::const_iterator& other) const
 {
-    return train_iterator <=> other.train_iterator;
+    return test_iterator <=> other.test_iterator;
 }
 
 std::tuple<const ksi::dataset&, const ksi::dataset&> ksi::TT::const_iterator::operator*() const
 {
-    return std::make_tuple(std::ref(*train_iterator), std::ref(test_dataset));
+    return std::make_tuple(std::ref(train_dataset), std::ref(*test_iterator));
 }
 
 std::tuple<const ksi::dataset&, const ksi::dataset&> ksi::TT::const_iterator::operator->() const
 {
-    return std::make_tuple(std::ref(*train_iterator), std::ref(test_dataset));
+    return std::make_tuple(std::ref(train_dataset), std::ref(*test_iterator));
 }
 
 void ksi::TT::const_iterator::initialize_test_dataset()
 {
-    test_dataset = ksi::dataset();
-    for (auto iter = tt->cbegin(); iter != tt->cend(); ++iter)
-    {
-        if (*this != iter)
-        {
-            for (auto i = 0; i < iter.test_dataset.size(); ++i)
-            {
-                test_dataset.addDatum(*iter.test_dataset.getDatum(i));
+    train_dataset = ksi::dataset();
+
+    for (auto it = tt->datasets.cbegin(); it != tt->datasets.cend(); ++it) {
+        if (it != test_iterator) {
+            for (std::size_t j = 0; j < it->size(); ++j) {
+                train_dataset.addDatum(*it->getDatum(j));
             }
         }
     }

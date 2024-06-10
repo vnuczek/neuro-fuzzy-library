@@ -85,8 +85,7 @@ namespace ksi
        *  @date 2019-01-21
        */
       ext_fuzzy_number_gaussian getFuzzyNumber (std::size_t row, std::size_t col) const ;
-      
-      
+
       /** Method sets a value in a row and a column
        @param row row number 
        @param col column number 

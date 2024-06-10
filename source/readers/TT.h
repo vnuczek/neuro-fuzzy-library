@@ -295,7 +295,7 @@ namespace ksi
         /**
          * Dereferences the iterator to access the current TT element.
          *
-         * @return A tuple containing the current dataset and the combined test dataset.
+         * @return A tuple containing the combined training dataset and the current test dataset.
          * @date 2024-06-05
          * @author Konrad Wnuk
          */
@@ -304,14 +304,15 @@ namespace ksi
         /**
          * Dereferences the iterator to access the current TT element.
          *
-         * @return A pointer to the tuple containing the current TT element.
+         * @return A tuple containing the combined training dataset and the current test dataset.
          * @date 2024-06-05
          * @author Konrad Wnuk
          */
         std::tuple<ksi::dataset, ksi::dataset> operator->() const;
 
+    private:
         /**
-		 * Initializes the test dataset by combining all datasets except the current training dataset.
+		 * Initializes the train dataset by combining all datasets except the current test dataset.
 		 *
 		 * @date 2024-06-09
 		 * @autor Konrad Wnuk
@@ -331,11 +332,11 @@ namespace ksi
         /** Pointer to the TT object */
         const TT* tt;
 
-        /** Const iterator pointing to the current train dataset */
-        std::vector<ksi::dataset>::const_iterator train_iterator;
+        /** Const iterator pointing to the current test dataset */
+        std::vector<ksi::dataset>::const_iterator test_iterator;
 
-        /** Combined test dataset */
-        ksi::dataset test_dataset;
+        /** Combined train dataset */
+        ksi::dataset train_dataset;
 
     public:
         /**
@@ -437,7 +438,7 @@ namespace ksi
         /**
          * Dereferences the const iterator to access the current TT element.
          *
-         * @return A tuple containing the current dataset and the combined test dataset.
+         * @return A tuple containing the combined training dataset and the current test dataset.
          * @date 2024-06-05
          * @author Konrad Wnuk
          */
@@ -446,14 +447,15 @@ namespace ksi
         /**
          * Dereferences the const iterator to access the current TT element.
          *
-         * @return A pointer to the current TT element.
+         * @return A tuple containing the combined training dataset and the current test dataset.
          * @date 2024-06-05
          * @author Konrad Wnuk
          */
         std::tuple<const ksi::dataset&, const ksi::dataset&> operator->() const;
 
+    private:
         /**
-         * Initializes the test dataset by combining all datasets except the current training dataset.
+         * Initializes the train dataset by combining all datasets except the current test dataset.
          *
          * @date 2024-06-09
          * @autor Konrad Wnuk

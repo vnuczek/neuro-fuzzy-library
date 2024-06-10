@@ -19,6 +19,10 @@ namespace ksi
      */
     class TVT : public CV 
    {
+    private:
+
+        int validation_size = 1;
+
    public:
         /**
          * @class iterator
@@ -46,6 +50,16 @@ namespace ksi
          * @author Konrad Wnuk
          */
         ksi::TVT(const ksi::reader& reader);
+
+        /**
+         * Constructor for TVT.
+         *
+         * @param reader The reader object to initialize the base class with.
+         * @param validation_dataset_size Size of the validation dataset.
+         * @date 2024-06-09
+         * @author Konrad Wnuk
+         */
+        ksi::TVT(const ksi::reader& reader, int validation_dataset_size);
 
         /**
          * Copy constructor for TVT.
@@ -137,9 +151,8 @@ namespace ksi
          * Clones the current reader object.
          *
          * @return A shared pointer to the cloned reader object.
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
+         * @date 2024-06-08
+         * @author Konrad Wnuk
          */
         std::shared_ptr<reader> clone() const override;
 
@@ -147,9 +160,8 @@ namespace ksi
          * Returns an iterator to the beginning of the TVT elements.
          *
          * @return An iterator to the beginning of the TVT elements.
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
+         * @date 2024-06-05
+         * @author Konrad Wnuk
          */
         ksi::TVT::iterator begin();
 
@@ -157,9 +169,8 @@ namespace ksi
          * Returns an iterator to the end of the TVT elements.
          *
          * @return An iterator to the end of the TVT elements.
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
+         * @date 2024-06-05
+         * @author Konrad Wnuk
          */
         ksi::TVT::iterator end();
 
@@ -167,9 +178,8 @@ namespace ksi
          * Returns a const iterator to the beginning of the TVT elements.
          *
          * @return A const_iterator to the beginning of the TVT elements.
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
+         * @date 2024-06-05
+         * @author Konrad Wnuk
          */
         ksi::TVT::const_iterator cbegin() const;
 
@@ -177,9 +187,8 @@ namespace ksi
          * Returns a const iterator to the end of the TVT elements.
          *
          * @return A const_iterator to the end of the TVT elements.
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
+         * @date 2024-06-05
+         * @author Konrad Wnuk
          */
         ksi::TVT::const_iterator cend() const;
     };
@@ -193,32 +202,35 @@ namespace ksi
      */
     class TVT::iterator {
     private:
+        /** Pointer to the TVT object */
         ksi::TVT* tvt;
 
-        std::vector<ksi::dataset>::iterator train_iterator;
+        /** Const iterator pointing to the current test dataset */
+        std::vector<ksi::dataset>::iterator test_iterator;
 
-        int validation_size = 1;
-
+        /** Combined validation dataset */
         ksi::dataset validation_dataset;
 
-        ksi::dataset test_dataset;
+        /** Combined train dataset */
+        ksi::dataset train_dataset;
 
     public:
 
         /**
          * Constructs a new iterator.
          *
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
+         * @param tvt Pointer to the TVT object.
+         * @param it Iterator pointing to the current test dataset.
+         * @date 2024-06-10
+         * @author Konrad Wnuk
          */
-        ksi::TVT::iterator();
+        ksi::TVT::iterator(ksi::TVT* tvt, std::vector<ksi::dataset>::iterator it);
 
         /**
          * Copy constructor.
          *
          * @param other The iterator object to copy.
-         * @date 2024-06-08
+         * @date 2024-06-10
          * @author Konrad Wnuk
          */
         ksi::TVT::iterator(const ksi::TVT::iterator& other);
@@ -227,7 +239,7 @@ namespace ksi
          * Move constructor.
          *
          * @param other The iterator object to move.
-         * @date 2024-06-08
+         * @date 2024-06-10
          * @author Konrad Wnuk
          */
         ksi::TVT::iterator(ksi::TVT::iterator&& other) noexcept;
@@ -237,7 +249,7 @@ namespace ksi
          *
          * @param other The iterator object to copy.
          * @return Reference to the copied iterator object.
-         * @date 2024-06-08
+         * @date 2024-06-10
          * @author Konrad Wnuk
          */
         ksi::TVT::iterator& operator=(const ksi::TVT::iterator& other);
@@ -247,7 +259,7 @@ namespace ksi
          *
          * @param other The iterator object to move.
          * @return Reference to the moved iterator object.
-         * @date 2024-06-08
+         * @date 2024-06-10
          * @author Konrad Wnuk
          */
         ksi::TVT::iterator& operator=(iterator&& other) noexcept;
@@ -256,9 +268,8 @@ namespace ksi
          * Advances the iterator to the next element.
          *
          * @return A reference to the advanced iterator.
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
+         * @date 2024-06-10
+         * @author Konrad Wnuk
          */
         ksi::TVT::iterator& operator++();
 
@@ -266,8 +277,8 @@ namespace ksi
          * Advances the iterator to the next element (post-increment).
          *
          * @return A copy of the iterator before it was advanced.
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
+         * @date 2024-06-10
+         * @author Konrad Wnuk
          */
         ksi::TVT::iterator operator++(int);
 
@@ -276,9 +287,8 @@ namespace ksi
          *
          * @param other The other iterator to compare with.
          * @return True if the iterators are equal, false otherwise.
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
+         * @date 2024-06-10
+         * @author Konrad Wnuk
          */
         bool operator==(const ksi::TVT::iterator& other) const;
 
@@ -287,8 +297,8 @@ namespace ksi
          *
          * @param other The other iterator to compare with.
          * @return True if the iterators are not equal, false otherwise.
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
+         * @date 2024-06-10
+         * @author Konrad Wnuk
          */
         bool operator!=(const ksi::TVT::iterator& other) const;
 
@@ -297,31 +307,37 @@ namespace ksi
          *
          * @param other The other iterator to compare with.
          * @return The result of the comparison.
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
+         * @date 2024-06-10
+         * @author Konrad Wnuk
          */
         std::strong_ordering operator<=>(const ksi::TVT::iterator& other) const;
 
         /**
          * Dereferences the iterator to access the current TVT element.
          *
-         * @return A reference to the current TVT element.
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
+         * @return A tuple containing the combined training dataset, the combined validation dataset and the current test dataset.
+         * @date 2024-06-10
+         * @author Konrad Wnuk
          */
         std::tuple<ksi::dataset, ksi::dataset, ksi::dataset> operator*() const;
 
         /**
          * Dereferences the iterator to access the current TVT element.
          *
-         * @return A pointer to the current TVT element.
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
+         * @return A tuple containing the combined training dataset, the combined validation dataset and the current test dataset.
+         * @date 2024-06-10
+         * @author Konrad Wnuk
          */
         std::tuple<ksi::dataset, ksi::dataset, ksi::dataset> operator->() const;
+
+    private:
+        /**
+         * Initializes the train and validation datasets by combining all datasets except the current test dataset.
+         *
+         * @date 2024-06-10
+         * @author Konrad Wnuk
+         */
+        void initialize_train_and_validation_datasets();
     };
 
     /**
@@ -333,32 +349,35 @@ namespace ksi
      */
     class TVT::const_iterator {
     private:
-        ksi::TVT* tvt;
+        /** Pointer to the TVT object */
+        const ksi::TVT* tvt;
 
-        std::vector<ksi::dataset>::iterator train_iterator;
+        /** Const iterator pointing to the current test dataset */
+        std::vector<ksi::dataset>::const_iterator test_iterator;
 
-        int validation_size = 1;
-
+        /** Combined validation dataset */
         ksi::dataset validation_dataset;
 
-        ksi::dataset test_dataset;
+        /** Combined train dataset */
+        ksi::dataset train_dataset;
 
     public:
 
         /**
          * Constructs a new const_iterator.
          *
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
+         * @param tvt Pointer to the TVT object.
+         * @param it Const iterator pointing to the current test dataset.
+         * @date 2024-06-10
+         * @author Konrad Wnuk
          */
-        ksi::TVT::const_iterator();
+        ksi::TVT::const_iterator(const ksi::TVT* tvt, std::vector<ksi::dataset>::const_iterator it);
 
         /**
          * Copy constructor.
          *
          * @param other The const_iterator object to copy.
-         * @date 2024-06-08
+         * @date 2024-06-10
          * @author Konrad Wnuk
          */
         ksi::TVT::const_iterator(const ksi::TVT::const_iterator& other);
@@ -367,7 +386,7 @@ namespace ksi
          * Move constructor.
          *
          * @param other The const_iterator object to move.
-         * @date 2024-06-08
+         * @date 2024-06-10
          * @author Konrad Wnuk
          */
         ksi::TVT::const_iterator(ksi::TVT::const_iterator&& other) noexcept;
@@ -377,7 +396,7 @@ namespace ksi
          *
          * @param other The const_iterator object to copy.
          * @return Reference to the copied const_iterator object.
-         * @date 2024-06-08
+         * @date 2024-06-10
          * @author Konrad Wnuk
          */
         ksi::TVT::const_iterator& operator=(const ksi::TVT::const_iterator& other);
@@ -387,7 +406,7 @@ namespace ksi
          *
          * @param other The const_iterator object to move.
          * @return Reference to the moved const_iterator object.
-         * @date 2024-06-08
+         * @date 2024-06-10
          * @author Konrad Wnuk
          */
         ksi::TVT::const_iterator& operator=(ksi::TVT::const_iterator&& other) noexcept;
@@ -396,9 +415,8 @@ namespace ksi
          * Advances the const iterator to the next element.
          *
          * @return A reference to the advanced const iterator.
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
+         * @date 2024-06-10
+         * @author Konrad Wnuk
          */
         ksi::TVT::const_iterator& operator++();
 
@@ -406,8 +424,8 @@ namespace ksi
          * Advances the const iterator to the next element (post-increment).
          *
          * @return A copy of the const iterator before it was advanced.
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
+         * @date 2024-06-10
+         * @author Konrad Wnuk
          */
         ksi::TVT::const_iterator operator++(int);
 
@@ -416,9 +434,8 @@ namespace ksi
          *
          * @param other The other const iterator to compare with.
          * @return True if the const iterators are equal, false otherwise.
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
+         * @date 2024-06-10
+         * @author Konrad Wnuk
          */
         bool operator==(const ksi::TVT::const_iterator& other) const;
 
@@ -427,9 +444,8 @@ namespace ksi
          *
          * @param other The other const iterator to compare with.
          * @return True if the const iterators are not equal, false otherwise.
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
+         * @date 2024-06-10
+         * @author Konrad Wnuk
          */
         bool operator!=(const ksi::TVT::const_iterator& other) const;
 
@@ -438,31 +454,37 @@ namespace ksi
          *
          * @param other The other const iterator to compare with.
          * @return The result of the comparison.
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
+         * @date 2024-06-10
+         * @author Konrad Wnuk
          */
         std::strong_ordering operator<=>(const ksi::TVT::const_iterator& other) const;
 
         /**
          * Dereferences the const iterator to access the current TVT element.
          *
-         * @return A reference to the current TVT element.
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
+         * @return A tuple containing the combined training dataset, the combined validation dataset and the current test dataset.
+         * @date 2024-06-10
+         * @author Konrad Wnuk
          */
         std::tuple<const ksi::dataset&, const ksi::dataset&, const ksi::dataset&> operator*() const;
 
         /**
          * Dereferences the const iterator to access the current TVT element.
          *
-         * @return A pointer to the current TVT element.
-         * @date 2024-05-30
-		 * @author Konrad Wnuk
-		 * @warning This method is not yet implemented.
+         * @return A tuple containing the combined training dataset, the combined validation dataset and the current test dataset.
+         * @date 2024-06-10
+         * @author Konrad Wnuk
          */
         std::tuple<const ksi::dataset&, const ksi::dataset&, const ksi::dataset&> operator->() const;
+
+    private:
+        /**
+         * Initializes the train and validation datasets by combining all datasets except the current test dataset.
+         *
+         * @date 2024-06-10
+         * @author Konrad Wnuk
+         */
+        void initialize_train_and_validation_datasets();
     };
 }
 

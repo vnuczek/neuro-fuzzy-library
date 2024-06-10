@@ -29,7 +29,7 @@ namespace ksi
         std::vector<ksi::dataset> datasets;
 
         /** Mutex for synchronizing access to datasets */
-        mutable std::mutex datasets_mutex; // KS: Może zrobić datasets atomic?
+        mutable std::mutex datasets_mutex;
 
     public:
         /**
