@@ -1,7 +1,5 @@
 /** @file */
 
- 
-
 #include <string>
 #include <iostream>
 #include <vector>
@@ -12,6 +10,39 @@
 #include "./experiments/exp-004.h"
 #include "./experiments/exp-005.h"
 #include "./experiments/exp-lab.h"
+
+#include "./readers/TT.h"
+#include "./readers/reader-complete.h"
+
+ksi::dataset create_dataset(int num_data, int num_attributes) {
+    ksi::dataset ds;
+    for (int i = 0; i < num_data; ++i) {
+        std::vector<double> attributes(num_attributes, i);
+        ds.addDatum(ksi::datum(attributes));
+    }
+    return ds;
+}
+
+void test_TT() {
+    std::cout << "Testing TT class methods" << std::endl;
+    
+    ksi::dataset ds = create_dataset(10, 3);
+    
+    ksi::reader_complete DataReader;
+    ksi::TT tt(DataReader);
+    
+    std::cout << "Testing split method" << std::endl;
+    tt.split(ds, 5);
+    
+    std::cout << "Testing save method" << std::endl;
+    tt.save("./test");
+    
+    std::cout << "Testing read_file method" << std::endl;
+    ksi::dataset read_ds = tt.read_file("./ds.data");
+    
+    std::cout << "Testing read_directory method" << std::endl;
+    tt.read_directory("./test");
+}
 
  
 int main (int argc, char ** params)
@@ -60,6 +91,9 @@ int main (int argc, char ** params)
                     experiment.execute();
                     break;
                 }
+				case 8:{
+                    test_TT();
+	                }
                 default: {
                     std::cout << "unknown experiment" << std::endl;
                 }
