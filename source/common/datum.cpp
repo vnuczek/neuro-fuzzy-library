@@ -385,3 +385,31 @@ std::size_t ksi::datum::getNumberOfLabels() const
 {
     return _labels.size();
 }
+
+void ksi::datum::save_print(std::ostream& os) const
+{
+    for (std::size_t i = 0; i < attributes.size(); ++i)
+    {
+        os << attributes[i]->getValue();
+        if (i < attributes.size() - 1)
+        {
+            os << " ";
+        }
+    }
+    
+    if (!_labels.empty())
+    {
+        os << " | ";
+        for (std::size_t i = 0; i < _labels.size(); ++i)
+        {
+            os << _labels[i];
+            if (i < _labels.size() - 1)
+            {
+                os << " ";
+            }
+        }
+    }
+
+    os << std::endl;
+}
+

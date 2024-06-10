@@ -75,7 +75,7 @@ void ksi::TT::save(const std::filesystem::path& directory) const
                     const datum* d = datasets[i].getDatum(j);
                     if (d)
                     {
-                        file << *d << std::endl;   // KS: Czy na pewno zadziała dobrze? Cos w stylu save_print?
+                        d->save_print(file);
                     }
                 }
                 file.close();
