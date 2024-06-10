@@ -43,7 +43,7 @@ namespace ksi
          * @date 2024-06-04
          * @author Konrad Wnuk
          */
-        TT(const reader& source_reader);
+        TT(reader& source_reader);
 
         /**
          * Copy constructor for TT.

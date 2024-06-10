@@ -9,10 +9,10 @@
 #include <ranges>
 #include <regex>
 
-ksi::TVT::TVT(const ksi::reader& source_reader)
+ksi::TVT::TVT(ksi::reader& source_reader)
 	: CV(source_reader) {}
 
-ksi::TVT::TVT(const ksi::reader& reader, int validation_dataset_size)
+ksi::TVT::TVT(ksi::reader& reader, int validation_dataset_size)
     : CV(reader), validation_size(validation_dataset_size) {}
 
 ksi::TVT::TVT(const TVT& other)

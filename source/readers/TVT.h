@@ -22,6 +22,7 @@ namespace ksi
     private:
         /**
          * @brief The size of the validation dataset.
+         *
          * Determines how many subsets are used for validation in each iteration.
          * Default value is 1.
          */
@@ -53,7 +54,7 @@ namespace ksi
          * @date 2024-06-04
          * @author Konrad Wnuk
          */
-        TVT(const reader& source_reader);
+        TVT(reader& source_reader);
 
         /**
          * Constructor for TVT.
@@ -63,7 +64,7 @@ namespace ksi
          * @date 2024-06-09
          * @author Konrad Wnuk
          */
-        TVT(const reader& reader, int validation_dataset_size);
+        TVT(reader& reader, int validation_dataset_size);
 
         /**
          * Copy constructor for TVT.

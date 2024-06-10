@@ -2,8 +2,8 @@
 
 #include "CV.h"
 
-ksi::CV::CV(const ksi::reader& source_reader)
-	: pReader(std::make_shared<ksi::reader>(source_reader)) {}
+ksi::CV::CV(ksi::reader& source_reader)
+	: pReader(source_reader.clone()) {}
 
 ksi::CV::CV(const CV& other)
 	: pReader(other.pReader)

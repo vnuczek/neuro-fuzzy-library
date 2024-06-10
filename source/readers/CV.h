@@ -39,7 +39,7 @@ namespace ksi
          * @date 2024-06-04
          * @author Konrad Wnuk
          */
-        CV(const reader& source_reader);
+        CV(reader& source_reader);
 
         /**
          * Copy constructor.

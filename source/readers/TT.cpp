@@ -9,7 +9,7 @@
 #include <ranges>
 #include <regex>
 
-ksi::TT::TT(const ksi::reader& source_reader)
+ksi::TT::TT(ksi::reader& source_reader)
 	: CV(source_reader) {}
 
 ksi::TT::TT(const TT& other)
