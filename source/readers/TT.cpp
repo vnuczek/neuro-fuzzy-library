@@ -96,6 +96,10 @@ ksi::dataset ksi::TT::read_file(const std::filesystem::path& file_directory)
 
 void ksi::TT::read_directory(const std::filesystem::path& directory)
 {
+    /** @todo Pliki nie muszą mieć koniecznie rozszerzenia *.data.
+     *        Lepiej byłoby, żeby przekazywać, jako parametr wzorzec nazwy pliku,
+     *        np. domyślnie ".*", chyba że użytkownik poda swój wzorzec.
+     */ 
     std::regex data_file_regex(".*\\.data$");
     auto data_files = std::filesystem::directory_iterator(directory)
         | std::views::filter([](const auto& entry) { return entry.is_regular_file(); })

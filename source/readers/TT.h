@@ -133,6 +133,7 @@ namespace ksi
 
         /**
          * Clones the current reader object.
+         * (the prototype design pattern)
          *
          * @return A shared pointer to the cloned reader object.
          * @date 2024-06-08

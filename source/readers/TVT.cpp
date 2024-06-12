@@ -6,7 +6,7 @@
 
 #include <thread>
 #include <fstream>
-#include <ranges>
+#include <ranges>  // KS: nieużywane 
 #include <regex>
 
 ksi::TVT::TVT(ksi::reader& source_reader)
@@ -376,3 +376,4 @@ void ksi::TVT::const_iterator::initialize_train_and_validation_datasets()
         }
     }
 }
+

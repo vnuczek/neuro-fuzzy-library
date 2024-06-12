@@ -14,7 +14,7 @@ namespace ksi
 {
     /**
      * @class CV
-     * An abstract class representing the base class for models.
+     * An abstract class representing the base class for the cross-validation models.
      *
      * @date   2024-05-30
      * @author Konrad Wnuk
@@ -100,6 +100,18 @@ namespace ksi
          * @param directory The directory where the data will be saved.
          * @date 2024-05-30
          * @author Konrad Wnuk
+         * 
+         * @todo W tej metodzie  trzeba jeszcze dodać nazwę pliku i rozszerzenie. 
+         *       Teraz jest domyślna nazwa i rozszerzenie.
+         *       Dobrze by było, gdyby po dodaniu zer do numeru pliku długość 
+         *       liczby była taka sama dla wszystkich plików. Teraz długośc 
+         *       jest zawsze 2. Gdy dane są podzielone na więcej niż 100 plików,
+         *       mamy numery dwucyfrowe 00-99 i trzy- lub więcejcyfrowe dla 
+         *       pozostałych.
+         * @todo Teraz metoda nadpisuje zawartość folderu. Byłoby lepiej,
+         *       gdyby to było kontrolowane. Np. domyślny paramter o wartości
+         *       false (czyli nie nadpisuj). Dopiero podanie wartości true,
+         *       nadpisze katalog.
          */
         virtual void save(const std::filesystem::path& directory) const = 0;
 
