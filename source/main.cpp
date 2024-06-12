@@ -42,17 +42,18 @@ void test_TT()
     tt.split(ds, 5);
     
     std::cout << "Testing save method" << std::endl;
-    tt.save("./test");
+    tt.save("./test_datasets/test");
     
     std::cout << "Testing read_file method" << std::endl;
-    //ksi::dataset read_ds = tt.read_file("./ds.data");
+    // ksi::dataset read_ds = tt.read_file("./test_datasets/ds.data");
     std::string file_name {"../data/exp-lab/train.txt"};
     ksi::dataset read_ds = tt.read_file(file_name);
     tt.split(read_ds, 120);
     tt.save("./test");
     
     std::cout << "Testing read_directory method" << std::endl;
-    tt.read_directory("./test");
+    tt.read_directory("./test_datasets/test");
+    
     
     {
         std::cout << "==========================" << std::endl;
@@ -245,6 +246,7 @@ void test_TT()
             ++licznik;
         }
     }
+
 }
 
  
