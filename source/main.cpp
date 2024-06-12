@@ -187,7 +187,83 @@ void test_TT()
         }
     }
     
+    // return;
     
+    {
+        std::cout << "==========================" << std::endl;
+        
+        std::string file_name {"./test_datasets/ds.data"};
+        
+        ksi::reader_complete czytnik; 
+        ksi::TT tt (czytnik);
+        auto d = tt.read_file(file_name);
+        tt.split(d, 5); 
+                
+        int licznik = 1;
+        for (ksi::TT::iterator it = tt.begin(); it != tt.end(); ++it)
+        {
+            std::cout << "--------------------------" << std::endl;
+            
+            debug(licznik);
+            debug(std::get<0>(*it).size()); // train
+            debug(std::get<0>(*it));
+            debug(std::get<1>(*it).size()); // test
+            debug(std::get<1>(*it));
+            ++licznik;
+        }
+    }
+    
+    // return; 
+    {
+        std::cout << "==========================" << std::endl;
+        
+        std::string file_name {"./test_datasets/ds.data"};
+        
+        ksi::reader_complete czytnik; 
+        ksi::TT tt (czytnik);
+        auto d = tt.read_file(file_name);
+        tt.split(d, 5); 
+        
+        int licznik = 1;
+        for (ksi::TT::const_iterator it = tt.cbegin(); it != tt.cend(); ++it)
+        {
+            std::cout << "--------------------------" << std::endl;
+            
+            debug(licznik);
+            debug(std::get<0>(*it).size()); // train
+            debug(std::get<0>(*it));
+            debug(std::get<1>(*it).size()); // test
+            debug(std::get<1>(*it));
+            ++licznik;
+        }
+    }
+    
+    // return; 
+    {
+        std::cout << "==========================" << std::endl;
+        
+        std::string file_name {"./test_datasets/ds.data"};
+        
+        ksi::reader_complete czytnik; 
+        ksi::TVT tvt (czytnik);
+        auto d = tvt.read_file(file_name);
+        tvt.split(d, 5); 
+        
+        int licznik = 1;
+        for (ksi::TVT::const_iterator it = tvt.cbegin(); it != tvt.cend(); ++it)
+        {
+            std::cout << "--------------------------" << std::endl;
+            
+            debug(licznik);
+            debug(std::get<0>(*it).size()); // train
+            debug(std::get<0>(*it));
+            debug(std::get<1>(*it).size()); // valid
+            debug(std::get<1>(*it));
+            debug(std::get<2>(*it).size()); // test
+            debug(std::get<2>(*it));
+            ++licznik;
+        }
+    }
     
     return;
     {
