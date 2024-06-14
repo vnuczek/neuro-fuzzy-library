@@ -58,15 +58,25 @@ void ksi::TT::split(const ksi::dataset & base_dataset, const int n)
     }
 }
 
-void ksi::TT::save(const std::filesystem::path& directory) const
+void ksi::TT::save(const std::filesystem::path& directory, const std::filesystem::path& filename, const std::filesystem::path& extension, bool overwrite) const
 {
     try  
     {
         std::filesystem::create_directories(directory);
 
+        const auto num_files = datasets.size();
+        const auto num_digits = std::to_string(num_files).length();
+
         for (auto i = 0; i < datasets.size(); ++i)
         {
-            std::ofstream file(directory / ("dataset_" + ksi::to_string(i, 2) + ".data"));
+            auto file_path = directory / (filename.string() + "_" + ksi::to_string(i, num_digits) + extension.string());
+
+            if (std::filesystem::exists(file_path) && !overwrite)
+            {
+                throw ksi::exception("File " + file_path.string() + " already exists. To overwrite, set the overwrite parameter to true.");
+            }
+
+            std::ofstream file(file_path);
 
             if (file.is_open())
             {
@@ -82,7 +92,7 @@ void ksi::TT::save(const std::filesystem::path& directory) const
             }
             else
             {
-                throw ksi::exception("Unable to open file " + (directory / ("dataset_" + std::to_string(i) + ".data")).string());
+                throw ksi::exception("Unable to open file " + file_path.string());
             }
         }
     }
@@ -94,13 +104,9 @@ ksi::dataset ksi::TT::read_file(const std::filesystem::path& file_directory)
     return pReader->read(file_directory.string());
 }
 
-void ksi::TT::read_directory(const std::filesystem::path& directory)
+void ksi::TT::read_directory(const std::filesystem::path& directory, const std::filesystem::path& extension_pattern)
 {
-    /** @todo Pliki nie muszą mieć koniecznie rozszerzenia *.data.
-     *        Lepiej byłoby, żeby przekazywać, jako parametr wzorzec nazwy pliku,
-     *        np. domyślnie ".*", chyba że użytkownik poda swój wzorzec.
-     */ 
-    std::regex data_file_regex(".*\\.data$");
+    std::regex data_file_regex(extension_pattern.string());
     auto data_files = std::filesystem::directory_iterator(directory)
         | std::views::filter([](const auto& entry) { return entry.is_regular_file(); })
         | std::views::filter([&data_file_regex](const auto& entry)

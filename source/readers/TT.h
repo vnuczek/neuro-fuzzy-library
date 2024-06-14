@@ -94,13 +94,16 @@ namespace ksi
         void split(const dataset& base_dataset, const int n = 10) override;
 
         /**
-         * Saves the data to a specified directory.
-         *
-         * @param directory The directory where the data will be saved.
-         * @date 2024-06-04
-         * @author Konrad Wnuk
-         */
-        void save(const std::filesystem::path& directory) const override;
+		 * Saves the data to a specified directory.
+		 *
+		 * @param directory The directory where the data will be saved.
+		 * @param filename The base name for the files to be saved. Default is "dataset".
+		 * @param extension The file extension for the files to be saved. Default is ".data".
+		 * @param overwrite Flag to control whether to overwrite the existing files. Default is false.
+		 * @date 2024-06-04
+		 * @author Konrad Wnuk
+		 */
+        void save(const std::filesystem::path& directory, const std::filesystem::path& filename = "dataset", const std::filesystem::path& extension = ".data", bool overwrite = false) const override;
 
         /**
          * Reads data from a specified file.
@@ -113,13 +116,14 @@ namespace ksi
         dataset read_file(const std::filesystem::path& file_directory) override;
 
         /**
-         * Reads data from a specified directory.
-         *
-         * @param directory The directory to read the data from.
-         * @date 2024-06-04
-         * @author Konrad Wnuk
-         */
-        void read_directory(const std::filesystem::path& directory) override;
+		 * Reads data from a specified directory.
+		 *
+		 * @param directory The directory to read the data from.
+		 * @param extension_pattern The pattern to match the file extensions. Defaults to ".data".
+		 * @date 2024-06-04
+		 * @author Konrad Wnuk
+		 */
+        void read_directory(const std::filesystem::path& directory, const std::filesystem::path& extension_pattern = ".data") override;
 
         /**
          * Reads data from a specified file.
