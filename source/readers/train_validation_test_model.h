@@ -314,6 +314,7 @@ namespace ksi
 
         /**
          * Checks if two iterators are not equal.
+         * @todo niepotrzebny operator
          *
          * @param other The other iterator to compare with.
          * @return True if the iterators are not equal, false otherwise.
@@ -461,6 +462,7 @@ namespace ksi
 
         /**
          * Checks if two const iterators are not equal.
+         * @todo niepotrzebny operator
          *
          * @param other The other const iterator to compare with.
          * @return True if the const iterators are not equal, false otherwise.

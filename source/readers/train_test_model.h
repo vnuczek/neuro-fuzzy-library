@@ -207,7 +207,8 @@ namespace ksi
         /** Iterator pointing to the current test dataset */
         std::vector<dataset>::iterator test_iterator;
 
-        /** Combined train dataset */
+        /** Combined train dataset 
+         * @todo Co to znaczy? */
         dataset train_dataset;
 
     public:
@@ -260,7 +261,7 @@ namespace ksi
         iterator& operator=(iterator&& other) noexcept;
 
         /**
-         * Advances the iterator to the next element.
+         * Advances the iterator to the next element (preincrement).
          *
          * @return A reference to the advanced iterator.
          * @date 2024-06-05
@@ -269,7 +270,7 @@ namespace ksi
         iterator& operator++();
 
         /**
-         * Advances the iterator to the next element (post-increment).
+         * Advances the iterator to the next element (postincrement).
          *
          * @return A copy of the iterator before it was advanced.
          * @date 2024-06-05
@@ -289,6 +290,7 @@ namespace ksi
 
         /**
          * Checks if two iterators are not equal.
+         * @todo niepotrzebny operator
          *
          * @param other The other iterator to compare with.
          * @return True if the iterators are not equal, false otherwise.
@@ -432,6 +434,7 @@ namespace ksi
 
         /**
          * Checks if two const iterators are not equal.
+         * @todo niepotrzebny operator
          *
          * @param other The other const iterator to compare with.
          * @return True if the const iterators are not equal, false otherwise.
