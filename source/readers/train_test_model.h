@@ -103,7 +103,7 @@ namespace ksi
 		 * @date 2024-06-04
 		 * @author Konrad Wnuk
 		 */
-        void save(const std::filesystem::path& directory, const std::filesystem::path& filename = "dataset", const std::filesystem::path& extension = ".data", bool overwrite = false) const override;
+        void save(const std::filesystem::path& directory, const std::filesystem::path& filename = "dataset", const std::filesystem::path& extension = ".data", const bool overwrite = false) const override;
 
         /**
          * Reads data from a specified file.

@@ -18,96 +18,26 @@
 #include "./readers/reader-incomplete.h"
 
 #include "./common/data-modifier-normaliser.h"
+#include "auxiliary/directory.h"
 
-ksi::dataset create_dataset(int num_data, int num_attributes) 
+void test_cross_validation_models() 
 {
-    ksi::dataset ds;
-    for (int i = 0; i < num_data; ++i) {
-        std::vector<double> values(num_attributes, i);
-        ds.addDatum(ksi::datum(values));
-    }
-    return ds;
-}
-
-void test_train_test_model() 
-{
-    std::cout << "Testing train_test_model class methods" << std::endl;
+    std::cout << "Testing cross validation models methods" << std::endl;
+    std::cout << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
     
-    ksi::dataset ds = create_dataset(10, 3);
-    
-    ksi::reader_complete DataReader;
-    ksi::train_test_model tt(DataReader);
-    
-    std::cout << "Testing split method" << std::endl;
-    tt.split(ds, 5);
-    
-    std::cout << "Testing save method" << std::endl;
-    tt.save("./test_datasets/test", "dataset", ".data", true);
-    
-    std::cout << "Testing read_file method" << std::endl;
-    // ksi::dataset read_ds = tt.read_file("./test_datasets/ds.data");
-    std::string file_name {"../data/exp-lab/train.txt"};
-    ksi::dataset read_ds = tt.read_file(file_name);
-    tt.split(read_ds, 10);
-    tt.save("./test", "dataset", ".data", true);
-    
-    std::cout << "Testing read_directory method" << std::endl;
-    tt.read_directory("./test_datasets/test");
-    
-    
-    /*{
-        std::cout << "==========================" << std::endl;
-        
-        std::string file_name {"../data/exp-lab/train.txt"};
-        tt.read_file(file_name);
-        
-        
-        int licznik = 1;
-        for (const auto & [train, test] : tt)
-        {
-            std::cout << "--------------------------" << std::endl;
-            
-            debug(licznik);
-            debug(train.size());
-            debug(train);
-            debug(test.size());
-            debug(test);
-            ++licznik;
-        }
-        
-    }*/
-    //// return;
-    //{
-    //    std::cout << "==========================" << std::endl;
-    //    
-    //    std::string file_name {"../data/exp-lab/train.txt"};
-    //    
-    //    tt.read_and_split_file(file_name);
-
-    //    int licznik = 1;
-    //    for (const auto & [train, test] : tt)
-    //    {
-    //        std::cout << "--------------------------" << std::endl;
-    //        
-    //        debug(licznik);
-    //        debug(train.size());
-    //        debug(train);
-    //        debug(test.size());
-    //        debug(test);
-    //        ++licznik;
-    //    }
-    //}
-    /* return;
     {
-        std::cout << "==========================" << std::endl;
-        
-        std::string file_name {"../data/exp-lab/train.txt"};
-        
+        /**@todo Proszę napisać co to robi bo nie mam pojęcia*/
+
+        std::cout << std::endl << "???" << std::endl;
+        std::cout << "====================================================" << std::endl;
+                
+        ksi::reader_complete reader;
+        ksi::train_test_model tt(reader);
+        const std::string file{ "../data/exp-lab/train.txt" };
+        tt.read_and_split_file(file, 5);
+
         ksi::data_modifier_normaliser normer;
-        
-        auto d = tt.read_file(file_name);
-        tt.split(d, 10); 
-        
+
         int licznik = 1;
         for (auto [train, test] : tt)
         {
@@ -121,154 +51,110 @@ void test_train_test_model()
             debug(test);
             ++licznik;
         }
-    }*/
-    
-    //// return ;
-    //{
-    //    std::cout << "==========================" << std::endl;
-    //    
-    //    std::string file_name {"../data/exp-lab/train.txt"};
-    //    
-    //    ksi::reader_incomplete czytnik; 
-    //    ksi::train_test_model tt (czytnik);
-    //    auto d = tt.read_file(file_name);
-    //    tt.split(d, 15); 
-    //    
-    //    int licznik = 1;
-    //    for (auto [train, test] : tt)
-    //    {
-    //        std::cout << "--------------------------" << std::endl;
-    //        
-    //        debug(licznik);
-    //        debug(train.size());
-    //        debug(train);
-    //        debug(test.size());
-    //        debug(test);
-    //        ++licznik;
-    //    }
-    //}
-    
-    //// return ;
-    //{
-    //    std::cout << "==========================" << std::endl;
-    //    
-    //    std::string file_name {"../data/exp-lab/train.txt"};
-    //    
-    //    ksi::reader_incomplete czytnik; 
-    //    ksi::train_test_model tt (czytnik);
-    //    auto d = tt.read_file(file_name);
-    //    tt.split(d, 15); 
-    //    
-    //    
-    //    const std::filesystem::path folder {"./do_usuniecia"};
-    //    std::filesystem::remove_all (folder);
-    //    
-    //    tt.save (folder, "dataset", ".data", true);
-    //    
-    //    tt.read_directory(folder);
-    //    
-    //    int licznik = 1;
-    //    for (auto [train, test] : tt)
-    //    {
-    //        std::cout << "--------------------------" << std::endl;
-    //        
-    //        debug(licznik);
-    //        debug(train.size());
-    //        debug(train);
-    //        debug(test.size());
-    //        debug(test);
-    //        ++licznik;
-    //    }
-    //}
-    
-    //// return;
-    //
-    //{
-    //    std::cout << "==========================" << std::endl;
-    //    
-    //    std::string file_name {"./test_datasets/ds.data"};
-    //    
-    //    ksi::reader_complete czytnik; 
-    //    ksi::train_test_model tt (czytnik);
-    //    auto d = tt.read_file(file_name);
-    //    tt.split(d, 5); 
-    //            
-    //    int licznik = 1;
-    //    for (ksi::train_test_model::iterator it = tt.begin(); it != tt.end(); ++it)
-    //    {
-    //        std::cout << "--------------------------" << std::endl;
-    //        
-    //        debug(licznik);
-    //        debug(std::get<0>(*it).size()); // train
-    //        debug(std::get<0>(*it));
-    //        debug(std::get<1>(*it).size()); // test
-    //        debug(std::get<1>(*it));
-    //        ++licznik;
-    //    }
-    //}
-    
-    //// return; 
-    //{
-    //    std::cout << "==========================" << std::endl;
-    //    
-    //    std::string file_name {"./test_datasets/ds.data"};
-    //    
-    //    ksi::reader_complete czytnik; 
-    //    ksi::train_test_model tt (czytnik);
-    //    auto d = tt.read_file(file_name);
-    //    tt.split(d, 5); 
-    //    
-    //    int licznik = 1;
-    //    for (ksi::train_test_model::const_iterator it = tt.cbegin(); it != tt.cend(); ++it)
-    //    {
-    //        std::cout << "--------------------------" << std::endl;
-    //        
-    //        debug(licznik);
-    //        debug(std::get<0>(*it).size()); // train
-    //        debug(std::get<0>(*it));
-    //        debug(std::get<1>(*it).size()); // test
-    //        debug(std::get<1>(*it));
-    //        ++licznik;
-    //    }
-    //}
-    //
-    //// return; 
-    //{
-    //    std::cout << "==========================" << std::endl;
-    //    
-    //    std::string file_name {"./test_datasets/ds.data"};
-    //    
-    //    ksi::reader_complete czytnik; 
-    //    ksi::train_validation_test_model tvt (czytnik);
-    //    auto d = tvt.read_file(file_name);
-    //    tvt.split(d, 5); 
-    //    
-    //    int licznik = 1;
-    //    for (ksi::train_validation_test_model::const_iterator it = tvt.cbegin(); it != tvt.cend(); ++it)
-    //    {
-    //        std::cout << "--------------------------" << std::endl;
-    //        
-    //        debug(licznik);
-    //        debug(std::get<0>(*it).size()); // train
-    //        debug(std::get<0>(*it));
-    //        debug(std::get<1>(*it).size()); // valid
-    //        debug(std::get<1>(*it));
-    //        debug(std::get<2>(*it).size()); // test
-    //        debug(std::get<2>(*it));
-    //        ++licznik;
-    //    }
-    //}
+    }
 
-    /*{
-        std::cout << "==========================" << std::endl;
+ 
+    {
+        std::cout << std::endl << "Testing read file and save method" << std::endl;
+        std::cout << "====================================================" << std::endl;
+
+        ksi::reader_complete reader;
+        ksi::train_test_model tt(reader);
+        const std::string file{ "../data/exp-lab/train.txt" };
+        tt.read_and_split_file(file, 5);
+
+        const std::filesystem::path directory {"./split_data"};
+        std::filesystem::remove_all (directory);
         
-        std::string file_name {"../data/exp-lab/train.txt"};
+        tt.save (directory, "dataset", ".data", true);
+    }
+
+    {
+        std::cout << std::endl << "Testing read directory method" << std::endl;
+        std::cout << "====================================================" << std::endl;
+
+        ksi::reader_complete reader;
+        ksi::train_test_model tt(reader);
+        const std::string directory{ "./read_dir" };
+        tt.read_directory(directory);
+        //tt.read_directory(directory, ".*");
+
+        int licznik = 1;
+        for (auto [train, test] : tt)
+        {
+            std::cout << "--------------------------" << std::endl;
+
+            debug(licznik);
+            debug(train.size());
+            debug(train);
+            debug(test.size());
+            debug(test);
+            ++licznik;
+        }
+    }
+
+    {
+        std::cout << std::endl << "Testing iterator for Training and Test model" << std::endl;
+        std::cout << "====================================================" << std::endl;
         
-        auto d = tt.read_file(file_name);
-        tt.split(d, 0); 
+        ksi::reader_complete reader;
+        ksi::train_test_model tt(reader);
+        const std::filesystem::path file{ "../data/exp-lab/train.txt" };
+        tt.read_and_split_file(file, 5);
+        
+        int licznik = 1;
+        for (ksi::train_test_model::iterator it = tt.begin(); it != tt.end(); ++it)
+        //for (ksi::train_test_model::const_iterator it = tt.cbegin(); it != tt.cend(); ++it)
+        {
+            std::cout << "--------------------------" << std::endl;
+            
+            debug(licznik);
+            debug(std::get<0>(*it).size()); // train
+            debug(std::get<0>(*it));
+            debug(std::get<1>(*it).size()); // test
+            debug(std::get<1>(*it));
+            ++licznik;
+        }
+    }
+   
+    {
+        std::cout << std::endl << "Testing iterator for Training, Validation and Test model" << std::endl;
+        std::cout << "====================================================" << std::endl;
+        
+        ksi::reader_complete reader;
+        ksi::train_validation_test_model tvt(reader);
+        const std::filesystem::path file{ "../data/exp-lab/train.txt" };
+        tvt.read_and_split_file(file, 5);
+        
+        int licznik = 1;
+        for (ksi::train_validation_test_model::iterator it = tvt.begin(); it != tvt.end(); ++it)
+        //for (ksi::train_validation_test_model::const_iterator it = tvt.cbegin(); it != tvt.cend(); ++it)
+        {
+            std::cout << "--------------------------" << std::endl;
+            
+            debug(licznik);
+            debug(std::get<0>(*it).size()); // train
+            debug(std::get<0>(*it));
+            debug(std::get<1>(*it).size()); // validation
+            debug(std::get<1>(*it));
+            debug(std::get<2>(*it).size()); // test
+            debug(std::get<2>(*it));
+            ++licznik;
+        }
+    }
+
+    {
+        std::cout << std::endl << "Testing for each loop for Training and Test model" << std::endl;
+        std::cout << "====================================================" << std::endl;
+        
+        ksi::reader_complete reader;
+        ksi::train_test_model tt(reader);
+        const std::filesystem::path file{ "../data/exp-lab/train.txt" };
+        tt.read_and_split_file(file, 5);
         
         int licznik = 1;
         for (auto [train, test] : tt)
+        //for (const auto& [train, valid, test] : tt)
         {
             std::cout << "--------------------------" << std::endl;
             
@@ -279,23 +165,20 @@ void test_train_test_model()
             debug(test);
             ++licznik;
         }
-    }*/
+    }
 
     {
-        std::cout << "==========================" << std::endl;
-        
-        /** @todo Tu jest jakiś problem. Pojawia się komunikat:
-         *        make: *** [makefile:50: 8] Błąd w obliczeniach zmiennoprzecinkowych (zrzut pamięci)
-         */
-        std::string file_name {"../data/exp-lab/train.txt"};
-        
-        ksi::reader_complete czytnik;
-        ksi::train_validation_test_model tvt (czytnik);
-        auto d = tvt.read_file(file_name);
-        tvt.split(d, 10); 
+        std::cout << std::endl << "Testing for each loop for Training, Validation and Test model" << std::endl;
+        std::cout << "====================================================" << std::endl;
+
+        ksi::reader_complete reader;
+        ksi::train_validation_test_model tvt(reader);
+        const std::filesystem::path file{ "../data/exp-lab/train.txt" };
+        tvt.read_and_split_file(file, 5);
         
         int licznik = 1;
-        for (const auto & [train, valid, test] : tvt)
+        for (auto [train, valid, test] : tvt)
+        //for (const auto& [train, valid, test] : tvt)
         {
             std::cout << "--------------------------" << std::endl;
             
@@ -361,7 +244,7 @@ int main (int argc, char ** params)
                           break;
                        }
                case 9: {
-                          test_train_test_model();
+                          test_cross_validation_models();
                           break;
                        }
                default: {

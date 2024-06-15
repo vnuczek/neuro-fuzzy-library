@@ -12,7 +12,7 @@
 ksi::train_validation_test_model::train_validation_test_model(ksi::reader& source_reader)
 	: cross_validation_model(source_reader) {}
 
-ksi::train_validation_test_model::train_validation_test_model(ksi::reader& reader, int validation_dataset_size)
+ksi::train_validation_test_model::train_validation_test_model(ksi::reader& reader, const int validation_dataset_size)
     : cross_validation_model(reader), validation_size(validation_dataset_size) {}
 
 ksi::train_validation_test_model::train_validation_test_model(const train_validation_test_model& other)
@@ -43,9 +43,9 @@ void ksi::train_validation_test_model::split(const ksi::dataset& base_dataset, c
 {
     try
     {
-        if (n <= 0)
+        if (n < 3)
         {
-            throw ksi::exception("Number of subsets must be grater than (0).");
+            throw ksi::exception("Number of subsets must be grater than (2).");
         }
 
         const auto total_size = base_dataset.size();
@@ -75,7 +75,7 @@ void ksi::train_validation_test_model::split(const ksi::dataset& base_dataset, c
     CATCH;
 }
 
-void ksi::train_validation_test_model::save(const std::filesystem::path& directory, const std::filesystem::path& filename, const std::filesystem::path& extension, bool overwrite) const
+void ksi::train_validation_test_model::save(const std::filesystem::path& directory, const std::filesystem::path& filename, const std::filesystem::path& extension, const bool overwrite) const
 {
     try
     {
@@ -267,6 +267,9 @@ std::tuple<ksi::dataset, ksi::dataset, ksi::dataset> ksi::train_validation_test_
 
 void ksi::train_validation_test_model::iterator::initialize_train_and_validation_datasets()
 {
+    train_dataset = ksi::dataset();
+    validation_dataset = ksi::dataset();
+
     auto total_datasets = pTVT->datasets.size();
     auto validation_start_index = std::distance(pTVT->datasets.begin(), test_iterator) + 1;
     auto current_validation_count = 0;

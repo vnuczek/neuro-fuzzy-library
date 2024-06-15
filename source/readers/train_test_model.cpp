@@ -40,9 +40,9 @@ void ksi::train_test_model::split(const ksi::dataset & base_dataset, const unsig
 {
     try
     {
-        if (n <= 0)
+        if (n < 2)
         {
-            throw ksi::exception("Number of subsets must be grater than (0).");
+            throw ksi::exception("Number of subsets must be grater than (1).");
         }
 
         const auto total_size = base_dataset.size();
@@ -72,7 +72,7 @@ void ksi::train_test_model::split(const ksi::dataset & base_dataset, const unsig
     CATCH;
 }
 
-void ksi::train_test_model::save(const std::filesystem::path& directory, const std::filesystem::path& filename, const std::filesystem::path& extension, bool overwrite) const
+void ksi::train_test_model::save(const std::filesystem::path& directory, const std::filesystem::path& filename, const std::filesystem::path& extension, const bool overwrite) const
 {
     try  
     {
