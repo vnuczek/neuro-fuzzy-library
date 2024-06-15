@@ -29,7 +29,7 @@ ksi::dataset create_dataset(int num_data, int num_attributes)
     return ds;
 }
 
-void test_TT() 
+void test_train_test_model() 
 {
     std::cout << "Testing train_test_model class methods" << std::endl;
     
@@ -42,14 +42,14 @@ void test_TT()
     tt.split(ds, 5);
     
     std::cout << "Testing save method" << std::endl;
-    tt.save("./test_datasets/test");
+    tt.save("./test_datasets/test", "dataset", ".data", true);
     
     std::cout << "Testing read_file method" << std::endl;
     // ksi::dataset read_ds = tt.read_file("./test_datasets/ds.data");
     std::string file_name {"../data/exp-lab/train.txt"};
     ksi::dataset read_ds = tt.read_file(file_name);
     tt.split(read_ds, 120);
-    tt.save("./test");
+    tt.save("./test", "dataset", ".data", true);
     
     std::cout << "Testing read_directory method" << std::endl;
     tt.read_directory("./test_datasets/test");
@@ -61,8 +61,7 @@ void test_TT()
         std::string file_name {"../data/exp-lab/train.txt"};
         tt.read_file(file_name);
         
-        /** @todo Czy to na pewno dobrze działa?
-         */ 
+        
         int licznik = 1;
         for (const auto & [train, test] : tt)
         {
@@ -77,33 +76,28 @@ void test_TT()
         }
         
     }
-    // return;
-    {
-        std::cout << "==========================" << std::endl;
-        
-        std::string file_name {"../data/exp-lab/train.txt"};
-        
-        /// @todo Taka składnia nie działa, a fajnie by było, gdyby także działała.
-        // tt.read_file(file_name);
-        // tt.split(10); 
-        
-        auto d = tt.read_file(file_name);
-        tt.split(d, 10); 
-        
-        int licznik = 1;
-        for (const auto & [train, test] : tt)
-        {
-            std::cout << "--------------------------" << std::endl;
-            
-            debug(licznik);
-            debug(train.size());
-            debug(train);
-            debug(test.size());
-            debug(test);
-            ++licznik;
-        }
-    }
-    // return;
+    //// return;
+    //{
+    //    std::cout << "==========================" << std::endl;
+    //    
+    //    std::string file_name {"../data/exp-lab/train.txt"};
+    //    
+    //    tt.read_and_split_file(file_name);
+
+    //    int licznik = 1;
+    //    for (const auto & [train, test] : tt)
+    //    {
+    //        std::cout << "--------------------------" << std::endl;
+    //        
+    //        debug(licznik);
+    //        debug(train.size());
+    //        debug(train);
+    //        debug(test.size());
+    //        debug(test);
+    //        ++licznik;
+    //    }
+    //}
+    /* return;
     {
         std::cout << "==========================" << std::endl;
         
@@ -127,143 +121,143 @@ void test_TT()
             debug(test);
             ++licznik;
         }
-    }
+    }*/
     
-    // return ;
-    {
-        std::cout << "==========================" << std::endl;
-        
-        std::string file_name {"../data/exp-lab/train.txt"};
-        
-        ksi::reader_incomplete czytnik; 
-        ksi::train_test_model tt (czytnik);
-        auto d = tt.read_file(file_name);
-        tt.split(d, 15); 
-        
-        int licznik = 1;
-        for (auto [train, test] : tt)
-        {
-            std::cout << "--------------------------" << std::endl;
-            
-            debug(licznik);
-            debug(train.size());
-            debug(train);
-            debug(test.size());
-            debug(test);
-            ++licznik;
-        }
-    }
+    //// return ;
+    //{
+    //    std::cout << "==========================" << std::endl;
+    //    
+    //    std::string file_name {"../data/exp-lab/train.txt"};
+    //    
+    //    ksi::reader_incomplete czytnik; 
+    //    ksi::train_test_model tt (czytnik);
+    //    auto d = tt.read_file(file_name);
+    //    tt.split(d, 15); 
+    //    
+    //    int licznik = 1;
+    //    for (auto [train, test] : tt)
+    //    {
+    //        std::cout << "--------------------------" << std::endl;
+    //        
+    //        debug(licznik);
+    //        debug(train.size());
+    //        debug(train);
+    //        debug(test.size());
+    //        debug(test);
+    //        ++licznik;
+    //    }
+    //}
     
-    // return ;
-    {
-        std::cout << "==========================" << std::endl;
-        
-        std::string file_name {"../data/exp-lab/train.txt"};
-        
-        ksi::reader_incomplete czytnik; 
-        ksi::train_test_model tt (czytnik);
-        auto d = tt.read_file(file_name);
-        tt.split(d, 15); 
-        
-        
-        const std::filesystem::path folder {"./do_usuniecia"};
-        std::filesystem::remove_all (folder);
-        
-        tt.save (folder);
-        
-        tt.read_directory(folder);
-        
-        int licznik = 1;
-        for (auto [train, test] : tt)
-        {
-            std::cout << "--------------------------" << std::endl;
-            
-            debug(licznik);
-            debug(train.size());
-            debug(train);
-            debug(test.size());
-            debug(test);
-            ++licznik;
-        }
-    }
+    //// return ;
+    //{
+    //    std::cout << "==========================" << std::endl;
+    //    
+    //    std::string file_name {"../data/exp-lab/train.txt"};
+    //    
+    //    ksi::reader_incomplete czytnik; 
+    //    ksi::train_test_model tt (czytnik);
+    //    auto d = tt.read_file(file_name);
+    //    tt.split(d, 15); 
+    //    
+    //    
+    //    const std::filesystem::path folder {"./do_usuniecia"};
+    //    std::filesystem::remove_all (folder);
+    //    
+    //    tt.save (folder, "dataset", ".data", true);
+    //    
+    //    tt.read_directory(folder);
+    //    
+    //    int licznik = 1;
+    //    for (auto [train, test] : tt)
+    //    {
+    //        std::cout << "--------------------------" << std::endl;
+    //        
+    //        debug(licznik);
+    //        debug(train.size());
+    //        debug(train);
+    //        debug(test.size());
+    //        debug(test);
+    //        ++licznik;
+    //    }
+    //}
     
-    // return;
+    //// return;
+    //
+    //{
+    //    std::cout << "==========================" << std::endl;
+    //    
+    //    std::string file_name {"./test_datasets/ds.data"};
+    //    
+    //    ksi::reader_complete czytnik; 
+    //    ksi::train_test_model tt (czytnik);
+    //    auto d = tt.read_file(file_name);
+    //    tt.split(d, 5); 
+    //            
+    //    int licznik = 1;
+    //    for (ksi::train_test_model::iterator it = tt.begin(); it != tt.end(); ++it)
+    //    {
+    //        std::cout << "--------------------------" << std::endl;
+    //        
+    //        debug(licznik);
+    //        debug(std::get<0>(*it).size()); // train
+    //        debug(std::get<0>(*it));
+    //        debug(std::get<1>(*it).size()); // test
+    //        debug(std::get<1>(*it));
+    //        ++licznik;
+    //    }
+    //}
     
-    {
-        std::cout << "==========================" << std::endl;
-        
-        std::string file_name {"./test_datasets/ds.data"};
-        
-        ksi::reader_complete czytnik; 
-        ksi::train_test_model tt (czytnik);
-        auto d = tt.read_file(file_name);
-        tt.split(d, 5); 
-                
-        int licznik = 1;
-        for (ksi::train_test_model::iterator it = tt.begin(); it != tt.end(); ++it)
-        {
-            std::cout << "--------------------------" << std::endl;
-            
-            debug(licznik);
-            debug(std::get<0>(*it).size()); // train
-            debug(std::get<0>(*it));
-            debug(std::get<1>(*it).size()); // test
-            debug(std::get<1>(*it));
-            ++licznik;
-        }
-    }
-    
-    // return; 
-    {
-        std::cout << "==========================" << std::endl;
-        
-        std::string file_name {"./test_datasets/ds.data"};
-        
-        ksi::reader_complete czytnik; 
-        ksi::train_test_model tt (czytnik);
-        auto d = tt.read_file(file_name);
-        tt.split(d, 5); 
-        
-        int licznik = 1;
-        for (ksi::train_test_model::const_iterator it = tt.cbegin(); it != tt.cend(); ++it)
-        {
-            std::cout << "--------------------------" << std::endl;
-            
-            debug(licznik);
-            debug(std::get<0>(*it).size()); // train
-            debug(std::get<0>(*it));
-            debug(std::get<1>(*it).size()); // test
-            debug(std::get<1>(*it));
-            ++licznik;
-        }
-    }
-    
-    // return; 
-    {
-        std::cout << "==========================" << std::endl;
-        
-        std::string file_name {"./test_datasets/ds.data"};
-        
-        ksi::reader_complete czytnik; 
-        ksi::train_validation_test_model tvt (czytnik);
-        auto d = tvt.read_file(file_name);
-        tvt.split(d, 5); 
-        
-        int licznik = 1;
-        for (ksi::train_validation_test_model::const_iterator it = tvt.cbegin(); it != tvt.cend(); ++it)
-        {
-            std::cout << "--------------------------" << std::endl;
-            
-            debug(licznik);
-            debug(std::get<0>(*it).size()); // train
-            debug(std::get<0>(*it));
-            debug(std::get<1>(*it).size()); // valid
-            debug(std::get<1>(*it));
-            debug(std::get<2>(*it).size()); // test
-            debug(std::get<2>(*it));
-            ++licznik;
-        }
-    }
+    //// return; 
+    //{
+    //    std::cout << "==========================" << std::endl;
+    //    
+    //    std::string file_name {"./test_datasets/ds.data"};
+    //    
+    //    ksi::reader_complete czytnik; 
+    //    ksi::train_test_model tt (czytnik);
+    //    auto d = tt.read_file(file_name);
+    //    tt.split(d, 5); 
+    //    
+    //    int licznik = 1;
+    //    for (ksi::train_test_model::const_iterator it = tt.cbegin(); it != tt.cend(); ++it)
+    //    {
+    //        std::cout << "--------------------------" << std::endl;
+    //        
+    //        debug(licznik);
+    //        debug(std::get<0>(*it).size()); // train
+    //        debug(std::get<0>(*it));
+    //        debug(std::get<1>(*it).size()); // test
+    //        debug(std::get<1>(*it));
+    //        ++licznik;
+    //    }
+    //}
+    //
+    //// return; 
+    //{
+    //    std::cout << "==========================" << std::endl;
+    //    
+    //    std::string file_name {"./test_datasets/ds.data"};
+    //    
+    //    ksi::reader_complete czytnik; 
+    //    ksi::train_validation_test_model tvt (czytnik);
+    //    auto d = tvt.read_file(file_name);
+    //    tvt.split(d, 5); 
+    //    
+    //    int licznik = 1;
+    //    for (ksi::train_validation_test_model::const_iterator it = tvt.cbegin(); it != tvt.cend(); ++it)
+    //    {
+    //        std::cout << "--------------------------" << std::endl;
+    //        
+    //        debug(licznik);
+    //        debug(std::get<0>(*it).size()); // train
+    //        debug(std::get<0>(*it));
+    //        debug(std::get<1>(*it).size()); // valid
+    //        debug(std::get<1>(*it));
+    //        debug(std::get<2>(*it).size()); // test
+    //        debug(std::get<2>(*it));
+    //        ++licznik;
+    //    }
+    //}
     
     return;
     {
@@ -372,8 +366,8 @@ int main (int argc, char ** params)
                           experiment.execute();
                           break;
                        }
-               case 8: {
-                          test_TT();
+               case 9: {
+                          test_train_test_model();
                           break;
                        }
                default: {

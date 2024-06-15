@@ -38,24 +38,33 @@ ksi::train_test_model& ksi::train_test_model::operator=(train_test_model&& other
 
 void ksi::train_test_model::split(const ksi::dataset & base_dataset, const int n)
 {
-    datasets.clear();
-    datasets.resize(n);
-
-    const auto total_size = base_dataset.size();
-    const auto base_size = total_size / n;
-    const auto remainder = total_size % n;
-
-    std::size_t index = 0;
-    for (int i = 0; i < n; ++i)
+    try
     {
-        const auto current_size = base_size + (i < remainder ? 1 : 0);
-
-        for (auto j = 0; j < current_size; ++j)
+        const auto total_size = base_dataset.size();
+        if (n > total_size)
         {
-            datasets[i].addDatum(*base_dataset.getDatum(index));
-            ++index;
+            throw ksi::exception("Number of subsets (" + std::to_string(n) + ") cannot be greater than the number of data points (" + std::to_string(total_size) + ").");
+        }
+
+        datasets.clear();
+        datasets.resize(n);
+
+        const auto base_size = total_size / n;
+        const auto remainder = total_size % n;
+
+        std::size_t index = 0;
+        for (int i = 0; i < n; ++i)
+        {
+            const auto current_size = base_size + (i < remainder ? 1 : 0);
+
+            for (auto j = 0; j < current_size; ++j)
+            {
+                datasets[i].addDatum(*base_dataset.getDatum(index));
+                ++index;
+            }
         }
     }
+    CATCH;
 }
 
 void ksi::train_test_model::save(const std::filesystem::path& directory, const std::filesystem::path& filename, const std::filesystem::path& extension, bool overwrite) const
@@ -250,7 +259,7 @@ void ksi::train_test_model::iterator::initialize_test_dataset()
 {
     train_dataset = ksi::dataset();
 
-    for (auto it = pTT->datasets.cbegin(); it != pTT->datasets.cend(); ++it) {
+    for (auto it = pTT->datasets.cbegin(); it != pTT->datasets.cend(); it++) {
         if (it != test_iterator) {
             for (std::size_t j = 0; j < it->size(); ++j) {
                 train_dataset.addDatum(*it->getDatum(j));
@@ -336,7 +345,7 @@ void ksi::train_test_model::const_iterator::initialize_test_dataset()
 {
     train_dataset = ksi::dataset();
 
-    for (auto it = pTT->datasets.cbegin(); it != pTT->datasets.cend(); ++it) {
+    for (auto it = pTT->datasets.cbegin(); it != pTT->datasets.cend(); it++) {
         if (it != test_iterator) {
             for (std::size_t j = 0; j < it->size(); ++j) {
                 train_dataset.addDatum(*it->getDatum(j));

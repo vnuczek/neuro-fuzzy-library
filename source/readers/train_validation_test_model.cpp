@@ -41,24 +41,33 @@ ksi::train_validation_test_model& ksi::train_validation_test_model::operator=(tr
 
 void ksi::train_validation_test_model::split(const ksi::dataset& base_dataset, const int n)
 {
-    datasets.clear();
-    datasets.resize(n);
-
-    const auto total_size = base_dataset.size();
-    const auto base_size = total_size / n;
-    const auto remainder = total_size % n;
-
-    std::size_t index = 0;
-    for (int i = 0; i < n; ++i)
+    try
     {
-        const auto current_size = base_size + (i < remainder ? 1 : 0);
-
-        for (auto j = 0; j < current_size; ++j)
+        const auto total_size = base_dataset.size();
+        if (n > total_size)
         {
-            datasets[i].addDatum(*base_dataset.getDatum(index));
-            ++index;
+            throw ksi::exception("Number of subsets (" + std::to_string(n) + ") cannot be greater than the number of data points (" + std::to_string(total_size) + ").");
+        }
+
+        datasets.clear();
+        datasets.resize(n);
+
+        const auto base_size = total_size / n;
+        const auto remainder = total_size % n;
+
+        std::size_t index = 0;
+        for (int i = 0; i < n; ++i)
+        {
+            const auto current_size = base_size + (i < remainder ? 1 : 0);
+
+            for (auto j = 0; j < current_size; ++j)
+            {
+                datasets[i].addDatum(*base_dataset.getDatum(index));
+                ++index;
+            }
         }
     }
+    CATCH;
 }
 
 void ksi::train_validation_test_model::save(const std::filesystem::path& directory, const std::filesystem::path& filename, const std::filesystem::path& extension, bool overwrite) const
