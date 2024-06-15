@@ -112,7 +112,7 @@ namespace ksi
          * @date 2024-06-04
          * @author Konrad Wnuk
          */
-        void split(const dataset & base_dataset, const int n = 10) override;
+        void split(const dataset & base_dataset, const unsigned int n = 10) override;
 
         /**
          * Saves the data to a specified directory.
@@ -164,7 +164,7 @@ namespace ksi
          * @date 2024-06-14
          * @author Konrad Wnuk
          */
-        void read_and_split_file(const std::filesystem::path& file_path, const int n = 10) override;
+        void read_and_split_file(const std::filesystem::path& file_path, const unsigned int n = 10) override;
 
         /**
          * Clones the current reader object.

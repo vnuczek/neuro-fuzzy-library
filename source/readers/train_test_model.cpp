@@ -36,10 +36,15 @@ ksi::train_test_model& ksi::train_test_model::operator=(train_test_model&& other
     return *this;
 }
 
-void ksi::train_test_model::split(const ksi::dataset & base_dataset, const int n)
+void ksi::train_test_model::split(const ksi::dataset & base_dataset, const unsigned int n)
 {
     try
     {
+        if (n <= 0)
+        {
+            throw ksi::exception("Number of subsets must be grater than (0).");
+        }
+
         const auto total_size = base_dataset.size();
         if (n > total_size)
         {
@@ -156,7 +161,7 @@ ksi::dataset ksi::train_test_model::read(const std::string& filename)
     return pReader->read(filename);
 }
 
-void ksi::train_test_model::read_and_split_file(const std::filesystem::path& file_path, const int n)
+void ksi::train_test_model::read_and_split_file(const std::filesystem::path& file_path, const unsigned int n)
 {
     dataset base_dataset = read_file(file_path);
     split(base_dataset, n);

@@ -48,14 +48,14 @@ void test_train_test_model()
     // ksi::dataset read_ds = tt.read_file("./test_datasets/ds.data");
     std::string file_name {"../data/exp-lab/train.txt"};
     ksi::dataset read_ds = tt.read_file(file_name);
-    tt.split(read_ds, 120);
+    tt.split(read_ds, 10);
     tt.save("./test", "dataset", ".data", true);
     
     std::cout << "Testing read_directory method" << std::endl;
     tt.read_directory("./test_datasets/test");
     
     
-    {
+    /*{
         std::cout << "==========================" << std::endl;
         
         std::string file_name {"../data/exp-lab/train.txt"};
@@ -75,7 +75,7 @@ void test_train_test_model()
             ++licznik;
         }
         
-    }
+    }*/
     //// return;
     //{
     //    std::cout << "==========================" << std::endl;
@@ -258,8 +258,7 @@ void test_train_test_model()
     //        ++licznik;
     //    }
     //}
-    
-    return;
+
     {
         std::cout << "==========================" << std::endl;
         

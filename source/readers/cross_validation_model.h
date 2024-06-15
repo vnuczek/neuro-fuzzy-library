@@ -92,7 +92,7 @@ namespace ksi
          * @date 2024-05-30
          * @author Konrad Wnuk
          */
-        virtual void split(const dataset & base_dataset, const int n = 10) = 0;
+        virtual void split(const dataset & base_dataset, const unsigned int n = 10) = 0;
         
         /**
 		 * Saves the data to a specified directory.
@@ -134,7 +134,7 @@ namespace ksi
          * @date 2024-06-14
          * @author Konrad Wnuk
          */
-        virtual void read_and_split_file(const std::filesystem::path& file_path, const int n = 10) = 0;
+        virtual void read_and_split_file(const std::filesystem::path& file_path, const unsigned int n = 10) = 0;
     };
 }
 
