@@ -259,17 +259,13 @@ void test_train_test_model()
     //    }
     //}
 
-    {
+    /*{
         std::cout << "==========================" << std::endl;
         
         std::string file_name {"../data/exp-lab/train.txt"};
         
         auto d = tt.read_file(file_name);
         tt.split(d, 0); 
-       
-        /** @todo Pojawia się komunikat:
-         *        make: *** [makefile:50: 8] Błąd w obliczeniach zmiennoprzecinkowych (zrzut pamięci)
-         */
         
         int licznik = 1;
         for (auto [train, test] : tt)
@@ -283,10 +279,8 @@ void test_train_test_model()
             debug(test);
             ++licznik;
         }
-    }
-    
-    
-    return;
+    }*/
+
     {
         std::cout << "==========================" << std::endl;
         
@@ -298,7 +292,7 @@ void test_train_test_model()
         ksi::reader_complete czytnik;
         ksi::train_validation_test_model tvt (czytnik);
         auto d = tvt.read_file(file_name);
-        tt.split(d, 10); 
+        tvt.split(d, 10); 
         
         int licznik = 1;
         for (const auto & [train, valid, test] : tvt)
@@ -316,6 +310,7 @@ void test_train_test_model()
         }
     }
 
+    return;
 }
 
  
