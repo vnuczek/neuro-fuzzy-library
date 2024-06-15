@@ -12,8 +12,8 @@
 #include "./experiments/exp-005.h"
 #include "./experiments/exp-lab.h"
 
-#include "./readers/TT.h"
-#include "./readers/TVT.h"
+#include "./readers/train_test_model.h"
+#include "./readers/train_validation_test_model.h"
 #include "./readers/reader-complete.h"
 #include "./readers/reader-incomplete.h"
 
@@ -31,12 +31,12 @@ ksi::dataset create_dataset(int num_data, int num_attributes)
 
 void test_TT() 
 {
-    std::cout << "Testing TT class methods" << std::endl;
+    std::cout << "Testing train_test_model class methods" << std::endl;
     
     ksi::dataset ds = create_dataset(10, 3);
     
     ksi::reader_complete DataReader;
-    ksi::TT tt(DataReader);
+    ksi::train_test_model tt(DataReader);
     
     std::cout << "Testing split method" << std::endl;
     tt.split(ds, 5);
@@ -136,7 +136,7 @@ void test_TT()
         std::string file_name {"../data/exp-lab/train.txt"};
         
         ksi::reader_incomplete czytnik; 
-        ksi::TT tt (czytnik);
+        ksi::train_test_model tt (czytnik);
         auto d = tt.read_file(file_name);
         tt.split(d, 15); 
         
@@ -161,7 +161,7 @@ void test_TT()
         std::string file_name {"../data/exp-lab/train.txt"};
         
         ksi::reader_incomplete czytnik; 
-        ksi::TT tt (czytnik);
+        ksi::train_test_model tt (czytnik);
         auto d = tt.read_file(file_name);
         tt.split(d, 15); 
         
@@ -195,12 +195,12 @@ void test_TT()
         std::string file_name {"./test_datasets/ds.data"};
         
         ksi::reader_complete czytnik; 
-        ksi::TT tt (czytnik);
+        ksi::train_test_model tt (czytnik);
         auto d = tt.read_file(file_name);
         tt.split(d, 5); 
                 
         int licznik = 1;
-        for (ksi::TT::iterator it = tt.begin(); it != tt.end(); ++it)
+        for (ksi::train_test_model::iterator it = tt.begin(); it != tt.end(); ++it)
         {
             std::cout << "--------------------------" << std::endl;
             
@@ -220,12 +220,12 @@ void test_TT()
         std::string file_name {"./test_datasets/ds.data"};
         
         ksi::reader_complete czytnik; 
-        ksi::TT tt (czytnik);
+        ksi::train_test_model tt (czytnik);
         auto d = tt.read_file(file_name);
         tt.split(d, 5); 
         
         int licznik = 1;
-        for (ksi::TT::const_iterator it = tt.cbegin(); it != tt.cend(); ++it)
+        for (ksi::train_test_model::const_iterator it = tt.cbegin(); it != tt.cend(); ++it)
         {
             std::cout << "--------------------------" << std::endl;
             
@@ -245,12 +245,12 @@ void test_TT()
         std::string file_name {"./test_datasets/ds.data"};
         
         ksi::reader_complete czytnik; 
-        ksi::TVT tvt (czytnik);
+        ksi::train_validation_test_model tvt (czytnik);
         auto d = tvt.read_file(file_name);
         tvt.split(d, 5); 
         
         int licznik = 1;
-        for (ksi::TVT::const_iterator it = tvt.cbegin(); it != tvt.cend(); ++it)
+        for (ksi::train_validation_test_model::const_iterator it = tvt.cbegin(); it != tvt.cend(); ++it)
         {
             std::cout << "--------------------------" << std::endl;
             
@@ -303,7 +303,7 @@ void test_TT()
         std::string file_name {"../data/exp-lab/train.txt"};
         
         ksi::reader_complete czytnik;
-        ksi::TVT tvt (czytnik);
+        ksi::train_validation_test_model tvt (czytnik);
         auto d = tvt.read_file(file_name);
         tt.split(d, 10); 
         
