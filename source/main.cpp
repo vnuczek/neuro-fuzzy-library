@@ -27,7 +27,7 @@ void test_cross_validation_models()
    std::cout << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
 
    {
-      std::cout << std::endl << "Test of modification of a returned dataset" << std::endl;
+      std::cout << std::endl << "1. Test of modification of a returned dataset" << std::endl;
       std::cout << "====================================================" << std::endl;
 
       ksi::reader_complete reader;
@@ -53,7 +53,7 @@ void test_cross_validation_models()
    }
 
    {
-      std::cout << std::endl << "Testing read file and save method" << std::endl;
+      std::cout << std::endl << "2. Testing read file and save method" << std::endl;
       std::cout << "====================================================" << std::endl;
 
       ksi::reader_complete reader;
@@ -64,19 +64,20 @@ void test_cross_validation_models()
       const std::filesystem::path directory {"./AAAAAsplit_data"};
       std::filesystem::remove_all (directory);
 
-      tt.save (directory, "aaaaaadataset", ".txt", false); /// @todo W implementacji Tu się pojawia wyjątek, gdy próbujemy nadpisać istniejące dane. Ale gdy się to uruchomi dwa razy, to wyjątek się nie pojawia. 
+      tt.save (directory, "aaaaaadataset", ".txt", false); /// @todo W implementacji tu się pojawia wyjątek, gdy próbujemy nadpisać istniejące dane. Ale gdy się to uruchomi dwa razy, to wyjątek się nie pojawia. 
    }
 
    {
-      std::cout << std::endl << "Testing read directory method" << std::endl;
+      std::cout << std::endl << "3. Testing read directory method" << std::endl;
       std::cout << "====================================================" << std::endl;
 
       ksi::reader_complete reader;
       ksi::train_test_model tt(reader);
       const std::string directory{ "./read_dir" };
       tt.read_directory(directory);
-      //tt.read_directory(directory, ".*");
-
+      // tt.read_directory(directory, "[01].data");
+      
+      /// @todo Poniższa pętla niczego nie wypisuje. Tak jakby nie wczytały się żadne dane, a katalog nie jest pusty. 
       int licznik = 1;
       for (auto [train, test] : tt)
       {
@@ -89,8 +90,64 @@ void test_cross_validation_models()
          debug(test);
          ++licznik;
       }
+      debug(licznik); /// @todo licznik == 1, czyli pętla się nie wykonuje.
    }
+   {
+      std::cout << std::endl << "4. Copying of readers" << std::endl;
+      std::cout << "====================================================" << std::endl;
 
+      ksi::reader_complete reader;
+      ksi::train_test_model tt(reader);
+      const std::string file_name{ "./read_dir/train.txt" };
+      tt.read_and_split_file(file_name);
+
+      int licznik = 1;
+      for (auto [train, test] : tt)
+      {
+         std::cout << "--------------------------" << std::endl;
+
+         debug(licznik);
+         debug(train.size());
+         debug(train);
+         debug(test.size());
+         debug(test);
+         break; 
+         ++licznik;
+      }
+      // kopiowanie:
+      auto kopia = tt; 
+
+      // tt wczytuje nowy plik
+      tt.read_and_split_file("./read_dir/dataset_0.data", 2);
+      for (auto [train, test] : tt)
+      {
+         std::cout << "--------------------------" << std::endl;
+
+         debug(licznik);
+         debug(train.size());
+         debug(train);
+         debug(test.size());
+         debug(test);
+         break; 
+         ++licznik;
+      }
+
+      // wypisujemy kopię, czyli stary tt
+      for (auto [train, test] : kopia)
+      {
+         std::cout << "--------------------------" << std::endl;
+
+         debug(licznik);
+         debug(train.size());
+         debug(train);
+         debug(test.size());
+         debug(test);
+         break; 
+         ++licznik;
+      }
+      
+   }
+   return ;
    {
       std::cout << std::endl << "Testing iterator for Training and Test model" << std::endl;
       std::cout              << "====================================================" << std::endl;

@@ -120,6 +120,9 @@ namespace ksi
 		 *
 		 * @param directory The directory to read the data from.
 		 * @param extension_pattern The pattern to match the file extensions. Defaults to ".data".
+       *        @todo Może byłoby trochę bardziej ogólnie, żeby ten parametr nie nazywał się
+       *              extension_pattern, ale file_name_pattern? Bo zasadniczo regeksem możemy dopasować
+       *              nazwę pliku, a nie tylko rozszerzenie.
 		 * @date 2024-06-04
 		 * @author Konrad Wnuk
 		 */
