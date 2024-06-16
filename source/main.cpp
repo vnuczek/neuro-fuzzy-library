@@ -27,7 +27,7 @@ void test_cross_validation_models()
    std::cout << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
 
    {
-      std::cout << std::endl << "Test of modification of a returned dataset" << std::endl;
+      std::cout << std::endl << "1. Test of modification of a returned dataset" << std::endl;
       std::cout << "====================================================" << std::endl;
 
       ksi::reader_complete reader;
@@ -53,7 +53,7 @@ void test_cross_validation_models()
    }
 
    {
-      std::cout << std::endl << "Testing read file and save method" << std::endl;
+      std::cout << std::endl << "2. Testing read file and save methods" << std::endl;
       std::cout << "====================================================" << std::endl;
 
       ksi::reader_complete reader;
@@ -61,14 +61,14 @@ void test_cross_validation_models()
       const std::string file{ "../data/exp-lab/train.txt" };
       tt.read_and_split_file(file, 5);
 
-      const std::filesystem::path directory {"./AAAAAsplit_data"};
+      const std::filesystem::path directory {"./split_data"};
       std::filesystem::remove_all (directory);
 
-      tt.save (directory, "aaaaaadataset", ".txt", false); /// @todo W implementacji Tu się pojawia wyjątek, gdy próbujemy nadpisać istniejące dane. Ale gdy się to uruchomi dwa razy, to wyjątek się nie pojawia. 
+      tt.save (directory, "dataset", ".txt", false); /// @todo W implementacji Tu się pojawia wyjątek, gdy próbujemy nadpisać istniejące dane. Ale gdy się to uruchomi dwa razy, to wyjątek się nie pojawia. 
    }
 
    {
-      std::cout << std::endl << "Testing read directory method" << std::endl;
+      std::cout << std::endl << "3. Testing read directory method" << std::endl;
       std::cout << "====================================================" << std::endl;
 
       ksi::reader_complete reader;
@@ -92,7 +92,118 @@ void test_cross_validation_models()
    }
 
    {
-      std::cout << std::endl << "Testing iterator for Training and Test model" << std::endl;
+       std::cout << std::endl << "4. Testing copying for Training and Test model" << std::endl;
+       std::cout << "====================================================" << std::endl;
+
+       ksi::reader_complete reader;
+       ksi::train_test_model tt(reader);
+       const std::string file_name{ "./read_dir/train.txt" };
+       tt.read_and_split_file(file_name);
+
+       int licznik = 1;
+       for (auto [train, test] : tt)
+       {
+           std::cout << "--------------------------" << std::endl;
+
+           debug(licznik);
+           debug(train.size());
+           debug(train);
+           debug(test.size());
+           debug(test);
+           break;
+           ++licznik;
+       }
+       
+       auto tt_copy = tt;
+
+       tt.read_and_split_file("./read_dir/dataset_0.data", 2);
+       for (auto [train, test] : tt)
+       {
+           std::cout << "--------------------------" << std::endl;
+
+           debug(licznik);
+           debug(train.size());
+           debug(train);
+           debug(test.size());
+           debug(test);
+           break;
+           ++licznik;
+       }
+       
+       for (auto [train, test] : tt_copy)
+       {
+           std::cout << "--------------------------" << std::endl;
+
+           debug(licznik);
+           debug(train.size());
+           debug(train);
+           debug(test.size());
+           debug(test);
+           break;
+           ++licznik;
+       }
+
+   }
+
+   {
+       std::cout << std::endl << "4. Testing copying for Training, Validation and Test model" << std::endl;
+       std::cout << "====================================================" << std::endl;
+
+       ksi::reader_complete reader;
+       ksi::train_validation_test_model tvt(reader);
+       const std::string file_name{ "./read_dir/train.txt" };
+       tvt.read_and_split_file(file_name);
+
+       int licznik = 1;
+       for (auto [train, valid, test] : tvt)
+       {
+           std::cout << "--------------------------" << std::endl;
+
+           debug(licznik);
+           debug(train.size());
+           debug(train);
+           debug(valid.size());
+           debug(valid);
+           debug(test.size());
+           debug(test);
+           ++licznik;
+       }
+
+       auto tvt_copy = tvt;
+
+       tvt.read_and_split_file("./read_dir/dataset_0.data", 2);
+       for (auto [train, valid, test] : tvt)
+       {
+           std::cout << "--------------------------" << std::endl;
+
+           debug(licznik);
+           debug(train.size());
+           debug(train);
+           debug(valid.size());
+           debug(valid);
+           debug(test.size());
+           debug(test);
+           ++licznik;
+       }
+
+       for (auto [train, valid, test] : tvt_copy)
+       {
+           std::cout << "--------------------------" << std::endl;
+
+           debug(licznik);
+           debug(train.size());
+           debug(train);
+           debug(valid.size());
+           debug(valid);
+           debug(test.size());
+           debug(test);
+           ++licznik;
+       }
+
+   }
+
+   {
+      std::cout << std::endl << "6. Testing iterator for Training and Test model" << std::endl;
       std::cout              << "====================================================" << std::endl;
 
       ksi::reader_complete reader;
@@ -116,7 +227,7 @@ void test_cross_validation_models()
    }
 
    {
-      std::cout << std::endl << "Testing iterator for Training, Validation and Test model" << std::endl;
+      std::cout << std::endl << "7. Testing iterator for Training, Validation and Test model" << std::endl;
       std::cout << "====================================================" << std::endl;
 
       ksi::reader_complete reader;
@@ -145,7 +256,7 @@ void test_cross_validation_models()
    }
 
    {
-      std::cout << std::endl << "Testing iterator for Training, Validation and Test model" << std::endl;
+      std::cout << std::endl << "8. Testing iterator for Training, Validation and Test model" << std::endl;
       std::cout << "====================================================" << std::endl;
 
       ksi::reader_complete reader;
@@ -174,7 +285,7 @@ void test_cross_validation_models()
    }
 
    {
-      std::cout << std::endl << "Testing for each loop for Training and Test model" << std::endl;
+      std::cout << std::endl << "9. Testing for each loop for Training and Test model" << std::endl;
       std::cout << "====================================================" << std::endl;
 
       ksi::reader_complete reader;
@@ -198,7 +309,7 @@ void test_cross_validation_models()
    }
 
    {
-      std::cout << std::endl << "Testing for each loop for Training, Validation and Test model" << std::endl;
+      std::cout << std::endl << "10. Testing for each loop for Training, Validation and Test model" << std::endl;
       std::cout << "====================================================" << std::endl;
 
       ksi::reader_complete reader;

@@ -121,9 +121,9 @@ ksi::dataset ksi::train_validation_test_model::read_file(const std::filesystem::
     return pReader->read(file_directory.string());
 }
 
-void ksi::train_validation_test_model::read_directory(const std::filesystem::path& directory, const std::filesystem::path& extension_pattern)
+void ksi::train_validation_test_model::read_directory(const std::filesystem::path& directory, const std::string& file_regex_pattern)
 {
-    std::regex data_file_regex(extension_pattern.string());
+    std::regex data_file_regex(file_regex_pattern);
     auto data_files = std::filesystem::directory_iterator(directory)
         | std::views::filter([](const auto& entry) { return entry.is_regular_file(); })
         | std::views::filter([&data_file_regex](const auto& entry)

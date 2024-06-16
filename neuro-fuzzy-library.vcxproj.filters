@@ -1,0 +1,1351 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\auxiliary\clock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\auxiliary\colours.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\auxiliary\confusion-matrix.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\auxiliary\directory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\auxiliary\error-calculator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\auxiliary\error-MAE.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\auxiliary\error-RMSE.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\auxiliary\least-error-squares-regression.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\auxiliary\mathematics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\auxiliary\multiclass_confusion_matrix.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\auxiliary\numeric_function.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\auxiliary\print.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\auxiliary\roc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\auxiliary\tempus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\auxiliary\utility-math.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\auxiliary\utility-string.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\auxiliary\vector-operators.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\common\data-modifier-filter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\common\data-modifier-imputer-average.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\common\data-modifier-imputer-knn-average.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\common\data-modifier-imputer-knn-median.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\common\data-modifier-imputer-knn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\common\data-modifier-imputer-median.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\common\data-modifier-imputer-values-from-knn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\common\data-modifier-imputer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\common\data-modifier-marginaliser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\common\data-modifier-normaliser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\common\data-modifier-outlier-remove-sigma.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\common\data-modifier-standardiser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\common\data-modifier.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\common\dataset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\common\datum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\common\extensional-fuzzy-number-gaussian.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\common\number.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\common\result.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\descriptors\descriptor-constant.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\descriptors\descriptor-gaussian-subspace.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\descriptors\descriptor-gaussian.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\descriptors\descriptor-interval-gaussian-subspace.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\descriptors\descriptor-interval-gaussian.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\descriptors\descriptor-semitriangular.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\descriptors\descriptor-sigmoidal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\descriptors\descriptor-singleton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\descriptors\descriptor-trapezoidal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\descriptors\descriptor-triangular.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\descriptors\descriptor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\descriptors\descriptor_arctan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\descriptors\descriptor_tanh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dissimilarities\dis-huber.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dissimilarities\dis-linear.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dissimilarities\dis-log-linear.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dissimilarities\dis-log.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dissimilarities\dis-sigmoidal-linear.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dissimilarities\dis-sigmoidal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dissimilarities\dis-square.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dissimilarities\dissimilarity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\experiments\exp-000.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\experiments\exp-001.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\experiments\exp-002.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\experiments\exp-003.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\experiments\exp-004.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\experiments\exp-005.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\experiments\exp-lab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\experiments\experiment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\gan\discriminative_model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\gan\gan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\gan\generative_model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\granules\data_item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\granules\granule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\granules\set_of_cooperating_granules.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\granules\set_of_granules.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\granules\set_of_standalone_granules.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\heuristics\ridders-gaussian-m.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\heuristics\ridders-gaussian-s.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\heuristics\ridders-test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\heuristics\ridders.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\heuristics\simulated-annealing-gaussian.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\heuristics\simulated-annealing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\implications\imp-fodor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\implications\imp-goedel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\implications\imp-goguen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\implications\imp-kleene-dienes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\implications\imp-lukasiewicz.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\implications\imp-reichenbach.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\implications\imp-rescher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\implications\imp-zadeh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\implications\implication.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\metrics\metric-euclidean-incomplete.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\metrics\metric-euclidean.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\metrics\metric-minkowski-weighted.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\metrics\metric-minkowski.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\metrics\metric.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\metrics\metric_mahalanobis.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\abstract-annbfis.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\abstract-ma.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\abstract-tsk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\abstract_fcom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\annbfis.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\annbfis_prototype.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\consequence-CL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\consequence-MA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\consequence-TSK.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\consequence.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\fac_prototype.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\fac_prototype_mahalanobis.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\fac_prototype_mahalanobis_classification.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\fac_prototype_mahalanobis_regression.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\fac_prototype_minkowski.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\fac_prototype_minkowski_classification.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\fac_prototype_minkowski_regression.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\fcom-annbfis.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\fcom-ma.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\fcom-tsk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\fubi-annbfis.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\granular_annbfis_classification.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\granular_annbfis_regression.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\granular_ma_classification.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\granular_ma_regression.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\granular_nfs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\granular_nfs_classification.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\granular_nfs_regression.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\granular_subspace_annbfis_classification.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\granular_subspace_annbfis_regression.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\granular_tsk_classification.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\granular_tsk_regression.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\logicalrule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\ma.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\neuro-fuzzy-system.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\nfs_prototype.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\premise.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\prototype.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\prototype_mahalanobis.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\prototype_mahalanobis_classification.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\prototype_mahalanobis_regression.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\prototype_minkowski.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\prototype_minkowski_classification.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\prototype_minkowski_regression.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\rule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\rulebase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\subspace-annbfis.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\subspace-premise.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\three_way_decision_nfs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\tsk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\neuro-fuzzy\tsk_prototype.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\owas\owa.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\owas\plowa.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\owas\sowa.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\owas\uowa.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\partitions\cluster.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\partitions\dbscan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\partitions\fcm-conditional.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\partitions\fcm-possibilistic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\partitions\fcm-T.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\partitions\fcm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\partitions\fcm_generic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\partitions\fcom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\partitions\fubi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\partitions\gk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\partitions\granular-dbscan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\partitions\grfcm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\partitions\partition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\partitions\partitioner-grid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\partitions\partitioner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\partitions\rfcm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\partitions\rfcom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\partitions\rsfcm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\partitions\sfcm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\readers\cross_validation_reader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\readers\multilabel_reader_complete.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\readers\reader-complete-by-parts.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\readers\reader-complete.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\readers\reader-incomplete.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\readers\reader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\readers\weighted_reader_complete.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\service\debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\service\exception.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\snorms\s-norm-drastic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\snorms\s-norm-einstein.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\snorms\s-norm-fodor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\snorms\s-norm-lukasiewicz.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\snorms\s-norm-max.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\snorms\s-norm-sum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\snorms\s-norm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\tnorms\t-norm-dombi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\tnorms\t-norm-drastic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\tnorms\t-norm-dubois-prade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\tnorms\t-norm-einstein.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\tnorms\t-norm-fodor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\tnorms\t-norm-frank.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\tnorms\t-norm-hamacher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\tnorms\t-norm-lukasiewicz.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\tnorms\t-norm-min.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\tnorms\t-norm-parametrized.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\tnorms\t-norm-product.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\tnorms\t-norm-schweizer-sklar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\tnorms\t-norm-sugeno-weber.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\tnorms\t-norm-yager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\tnorms\t-norm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\common\DatasetStatistics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\metrics\metric-chebyshev.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\metrics\metric-manhattan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\metrics\metric-cosine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\partitions\fcm-T-metrics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\auxiliary\to_string.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\readers\train_test_model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\readers\train_validation_test_model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\readers\cross_validation_model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\auxiliary\clock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\auxiliary\colours.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\auxiliary\confusion-matrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\auxiliary\definitions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\auxiliary\directory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\auxiliary\error-calculator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\auxiliary\error-MAE.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\auxiliary\error-RMSE.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\auxiliary\least-error-squares-regression.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\auxiliary\mathematics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\auxiliary\matrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\auxiliary\multiclass_confusion_matrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\auxiliary\numeric_function.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\auxiliary\print.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\auxiliary\roc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\auxiliary\tempus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\auxiliary\utility-math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\auxiliary\utility-string.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\auxiliary\vector-operators.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\common\data-modifier-filter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\common\data-modifier-imputer-average.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\common\data-modifier-imputer-knn-average.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\common\data-modifier-imputer-knn-median.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\common\data-modifier-imputer-knn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\common\data-modifier-imputer-median.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\common\data-modifier-imputer-values-from-knn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\common\data-modifier-imputer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\common\data-modifier-marginaliser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\common\data-modifier-normaliser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\common\data-modifier-outlier-remove-sigma.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\common\data-modifier-standardiser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\common\data-modifier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\common\dataset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\common\datum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\common\extensional-fuzzy-number-gaussian.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\common\number.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\common\result.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\descriptors\descriptor-constant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\descriptors\descriptor-gaussian-subspace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\descriptors\descriptor-gaussian.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\descriptors\descriptor-interval-gaussian-subspace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\descriptors\descriptor-interval-gaussian.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\descriptors\descriptor-semitriangular.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\descriptors\descriptor-sigmoidal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\descriptors\descriptor-singleton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\descriptors\descriptor-trapezoidal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\descriptors\descriptor-triangular.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\descriptors\descriptor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\descriptors\descriptor_arctan.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\descriptors\descriptor_tanh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dissimilarities\dis-huber.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dissimilarities\dis-linear.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dissimilarities\dis-log-linear.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dissimilarities\dis-log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dissimilarities\dis-sigmoidal-linear.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dissimilarities\dis-sigmoidal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dissimilarities\dis-square.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dissimilarities\dissimilarity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\experiments\exp-000.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\experiments\exp-001.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\experiments\exp-002.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\experiments\exp-003.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\experiments\exp-004.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\experiments\exp-005.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\experiments\exp-lab.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\experiments\experiment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\gan\discriminative_model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\gan\gan.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\gan\generative_model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\granules\data_item.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\granules\granule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\granules\set_of_cooperating_granules.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\granules\set_of_granules.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\granules\set_of_standalone_granules.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\heuristics\ridders-gaussian-m.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\heuristics\ridders-gaussian-s.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\heuristics\ridders-test.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\heuristics\ridders.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\heuristics\simulated-annealing-gaussian.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\heuristics\simulated-annealing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\implications\imp-fodor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\implications\imp-goedel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\implications\imp-goguen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\implications\imp-kleene-dienes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\implications\imp-lukasiewicz.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\implications\imp-reichenbach.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\implications\imp-rescher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\implications\imp-zadeh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\implications\implication.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\metrics\metric-euclidean-incomplete.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\metrics\metric-euclidean.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\metrics\metric-minkowski-weighted.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\metrics\metric-minkowski.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\metrics\metric.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\metrics\metric_mahalanobis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\abstract-annbfis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\abstract-ma.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\abstract-tsk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\abstract_fcom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\annbfis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\annbfis_prototype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\consequence-CL.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\consequence-MA.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\consequence-TSK.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\consequence.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\fac_prototype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\fac_prototype_mahalanobis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\fac_prototype_mahalanobis_classification.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\fac_prototype_mahalanobis_regression.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\fac_prototype_minkowski.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\fac_prototype_minkowski_classification.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\fac_prototype_minkowski_regression.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\fcom-annbfis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\fcom-ma.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\fcom-tsk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\fubi-annbfis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\granular_annbfis_classification.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\granular_annbfis_regression.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\granular_ma_classification.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\granular_ma_regression.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\granular_nfs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\granular_nfs_classification.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\granular_nfs_regression.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\granular_subspace_annbfis_classification.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\granular_subspace_annbfis_regression.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\granular_tsk_classification.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\granular_tsk_regression.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\logicalrule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\ma.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\neuro-fuzzy-system.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\nfs_prototype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\premise.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\prototype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\prototype_mahalanobis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\prototype_mahalanobis_classification.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\prototype_mahalanobis_regression.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\prototype_minkowski.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\prototype_minkowski_classification.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\prototype_minkowski_regression.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\rule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\rulebase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\subspace-annbfis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\subspace-premise.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\three_way_decision_nfs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\tsk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\neuro-fuzzy\tsk_prototype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\owas\owa.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\owas\plowa.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\owas\sowa.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\owas\uowa.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\partitions\cluster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\partitions\dbscan.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\partitions\fcm-conditional.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\partitions\fcm-possibilistic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\partitions\fcm-T.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\partitions\fcm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\partitions\fcm_generic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\partitions\fcom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\partitions\fubi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\partitions\gk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\partitions\granular-dbscan.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\partitions\grfcm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\partitions\partition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\partitions\partitioner-grid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\partitions\partitioner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\partitions\rfcm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\partitions\rfcom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\partitions\rsfcm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\partitions\sfcm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\readers\cross_validation_reader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\readers\multilabel_reader_complete.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\readers\reader-complete-by-parts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\readers\reader-complete.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\readers\reader-incomplete.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\readers\reader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\readers\weighted_reader_complete.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\service\debug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\service\exception.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\snorms\s-norm-drastic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\snorms\s-norm-einstein.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\snorms\s-norm-fodor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\snorms\s-norm-lukasiewicz.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\snorms\s-norm-max.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\snorms\s-norm-sum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\snorms\s-norm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\tnorms\t-norm-dombi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\tnorms\t-norm-drastic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\tnorms\t-norm-dubois-prade.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\tnorms\t-norm-einstein.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\tnorms\t-norm-fodor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\tnorms\t-norm-frank.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\tnorms\t-norm-hamacher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\tnorms\t-norm-lukasiewicz.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\tnorms\t-norm-min.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\tnorms\t-norm-parametrized.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\tnorms\t-norm-product.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\tnorms\t-norm-schweizer-sklar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\tnorms\t-norm-sugeno-weber.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\tnorms\t-norm-yager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\tnorms\t-norm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\common\DatasetStatistics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\descriptors\DescriptorStatistics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\metrics\metric-chebyshev.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\metrics\metric-manhattan.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\metrics\metric-cosine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\partitions\fcm-T-metrics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\auxiliary\to_string.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\readers\train_test_model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\readers\train_validation_test_model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\readers\cross_validation_model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="source\common\CTuple.cpp-obsolete" />
+    <None Include="source\common\datum-complete.cpp-obsolete" />
+    <None Include="source\common\datum-incomplete.cpp-obsolete" />
+    <None Include="source\common\datum-interval.cpp-obsolete" />
+    <None Include="source\partitions\cluster-gaussian.cpp-obsolete" />
+    <None Include="source\partitions\cluster-gaussian.h-obsolete" />
+    <None Include="data\exp-001\complete.data">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\exp-001\incomplete.data">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\exp-001\outliers.data">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\exp-002\dbscan.data">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\exp-002\fcom.data">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\exp-002\fcom-10.data">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\exp-002\pedrycz.data">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\exp-002\possibilistic.data">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\exp-002\sub-135-245.data">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\exp-002\two-crossed.data">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\exp-002\two-crossed-oblique.data">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\exp-002\two-parallel.data">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\exp-002\two-parallel-oblique.data">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\exp-002\two-spherical.data">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\exp-003\rfcom-10-5.data">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\exp-003\sub-135-245-m10.data">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\exp-005\classification\haberman\haberman.test">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\exp-005\classification\haberman\haberman.train">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\exp-005\regression\leukocytes\leukocytes.test">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\exp-005\regression\leukocytes\leukocytes.train">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\exp-lab\test.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="data\exp-lab\train.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

@@ -4,6 +4,7 @@
 #define TRAIN_TEST_MODEL_H
 
 #include "cross_validation_model.h"
+
 #include <tuple>
 
 namespace ksi
@@ -119,11 +120,11 @@ namespace ksi
 		 * Reads data from a specified directory.
 		 *
 		 * @param directory The directory to read the data from.
-		 * @param extension_pattern The pattern to match the file extensions. Defaults to ".data".
+		 * @param file_regex_pattern The pattern to match the files. Defaults to ".*\\.data$".
 		 * @date 2024-06-04
 		 * @author Konrad Wnuk
 		 */
-        void read_directory(const std::filesystem::path& directory, const std::filesystem::path& extension_pattern = ".data") override;
+        void read_directory(const std::filesystem::path& directory, const std::string& file_regex_pattern = ".*\\.data$") override;
 
         /**
          * Reads data from a specified file.
