@@ -245,11 +245,6 @@ bool ksi::train_validation_test_model::iterator::operator==(const iterator& othe
     return test_iterator == other.test_iterator;
 }
 
-bool ksi::train_validation_test_model::iterator::operator!=(const iterator& other) const
-{
-    return !(*this == other);
-}
-
 std::strong_ordering ksi::train_validation_test_model::iterator::operator<=>(const iterator& other) const
 {
     return test_iterator <=> other.test_iterator;
@@ -263,6 +258,13 @@ std::tuple<ksi::dataset, ksi::dataset, ksi::dataset> ksi::train_validation_test_
 std::tuple<ksi::dataset, ksi::dataset, ksi::dataset> ksi::train_validation_test_model::iterator::operator->() const
 {
     return std::make_tuple(train_dataset, validation_dataset, *test_iterator);
+}
+
+void ksi::train_validation_test_model::iterator::swap(std::tuple<dataset, dataset, dataset>& other)
+{
+    std::swap(std::get<0>(other), train_dataset);
+    std::swap(std::get<1>(other), validation_dataset);
+    std::swap(std::get<2>(other), *test_iterator);
 }
 
 void ksi::train_validation_test_model::iterator::initialize_train_and_validation_datasets()
@@ -353,11 +355,6 @@ ksi::train_validation_test_model::const_iterator ksi::train_validation_test_mode
 bool ksi::train_validation_test_model::const_iterator::operator==(const const_iterator& other) const
 {
     return test_iterator == other.test_iterator;
-}
-
-bool ksi::train_validation_test_model::const_iterator::operator!=(const const_iterator& other) const
-{
-    return !(*this == other);
 }
 
 std::strong_ordering ksi::train_validation_test_model::const_iterator::operator<=>(const const_iterator& other) const

@@ -240,11 +240,6 @@ bool ksi::train_test_model::iterator::operator==(const iterator& other) const
     return test_iterator == other.test_iterator;
 }
 
-bool ksi::train_test_model::iterator::operator!=(const iterator& other) const
-{
-    return !(*this == other);
-}
-
 std::strong_ordering ksi::train_test_model::iterator::operator<=>(const iterator& other) const
 {
     return test_iterator <=> other.test_iterator;
@@ -258,6 +253,12 @@ std::tuple<ksi::dataset, ksi::dataset> ksi::train_test_model::iterator::operator
 std::tuple<ksi::dataset, ksi::dataset> ksi::train_test_model::iterator::operator->() const
 {
     return std::make_tuple(train_dataset, *test_iterator);
+}
+
+void ksi::train_test_model::iterator::swap(std::tuple<dataset, dataset>& other)
+{
+    std::swap(std::get<0>(other), train_dataset);
+    std::swap(std::get<1>(other), *test_iterator);
 }
 
 void ksi::train_test_model::iterator::initialize_test_dataset()
@@ -324,11 +325,6 @@ ksi::train_test_model::const_iterator ksi::train_test_model::const_iterator::ope
 bool ksi::train_test_model::const_iterator::operator==(const ksi::train_test_model::const_iterator& other) const
 {
     return test_iterator == other.test_iterator;
-}
-
-bool ksi::train_test_model::const_iterator::operator!=(const const_iterator& other) const
-{
-    return !(*this == other);
 }
 
 std::strong_ordering ksi::train_test_model::const_iterator::operator<=>(const ksi::train_test_model::const_iterator& other) const

@@ -287,18 +287,7 @@ namespace ksi
          * @author Konrad Wnuk
          */
         bool operator==(const iterator& other) const;
-
-        /**
-         * Checks if two iterators are not equal.
-         * @todo niepotrzebny operator
-         *
-         * @param other The other iterator to compare with.
-         * @return True if the iterators are not equal, false otherwise.
-         * @date 2024-06-08
-         * @author Konrad Wnuk
-         */
-        bool operator!=(const iterator& other) const;
-
+        
         /**
          * Compares two iterators.
          *
@@ -326,6 +315,15 @@ namespace ksi
          * @author Konrad Wnuk
          */
         std::tuple<dataset, dataset> operator->() const;
+
+        /**
+         * Swaps the current datasets with the provided tuple of datasets.
+         *
+         * @param other Tuple of datasets to swap with.
+         * @date 2024-06-16
+         * @author Konrad Wnuk
+         */
+        void swap(std::tuple<dataset, dataset>& other);
 
     private:
         /**
@@ -431,17 +429,6 @@ namespace ksi
          * @author Konrad Wnuk
          */
         bool operator==(const const_iterator& other) const;
-
-        /**
-         * Checks if two const iterators are not equal.
-         * @todo niepotrzebny operator
-         *
-         * @param other The other const iterator to compare with.
-         * @return True if the const iterators are not equal, false otherwise.
-         * @date 2024-06-08
-         * @author Konrad Wnuk
-         */
-        bool operator!=(const const_iterator& other) const;
 
         /**
          * Compares two const iterators.

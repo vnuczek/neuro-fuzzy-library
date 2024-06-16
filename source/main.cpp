@@ -32,7 +32,7 @@ void test_cross_validation_models()
 
       ksi::reader_complete reader;
       ksi::train_test_model tt(reader);
-      const std::string file{ "../data/exp-lab/train.txt" };
+      const std::filesystem::path file{ "../data/exp-lab/train.txt" };
       tt.read_and_split_file(file, 5);
 
       ksi::data_modifier_normaliser normer;
@@ -73,7 +73,7 @@ void test_cross_validation_models()
 
       ksi::reader_complete reader;
       ksi::train_test_model tt(reader);
-      const std::string directory{ "./read_dir" };
+      const std::filesystem::path directory{ "./read_dir" };
       tt.read_directory(directory);
       //tt.read_directory(directory, ".*");
 
@@ -130,6 +130,9 @@ void test_cross_validation_models()
       {
          std::cout << "--------------------------" << std::endl;
 
+         // std::tuple<ksi::dataset, ksi::dataset> t_ds;
+      	 // it->swap(t_ds);
+
          debug(licznik);
          debug(std::get<0>(*it).size()); // train
          debug(std::get<0>(*it));
@@ -156,9 +159,9 @@ void test_cross_validation_models()
       {
          std::cout << "--------------------------" << std::endl;
 
-         std::tuple<ksi::dataset, ksi::dataset, ksi::dataset> ddd;
-         // it->swap(ddd);  /// @todo nie działa
-         return;
+         // std::tuple<ksi::dataset, ksi::dataset, ksi::dataset> t_ds;
+         // it->swap(t_ds);
+
          debug(licznik);
          debug(std::get<0>(*it).size()); // train
          debug(std::get<0>(*it));
@@ -167,11 +170,9 @@ void test_cross_validation_models()
          debug(std::get<2>(*it).size()); // test
          debug(std::get<2>(*it));
          ++licznik;
-
-         return ;
       }
    }
-   return ;
+
    {
       std::cout << std::endl << "Testing for each loop for Training and Test model" << std::endl;
       std::cout << "====================================================" << std::endl;
@@ -272,7 +273,7 @@ int main (int argc, char ** params)
                           experiment.execute();
                           break;
                        }
-               case 8: {
+               case 9: {
                           test_cross_validation_models();
                           break;
                        }
