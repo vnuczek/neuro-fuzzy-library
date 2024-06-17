@@ -78,23 +78,13 @@ void ksi::train_test_model::save(const std::filesystem::path& directory, const s
 {
     try  
     {
-        debug(directory);
-        debug(std::filesystem::exists(directory));
-        auto directory_created = std::filesystem::create_directories(directory);
-        debug(directory_created);
+        std::filesystem::create_directories(directory);
         const auto num_files = datasets.size();
         const auto num_digits = std::to_string(num_files).length();
 
         for (auto i = 0; i < datasets.size(); ++i)
         {
             auto file_path = directory / (filename.string() + "_" + ksi::to_string(i, num_digits) + extension.string());
-            debug(file_path);
-            std::error_code ec;
-            debug(std::filesystem::exists(file_path));
-            debug(std::filesystem::is_regular_file(file_path));
-            debug(std::filesystem::exists("./main.cpp"));
-            // std::ofstream f (file_path);
-            debug(std::filesystem::exists(file_path));
             if (std::filesystem::exists(file_path) && !overwrite)
             {
                 throw ksi::exception("File " + file_path.string() + " already exists. To overwrite, set the overwrite parameter to true.");
