@@ -78,8 +78,10 @@ void ksi::train_test_model::save(const std::filesystem::path& directory, const s
 {
     try  
     {
-        std::filesystem::create_directories(directory);
-
+        debug(directory);
+        debug(std::filesystem::exists(directory));
+        auto directory_created = std::filesystem::create_directories(directory);
+        debug(directory_created);
         const auto num_files = datasets.size();
         const auto num_digits = std::to_string(num_files).length();
 

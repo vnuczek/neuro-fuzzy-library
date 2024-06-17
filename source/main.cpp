@@ -63,7 +63,7 @@ void test_cross_validation_models()
          tt.read_and_split_file(file, 5);
 
          const std::filesystem::path directory {"./split_data"};
-         std::filesystem::remove_all (directory);
+         // std::filesystem::remove_all (directory);
 
          tt.save (directory, "aaaaaadataset", ".txt", false); /// @todo W implementacji tu się pojawia wyjątek, gdy próbujemy nadpisać istniejące dane. Ale gdy się to uruchomi dwa razy, to wyjątek się nie pojawia. 
          tt.save (directory, "dataset", ".data", false); /// < to ma być
@@ -71,6 +71,7 @@ void test_cross_validation_models()
       catch (...)
       {
          std::cerr << "!!!! WYJATEK !!!!" << std::endl;
+         throw;
       }
    }
    return ;
