@@ -4,6 +4,7 @@
 #define TRAIN_TEST_MODEL_H
 
 #include "cross_validation_model.h"
+
 #include <tuple>
 
 namespace ksi
@@ -119,14 +120,11 @@ namespace ksi
 		 * Reads data from a specified directory.
 		 *
 		 * @param directory The directory to read the data from.
-		 * @param extension_pattern The pattern to match the file extensions. Defaults to ".data".
-       *        @todo Może byłoby trochę bardziej ogólnie, żeby ten parametr nie nazywał się
-       *              extension_pattern, ale file_name_pattern? Bo zasadniczo regeksem możemy dopasować
-       *              nazwę pliku, a nie tylko rozszerzenie.
+		 * @param file_regex_pattern The pattern to match the files. Defaults to ".*\\.data$".
 		 * @date 2024-06-04
 		 * @author Konrad Wnuk
 		 */
-        void read_directory(const std::filesystem::path& directory, const std::filesystem::path& extension_pattern = ".data") override;
+        void read_directory(const std::filesystem::path& directory, const std::string& file_regex_pattern = ".*\\.data$") override;
 
         /**
          * Reads data from a specified file.
@@ -290,18 +288,7 @@ namespace ksi
          * @author Konrad Wnuk
          */
         bool operator==(const iterator& other) const;
-
-        /**
-         * Checks if two iterators are not equal.
-         * @todo niepotrzebny operator
-         *
-         * @param other The other iterator to compare with.
-         * @return True if the iterators are not equal, false otherwise.
-         * @date 2024-06-08
-         * @author Konrad Wnuk
-         */
-        bool operator!=(const iterator& other) const;
-
+        
         /**
          * Compares two iterators.
          *
@@ -329,6 +316,15 @@ namespace ksi
          * @author Konrad Wnuk
          */
         std::tuple<dataset, dataset> operator->() const;
+
+        /**
+         * Swaps the current datasets with the provided tuple of datasets.
+         *
+         * @param other Tuple of datasets to swap with.
+         * @date 2024-06-16
+         * @author Konrad Wnuk
+         */
+        void swap(std::tuple<dataset, dataset>& other);
 
     private:
         /**
@@ -434,17 +430,6 @@ namespace ksi
          * @author Konrad Wnuk
          */
         bool operator==(const const_iterator& other) const;
-
-        /**
-         * Checks if two const iterators are not equal.
-         * @todo niepotrzebny operator
-         *
-         * @param other The other const iterator to compare with.
-         * @return True if the const iterators are not equal, false otherwise.
-         * @date 2024-06-08
-         * @author Konrad Wnuk
-         */
-        bool operator!=(const const_iterator& other) const;
 
         /**
          * Compares two const iterators.

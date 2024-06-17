@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <ProjectGuid>{993AC922-70F0-4B15-959D-5D1654C518E9}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>.\source</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>.\source</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>.\source</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>.\source</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level3</WarningLevel>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level3</WarningLevel>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level3</WarningLevel>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level3</WarningLevel>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="source\auxiliary\clock.cpp" />
+    <ClCompile Include="source\auxiliary\colours.cpp" />
+    <ClCompile Include="source\auxiliary\confusion-matrix.cpp" />
+    <ClCompile Include="source\auxiliary\directory.cpp" />
+    <ClCompile Include="source\auxiliary\error-calculator.cpp" />
+    <ClCompile Include="source\auxiliary\error-MAE.cpp" />
+    <ClCompile Include="source\auxiliary\error-RMSE.cpp" />
+    <ClCompile Include="source\auxiliary\least-error-squares-regression.cpp" />
+    <ClCompile Include="source\auxiliary\mathematics.cpp" />
+    <ClCompile Include="source\auxiliary\multiclass_confusion_matrix.cpp" />
+    <ClCompile Include="source\auxiliary\numeric_function.cpp" />
+    <ClCompile Include="source\auxiliary\print.cpp" />
+    <ClCompile Include="source\auxiliary\roc.cpp" />
+    <ClCompile Include="source\auxiliary\tempus.cpp" />
+    <ClCompile Include="source\auxiliary\to_string.cpp" />
+    <ClCompile Include="source\auxiliary\utility-math.cpp" />
+    <ClCompile Include="source\auxiliary\utility-string.cpp" />
+    <ClCompile Include="source\auxiliary\vector-operators.cpp" />
+    <ClCompile Include="source\common\data-modifier-filter.cpp" />
+    <ClCompile Include="source\common\data-modifier-imputer-average.cpp" />
+    <ClCompile Include="source\common\data-modifier-imputer-knn-average.cpp" />
+    <ClCompile Include="source\common\data-modifier-imputer-knn-median.cpp" />
+    <ClCompile Include="source\common\data-modifier-imputer-knn.cpp" />
+    <ClCompile Include="source\common\data-modifier-imputer-median.cpp" />
+    <ClCompile Include="source\common\data-modifier-imputer-values-from-knn.cpp" />
+    <ClCompile Include="source\common\data-modifier-imputer.cpp" />
+    <ClCompile Include="source\common\data-modifier-marginaliser.cpp" />
+    <ClCompile Include="source\common\data-modifier-normaliser.cpp" />
+    <ClCompile Include="source\common\data-modifier-outlier-remove-sigma.cpp" />
+    <ClCompile Include="source\common\data-modifier-standardiser.cpp" />
+    <ClCompile Include="source\common\data-modifier.cpp" />
+    <ClCompile Include="source\common\dataset.cpp" />
+    <ClCompile Include="source\common\DatasetStatistics.cpp" />
+    <ClCompile Include="source\common\datum.cpp" />
+    <ClCompile Include="source\common\extensional-fuzzy-number-gaussian.cpp" />
+    <ClCompile Include="source\common\number.cpp" />
+    <ClCompile Include="source\common\result.cpp" />
+    <ClCompile Include="source\descriptors\descriptor-constant.cpp" />
+    <ClCompile Include="source\descriptors\descriptor-gaussian-subspace.cpp" />
+    <ClCompile Include="source\descriptors\descriptor-gaussian.cpp" />
+    <ClCompile Include="source\descriptors\descriptor-interval-gaussian-subspace.cpp" />
+    <ClCompile Include="source\descriptors\descriptor-interval-gaussian.cpp" />
+    <ClCompile Include="source\descriptors\descriptor-semitriangular.cpp" />
+    <ClCompile Include="source\descriptors\descriptor-sigmoidal.cpp" />
+    <ClCompile Include="source\descriptors\descriptor-singleton.cpp" />
+    <ClCompile Include="source\descriptors\descriptor-trapezoidal.cpp" />
+    <ClCompile Include="source\descriptors\descriptor-triangular.cpp" />
+    <ClCompile Include="source\descriptors\descriptor.cpp" />
+    <ClCompile Include="source\descriptors\descriptor_arctan.cpp" />
+    <ClCompile Include="source\descriptors\descriptor_tanh.cpp" />
+    <ClCompile Include="source\dissimilarities\dis-huber.cpp" />
+    <ClCompile Include="source\dissimilarities\dis-linear.cpp" />
+    <ClCompile Include="source\dissimilarities\dis-log-linear.cpp" />
+    <ClCompile Include="source\dissimilarities\dis-log.cpp" />
+    <ClCompile Include="source\dissimilarities\dis-sigmoidal-linear.cpp" />
+    <ClCompile Include="source\dissimilarities\dis-sigmoidal.cpp" />
+    <ClCompile Include="source\dissimilarities\dis-square.cpp" />
+    <ClCompile Include="source\dissimilarities\dissimilarity.cpp" />
+    <ClCompile Include="source\experiments\exp-000.cpp" />
+    <ClCompile Include="source\experiments\exp-001.cpp" />
+    <ClCompile Include="source\experiments\exp-002.cpp" />
+    <ClCompile Include="source\experiments\exp-003.cpp" />
+    <ClCompile Include="source\experiments\exp-004.cpp" />
+    <ClCompile Include="source\experiments\exp-005.cpp" />
+    <ClCompile Include="source\experiments\exp-lab.cpp" />
+    <ClCompile Include="source\experiments\experiment.cpp" />
+    <ClCompile Include="source\gan\discriminative_model.cpp" />
+    <ClCompile Include="source\gan\gan.cpp" />
+    <ClCompile Include="source\gan\generative_model.cpp" />
+    <ClCompile Include="source\granules\data_item.cpp" />
+    <ClCompile Include="source\granules\granule.cpp" />
+    <ClCompile Include="source\granules\set_of_cooperating_granules.cpp" />
+    <ClCompile Include="source\granules\set_of_granules.cpp" />
+    <ClCompile Include="source\granules\set_of_standalone_granules.cpp" />
+    <ClCompile Include="source\heuristics\ridders-gaussian-m.cpp" />
+    <ClCompile Include="source\heuristics\ridders-gaussian-s.cpp" />
+    <ClCompile Include="source\heuristics\ridders-test.cpp" />
+    <ClCompile Include="source\heuristics\ridders.cpp" />
+    <ClCompile Include="source\heuristics\simulated-annealing-gaussian.cpp" />
+    <ClCompile Include="source\heuristics\simulated-annealing.cpp" />
+    <ClCompile Include="source\implications\imp-fodor.cpp" />
+    <ClCompile Include="source\implications\imp-goedel.cpp" />
+    <ClCompile Include="source\implications\imp-goguen.cpp" />
+    <ClCompile Include="source\implications\imp-kleene-dienes.cpp" />
+    <ClCompile Include="source\implications\imp-lukasiewicz.cpp" />
+    <ClCompile Include="source\implications\imp-reichenbach.cpp" />
+    <ClCompile Include="source\implications\imp-rescher.cpp" />
+    <ClCompile Include="source\implications\imp-zadeh.cpp" />
+    <ClCompile Include="source\implications\implication.cpp" />
+    <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\metrics\metric-chebyshev.cpp" />
+    <ClCompile Include="source\metrics\metric-cosine.cpp" />
+    <ClCompile Include="source\metrics\metric-euclidean-incomplete.cpp" />
+    <ClCompile Include="source\metrics\metric-euclidean.cpp" />
+    <ClCompile Include="source\metrics\metric-manhattan.cpp" />
+    <ClCompile Include="source\metrics\metric-minkowski-weighted.cpp" />
+    <ClCompile Include="source\metrics\metric-minkowski.cpp" />
+    <ClCompile Include="source\metrics\metric.cpp" />
+    <ClCompile Include="source\metrics\metric_mahalanobis.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\abstract-annbfis.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\abstract-ma.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\abstract-tsk.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\abstract_fcom.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\annbfis.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\annbfis_prototype.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\consequence-CL.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\consequence-MA.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\consequence-TSK.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\consequence.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\fac_prototype.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\fac_prototype_mahalanobis.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\fac_prototype_mahalanobis_classification.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\fac_prototype_mahalanobis_regression.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\fac_prototype_minkowski.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\fac_prototype_minkowski_classification.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\fac_prototype_minkowski_regression.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\fcom-annbfis.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\fcom-ma.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\fcom-tsk.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\fubi-annbfis.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\granular_annbfis_classification.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\granular_annbfis_regression.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\granular_ma_classification.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\granular_ma_regression.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\granular_nfs.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\granular_nfs_classification.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\granular_nfs_regression.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\granular_subspace_annbfis_classification.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\granular_subspace_annbfis_regression.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\granular_tsk_classification.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\granular_tsk_regression.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\logicalrule.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\ma.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\neuro-fuzzy-system.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\nfs_prototype.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\premise.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\prototype.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\prototype_mahalanobis.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\prototype_mahalanobis_classification.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\prototype_mahalanobis_regression.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\prototype_minkowski.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\prototype_minkowski_classification.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\prototype_minkowski_regression.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\rule.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\rulebase.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\subspace-annbfis.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\subspace-premise.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\three_way_decision_nfs.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\tsk.cpp" />
+    <ClCompile Include="source\neuro-fuzzy\tsk_prototype.cpp" />
+    <ClCompile Include="source\owas\owa.cpp" />
+    <ClCompile Include="source\owas\plowa.cpp" />
+    <ClCompile Include="source\owas\sowa.cpp" />
+    <ClCompile Include="source\owas\uowa.cpp" />
+    <ClCompile Include="source\partitions\cluster.cpp" />
+    <ClCompile Include="source\partitions\dbscan.cpp" />
+    <ClCompile Include="source\partitions\fcm-conditional.cpp" />
+    <ClCompile Include="source\partitions\fcm-possibilistic.cpp" />
+    <ClCompile Include="source\partitions\fcm-T-metrics.cpp" />
+    <ClCompile Include="source\partitions\fcm-T.cpp" />
+    <ClCompile Include="source\partitions\fcm.cpp" />
+    <ClCompile Include="source\partitions\fcm_generic.cpp" />
+    <ClCompile Include="source\partitions\fcom.cpp" />
+    <ClCompile Include="source\partitions\fubi.cpp" />
+    <ClCompile Include="source\partitions\gk.cpp" />
+    <ClCompile Include="source\partitions\granular-dbscan.cpp" />
+    <ClCompile Include="source\partitions\grfcm.cpp" />
+    <ClCompile Include="source\partitions\partition.cpp" />
+    <ClCompile Include="source\partitions\partitioner-grid.cpp" />
+    <ClCompile Include="source\partitions\partitioner.cpp" />
+    <ClCompile Include="source\partitions\rfcm.cpp" />
+    <ClCompile Include="source\partitions\rfcom.cpp" />
+    <ClCompile Include="source\partitions\rsfcm.cpp" />
+    <ClCompile Include="source\partitions\sfcm.cpp" />
+    <ClCompile Include="source\readers\cross_validation_reader.cpp" />
+    <ClCompile Include="source\readers\cross_validation_model.cpp" />
+    <ClCompile Include="source\readers\multilabel_reader_complete.cpp" />
+    <ClCompile Include="source\readers\reader-complete-by-parts.cpp" />
+    <ClCompile Include="source\readers\reader-complete.cpp" />
+    <ClCompile Include="source\readers\reader-incomplete.cpp" />
+    <ClCompile Include="source\readers\reader.cpp" />
+    <ClCompile Include="source\readers\train_test_model.cpp" />
+    <ClCompile Include="source\readers\train_validation_test_model.cpp" />
+    <ClCompile Include="source\readers\weighted_reader_complete.cpp" />
+    <ClCompile Include="source\service\debug.cpp" />
+    <ClCompile Include="source\service\exception.cpp" />
+    <ClCompile Include="source\snorms\s-norm-drastic.cpp" />
+    <ClCompile Include="source\snorms\s-norm-einstein.cpp" />
+    <ClCompile Include="source\snorms\s-norm-fodor.cpp" />
+    <ClCompile Include="source\snorms\s-norm-lukasiewicz.cpp" />
+    <ClCompile Include="source\snorms\s-norm-max.cpp" />
+    <ClCompile Include="source\snorms\s-norm-sum.cpp" />
+    <ClCompile Include="source\snorms\s-norm.cpp" />
+    <ClCompile Include="source\tnorms\t-norm-dombi.cpp" />
+    <ClCompile Include="source\tnorms\t-norm-drastic.cpp" />
+    <ClCompile Include="source\tnorms\t-norm-dubois-prade.cpp" />
+    <ClCompile Include="source\tnorms\t-norm-einstein.cpp" />
+    <ClCompile Include="source\tnorms\t-norm-fodor.cpp" />
+    <ClCompile Include="source\tnorms\t-norm-frank.cpp" />
+    <ClCompile Include="source\tnorms\t-norm-hamacher.cpp" />
+    <ClCompile Include="source\tnorms\t-norm-lukasiewicz.cpp" />
+    <ClCompile Include="source\tnorms\t-norm-min.cpp" />
+    <ClCompile Include="source\tnorms\t-norm-parametrized.cpp" />
+    <ClCompile Include="source\tnorms\t-norm-product.cpp" />
+    <ClCompile Include="source\tnorms\t-norm-schweizer-sklar.cpp" />
+    <ClCompile Include="source\tnorms\t-norm-sugeno-weber.cpp" />
+    <ClCompile Include="source\tnorms\t-norm-yager.cpp" />
+    <ClCompile Include="source\tnorms\t-norm.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\auxiliary\clock.h" />
+    <ClInclude Include="source\auxiliary\colours.h" />
+    <ClInclude Include="source\auxiliary\confusion-matrix.h" />
+    <ClInclude Include="source\auxiliary\definitions.h" />
+    <ClInclude Include="source\auxiliary\directory.h" />
+    <ClInclude Include="source\auxiliary\error-calculator.h" />
+    <ClInclude Include="source\auxiliary\error-MAE.h" />
+    <ClInclude Include="source\auxiliary\error-RMSE.h" />
+    <ClInclude Include="source\auxiliary\least-error-squares-regression.h" />
+    <ClInclude Include="source\auxiliary\mathematics.h" />
+    <ClInclude Include="source\auxiliary\matrix.h" />
+    <ClInclude Include="source\auxiliary\multiclass_confusion_matrix.h" />
+    <ClInclude Include="source\auxiliary\numeric_function.h" />
+    <ClInclude Include="source\auxiliary\print.h" />
+    <ClInclude Include="source\auxiliary\roc.h" />
+    <ClInclude Include="source\auxiliary\tempus.h" />
+    <ClInclude Include="source\auxiliary\to_string.h" />
+    <ClInclude Include="source\auxiliary\utility-math.h" />
+    <ClInclude Include="source\auxiliary\utility-string.h" />
+    <ClInclude Include="source\auxiliary\vector-operators.h" />
+    <ClInclude Include="source\common\data-modifier-filter.h" />
+    <ClInclude Include="source\common\data-modifier-imputer-average.h" />
+    <ClInclude Include="source\common\data-modifier-imputer-knn-average.h" />
+    <ClInclude Include="source\common\data-modifier-imputer-knn-median.h" />
+    <ClInclude Include="source\common\data-modifier-imputer-knn.h" />
+    <ClInclude Include="source\common\data-modifier-imputer-median.h" />
+    <ClInclude Include="source\common\data-modifier-imputer-values-from-knn.h" />
+    <ClInclude Include="source\common\data-modifier-imputer.h" />
+    <ClInclude Include="source\common\data-modifier-marginaliser.h" />
+    <ClInclude Include="source\common\data-modifier-normaliser.h" />
+    <ClInclude Include="source\common\data-modifier-outlier-remove-sigma.h" />
+    <ClInclude Include="source\common\data-modifier-standardiser.h" />
+    <ClInclude Include="source\common\data-modifier.h" />
+    <ClInclude Include="source\common\dataset.h" />
+    <ClInclude Include="source\common\DatasetStatistics.h" />
+    <ClInclude Include="source\common\datum.h" />
+    <ClInclude Include="source\common\extensional-fuzzy-number-gaussian.h" />
+    <ClInclude Include="source\common\number.h" />
+    <ClInclude Include="source\common\result.h" />
+    <ClInclude Include="source\descriptors\descriptor-constant.h" />
+    <ClInclude Include="source\descriptors\descriptor-gaussian-subspace.h" />
+    <ClInclude Include="source\descriptors\descriptor-gaussian.h" />
+    <ClInclude Include="source\descriptors\descriptor-interval-gaussian-subspace.h" />
+    <ClInclude Include="source\descriptors\descriptor-interval-gaussian.h" />
+    <ClInclude Include="source\descriptors\descriptor-semitriangular.h" />
+    <ClInclude Include="source\descriptors\descriptor-sigmoidal.h" />
+    <ClInclude Include="source\descriptors\descriptor-singleton.h" />
+    <ClInclude Include="source\descriptors\descriptor-trapezoidal.h" />
+    <ClInclude Include="source\descriptors\descriptor-triangular.h" />
+    <ClInclude Include="source\descriptors\descriptor.h" />
+    <ClInclude Include="source\descriptors\DescriptorStatistics.h" />
+    <ClInclude Include="source\descriptors\descriptor_arctan.h" />
+    <ClInclude Include="source\descriptors\descriptor_tanh.h" />
+    <ClInclude Include="source\dissimilarities\dis-huber.h" />
+    <ClInclude Include="source\dissimilarities\dis-linear.h" />
+    <ClInclude Include="source\dissimilarities\dis-log-linear.h" />
+    <ClInclude Include="source\dissimilarities\dis-log.h" />
+    <ClInclude Include="source\dissimilarities\dis-sigmoidal-linear.h" />
+    <ClInclude Include="source\dissimilarities\dis-sigmoidal.h" />
+    <ClInclude Include="source\dissimilarities\dis-square.h" />
+    <ClInclude Include="source\dissimilarities\dissimilarity.h" />
+    <ClInclude Include="source\experiments\exp-000.h" />
+    <ClInclude Include="source\experiments\exp-001.h" />
+    <ClInclude Include="source\experiments\exp-002.h" />
+    <ClInclude Include="source\experiments\exp-003.h" />
+    <ClInclude Include="source\experiments\exp-004.h" />
+    <ClInclude Include="source\experiments\exp-005.h" />
+    <ClInclude Include="source\experiments\exp-lab.h" />
+    <ClInclude Include="source\experiments\experiment.h" />
+    <ClInclude Include="source\gan\discriminative_model.h" />
+    <ClInclude Include="source\gan\gan.h" />
+    <ClInclude Include="source\gan\generative_model.h" />
+    <ClInclude Include="source\granules\data_item.h" />
+    <ClInclude Include="source\granules\granule.h" />
+    <ClInclude Include="source\granules\set_of_cooperating_granules.h" />
+    <ClInclude Include="source\granules\set_of_granules.h" />
+    <ClInclude Include="source\granules\set_of_standalone_granules.h" />
+    <ClInclude Include="source\heuristics\ridders-gaussian-m.h" />
+    <ClInclude Include="source\heuristics\ridders-gaussian-s.h" />
+    <ClInclude Include="source\heuristics\ridders-test.h" />
+    <ClInclude Include="source\heuristics\ridders.h" />
+    <ClInclude Include="source\heuristics\simulated-annealing-gaussian.h" />
+    <ClInclude Include="source\heuristics\simulated-annealing.h" />
+    <ClInclude Include="source\implications\imp-fodor.h" />
+    <ClInclude Include="source\implications\imp-goedel.h" />
+    <ClInclude Include="source\implications\imp-goguen.h" />
+    <ClInclude Include="source\implications\imp-kleene-dienes.h" />
+    <ClInclude Include="source\implications\imp-lukasiewicz.h" />
+    <ClInclude Include="source\implications\imp-reichenbach.h" />
+    <ClInclude Include="source\implications\imp-rescher.h" />
+    <ClInclude Include="source\implications\imp-zadeh.h" />
+    <ClInclude Include="source\implications\implication.h" />
+    <ClInclude Include="source\metrics\metric-chebyshev.h" />
+    <ClInclude Include="source\metrics\metric-cosine.h" />
+    <ClInclude Include="source\metrics\metric-euclidean-incomplete.h" />
+    <ClInclude Include="source\metrics\metric-euclidean.h" />
+    <ClInclude Include="source\metrics\metric-manhattan.h" />
+    <ClInclude Include="source\metrics\metric-minkowski-weighted.h" />
+    <ClInclude Include="source\metrics\metric-minkowski.h" />
+    <ClInclude Include="source\metrics\metric.h" />
+    <ClInclude Include="source\metrics\metric_mahalanobis.h" />
+    <ClInclude Include="source\neuro-fuzzy\abstract-annbfis.h" />
+    <ClInclude Include="source\neuro-fuzzy\abstract-ma.h" />
+    <ClInclude Include="source\neuro-fuzzy\abstract-tsk.h" />
+    <ClInclude Include="source\neuro-fuzzy\abstract_fcom.h" />
+    <ClInclude Include="source\neuro-fuzzy\annbfis.h" />
+    <ClInclude Include="source\neuro-fuzzy\annbfis_prototype.h" />
+    <ClInclude Include="source\neuro-fuzzy\consequence-CL.h" />
+    <ClInclude Include="source\neuro-fuzzy\consequence-MA.h" />
+    <ClInclude Include="source\neuro-fuzzy\consequence-TSK.h" />
+    <ClInclude Include="source\neuro-fuzzy\consequence.h" />
+    <ClInclude Include="source\neuro-fuzzy\fac_prototype.h" />
+    <ClInclude Include="source\neuro-fuzzy\fac_prototype_mahalanobis.h" />
+    <ClInclude Include="source\neuro-fuzzy\fac_prototype_mahalanobis_classification.h" />
+    <ClInclude Include="source\neuro-fuzzy\fac_prototype_mahalanobis_regression.h" />
+    <ClInclude Include="source\neuro-fuzzy\fac_prototype_minkowski.h" />
+    <ClInclude Include="source\neuro-fuzzy\fac_prototype_minkowski_classification.h" />
+    <ClInclude Include="source\neuro-fuzzy\fac_prototype_minkowski_regression.h" />
+    <ClInclude Include="source\neuro-fuzzy\fcom-annbfis.h" />
+    <ClInclude Include="source\neuro-fuzzy\fcom-ma.h" />
+    <ClInclude Include="source\neuro-fuzzy\fcom-tsk.h" />
+    <ClInclude Include="source\neuro-fuzzy\fubi-annbfis.h" />
+    <ClInclude Include="source\neuro-fuzzy\granular_annbfis_classification.h" />
+    <ClInclude Include="source\neuro-fuzzy\granular_annbfis_regression.h" />
+    <ClInclude Include="source\neuro-fuzzy\granular_ma_classification.h" />
+    <ClInclude Include="source\neuro-fuzzy\granular_ma_regression.h" />
+    <ClInclude Include="source\neuro-fuzzy\granular_nfs.h" />
+    <ClInclude Include="source\neuro-fuzzy\granular_nfs_classification.h" />
+    <ClInclude Include="source\neuro-fuzzy\granular_nfs_regression.h" />
+    <ClInclude Include="source\neuro-fuzzy\granular_subspace_annbfis_classification.h" />
+    <ClInclude Include="source\neuro-fuzzy\granular_subspace_annbfis_regression.h" />
+    <ClInclude Include="source\neuro-fuzzy\granular_tsk_classification.h" />
+    <ClInclude Include="source\neuro-fuzzy\granular_tsk_regression.h" />
+    <ClInclude Include="source\neuro-fuzzy\logicalrule.h" />
+    <ClInclude Include="source\neuro-fuzzy\ma.h" />
+    <ClInclude Include="source\neuro-fuzzy\neuro-fuzzy-system.h" />
+    <ClInclude Include="source\neuro-fuzzy\nfs_prototype.h" />
+    <ClInclude Include="source\neuro-fuzzy\premise.h" />
+    <ClInclude Include="source\neuro-fuzzy\prototype.h" />
+    <ClInclude Include="source\neuro-fuzzy\prototype_mahalanobis.h" />
+    <ClInclude Include="source\neuro-fuzzy\prototype_mahalanobis_classification.h" />
+    <ClInclude Include="source\neuro-fuzzy\prototype_mahalanobis_regression.h" />
+    <ClInclude Include="source\neuro-fuzzy\prototype_minkowski.h" />
+    <ClInclude Include="source\neuro-fuzzy\prototype_minkowski_classification.h" />
+    <ClInclude Include="source\neuro-fuzzy\prototype_minkowski_regression.h" />
+    <ClInclude Include="source\neuro-fuzzy\rule.h" />
+    <ClInclude Include="source\neuro-fuzzy\rulebase.h" />
+    <ClInclude Include="source\neuro-fuzzy\subspace-annbfis.h" />
+    <ClInclude Include="source\neuro-fuzzy\subspace-premise.h" />
+    <ClInclude Include="source\neuro-fuzzy\three_way_decision_nfs.h" />
+    <ClInclude Include="source\neuro-fuzzy\tsk.h" />
+    <ClInclude Include="source\neuro-fuzzy\tsk_prototype.h" />
+    <ClInclude Include="source\owas\owa.h" />
+    <ClInclude Include="source\owas\plowa.h" />
+    <ClInclude Include="source\owas\sowa.h" />
+    <ClInclude Include="source\owas\uowa.h" />
+    <ClInclude Include="source\partitions\cluster.h" />
+    <ClInclude Include="source\partitions\dbscan.h" />
+    <ClInclude Include="source\partitions\fcm-conditional.h" />
+    <ClInclude Include="source\partitions\fcm-possibilistic.h" />
+    <ClInclude Include="source\partitions\fcm-T-metrics.h" />
+    <ClInclude Include="source\partitions\fcm-T.h" />
+    <ClInclude Include="source\partitions\fcm.h" />
+    <ClInclude Include="source\partitions\fcm_generic.h" />
+    <ClInclude Include="source\partitions\fcom.h" />
+    <ClInclude Include="source\partitions\fubi.h" />
+    <ClInclude Include="source\partitions\gk.h" />
+    <ClInclude Include="source\partitions\granular-dbscan.h" />
+    <ClInclude Include="source\partitions\grfcm.h" />
+    <ClInclude Include="source\partitions\partition.h" />
+    <ClInclude Include="source\partitions\partitioner-grid.h" />
+    <ClInclude Include="source\partitions\partitioner.h" />
+    <ClInclude Include="source\partitions\rfcm.h" />
+    <ClInclude Include="source\partitions\rfcom.h" />
+    <ClInclude Include="source\partitions\rsfcm.h" />
+    <ClInclude Include="source\partitions\sfcm.h" />
+    <ClInclude Include="source\readers\cross_validation_reader.h" />
+    <ClInclude Include="source\readers\cross_validation_model.h" />
+    <ClInclude Include="source\readers\multilabel_reader_complete.h" />
+    <ClInclude Include="source\readers\reader-complete-by-parts.h" />
+    <ClInclude Include="source\readers\reader-complete.h" />
+    <ClInclude Include="source\readers\reader-incomplete.h" />
+    <ClInclude Include="source\readers\reader.h" />
+    <ClInclude Include="source\readers\train_test_model.h" />
+    <ClInclude Include="source\readers\train_validation_test_model.h" />
+    <ClInclude Include="source\readers\weighted_reader_complete.h" />
+    <ClInclude Include="source\service\debug.h" />
+    <ClInclude Include="source\service\exception.h" />
+    <ClInclude Include="source\snorms\s-norm-drastic.h" />
+    <ClInclude Include="source\snorms\s-norm-einstein.h" />
+    <ClInclude Include="source\snorms\s-norm-fodor.h" />
+    <ClInclude Include="source\snorms\s-norm-lukasiewicz.h" />
+    <ClInclude Include="source\snorms\s-norm-max.h" />
+    <ClInclude Include="source\snorms\s-norm-sum.h" />
+    <ClInclude Include="source\snorms\s-norm.h" />
+    <ClInclude Include="source\tnorms\t-norm-dombi.h" />
+    <ClInclude Include="source\tnorms\t-norm-drastic.h" />
+    <ClInclude Include="source\tnorms\t-norm-dubois-prade.h" />
+    <ClInclude Include="source\tnorms\t-norm-einstein.h" />
+    <ClInclude Include="source\tnorms\t-norm-fodor.h" />
+    <ClInclude Include="source\tnorms\t-norm-frank.h" />
+    <ClInclude Include="source\tnorms\t-norm-hamacher.h" />
+    <ClInclude Include="source\tnorms\t-norm-lukasiewicz.h" />
+    <ClInclude Include="source\tnorms\t-norm-min.h" />
+    <ClInclude Include="source\tnorms\t-norm-parametrized.h" />
+    <ClInclude Include="source\tnorms\t-norm-product.h" />
+    <ClInclude Include="source\tnorms\t-norm-schweizer-sklar.h" />
+    <ClInclude Include="source\tnorms\t-norm-sugeno-weber.h" />
+    <ClInclude Include="source\tnorms\t-norm-yager.h" />
+    <ClInclude Include="source\tnorms\t-norm.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="data\exp-001\complete.data" />
+    <None Include="data\exp-001\incomplete.data" />
+    <None Include="data\exp-001\outliers.data" />
+    <None Include="data\exp-002\dbscan.data" />
+    <None Include="data\exp-002\fcom-10.data" />
+    <None Include="data\exp-002\fcom.data" />
+    <None Include="data\exp-002\pedrycz.data" />
+    <None Include="data\exp-002\possibilistic.data" />
+    <None Include="data\exp-002\sub-135-245.data" />
+    <None Include="data\exp-002\two-crossed-oblique.data" />
+    <None Include="data\exp-002\two-crossed.data" />
+    <None Include="data\exp-002\two-parallel-oblique.data" />
+    <None Include="data\exp-002\two-parallel.data" />
+    <None Include="data\exp-002\two-spherical.data" />
+    <None Include="data\exp-003\rfcom-10-5.data" />
+    <None Include="data\exp-003\sub-135-245-m10.data" />
+    <None Include="data\exp-005\classification\haberman\haberman.test" />
+    <None Include="data\exp-005\classification\haberman\haberman.train" />
+    <None Include="data\exp-005\regression\leukocytes\leukocytes.test" />
+    <None Include="data\exp-005\regression\leukocytes\leukocytes.train" />
+    <None Include="source\common\CTuple.cpp-obsolete" />
+    <None Include="source\common\datum-complete.cpp-obsolete" />
+    <None Include="source\common\datum-incomplete.cpp-obsolete" />
+    <None Include="source\common\datum-interval.cpp-obsolete" />
+    <None Include="source\partitions\cluster-gaussian.cpp-obsolete" />
+    <None Include="source\partitions\cluster-gaussian.h-obsolete" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\exp-lab\test.txt" />
+    <Text Include="data\exp-lab\train.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -120,11 +120,11 @@ namespace ksi
 		 * Reads data from a specified directory.
 		 *
 		 * @param directory The directory to read the data from.
-		 * @param extension_pattern The pattern to match the file extensions. Defaults to ".data".
+		 * @param file_regex_pattern The pattern to match the files. Defaults to ".*\\.data$".
 		 * @date 2024-05-30
 		 * @author Konrad Wnuk
 		 */
-        virtual void read_directory(const std::filesystem::path& directory, const std::filesystem::path& extension_pattern = ".data") = 0;
+        virtual void read_directory(const std::filesystem::path& directory, const std::string& file_regex_pattern = ".*\\.data$") = 0;
 
         /**
          * Reads data from a file and splits it into subsets.
