@@ -73,6 +73,7 @@ void test_cross_validation_models()
          std::cerr << "!!!! WYJATEK !!!!" << std::endl;
       }
    }
+   return ;
    {
       std::cout << std::endl << "3. Testing read directory method" << std::endl;
       std::cout << "====================================================" << std::endl;
@@ -304,7 +305,7 @@ void test_cross_validation_models()
       {
          std::cout << "--------------------------" << std::endl;
 
-           std::tuple<ksi::dataset, ksi::dataset> t_ds;
+           std::tuple<ksi::dataset, ksi::dataset, ksi::dataset> t_ds;
            (*it).swap(t_ds);    // kompiluje się 
       	  // it->swap(t_ds);   /// @todo niekompiluje się
 
