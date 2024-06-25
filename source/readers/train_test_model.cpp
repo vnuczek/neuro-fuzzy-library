@@ -255,12 +255,6 @@ std::tuple<ksi::dataset, ksi::dataset> ksi::train_test_model::iterator::operator
     return std::make_tuple(train_dataset, *test_iterator);
 }
 
-void ksi::train_test_model::iterator::swap(std::tuple<dataset, dataset>& other)
-{
-    std::swap(std::get<0>(other), train_dataset);
-    std::swap(std::get<1>(other), *test_iterator);
-}
-
 void ksi::train_test_model::iterator::initialize_test_dataset()
 {
     train_dataset = ksi::dataset();

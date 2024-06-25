@@ -5,20 +5,11 @@
 #include <vector>
 #include <filesystem>
 
-#include "./experiments/exp-001.h"
-#include "./experiments/exp-002.h"
-#include "./experiments/exp-003.h"
-#include "./experiments/exp-004.h"
-#include "./experiments/exp-005.h"
-#include "./experiments/exp-lab.h"
-
 #include "./readers/train_test_model.h"
 #include "./readers/train_validation_test_model.h"
 #include "./readers/reader-complete.h"
-#include "./readers/reader-incomplete.h"
 
 #include "./common/data-modifier-normaliser.h"
-#include "auxiliary/directory.h"
 #include "common/dataset.h"
 
 void test_cross_validation_models() 
@@ -26,7 +17,7 @@ void test_cross_validation_models()
    std::cout << "Testing cross validation models methods" << std::endl;
    std::cout << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
 
-   /*{
+   {
       std::cout << std::endl << "1. Test of modification of a returned dataset" << std::endl;
       std::cout << "====================================================" << std::endl;
 
@@ -50,7 +41,7 @@ void test_cross_validation_models()
          debug(test);
          ++licznik;
       }
-   }*/
+   }
 
    {
       std::cout << std::endl << "2. Testing read file and save methods" << std::endl;
@@ -91,7 +82,7 @@ void test_cross_validation_models()
       }
    }
 
-   /*{
+   {
        std::cout << std::endl << "4. Testing copying for Training and Test model" << std::endl;
        std::cout << "====================================================" << std::endl;
 
@@ -143,9 +134,9 @@ void test_cross_validation_models()
            ++licznik;
        }
 
-   }*/
+   }
 
-   /*{
+   {
        std::cout << std::endl << "4. Testing copying for Training, Validation and Test model" << std::endl;
        std::cout << "====================================================" << std::endl;
 
@@ -200,139 +191,133 @@ void test_cross_validation_models()
            ++licznik;
        }
 
-   }*/
+   }
 
-   //{
-   //   std::cout << std::endl << "6. Testing iterator for Training and Test model" << std::endl;
-   //   std::cout              << "====================================================" << std::endl;
+   {
+      std::cout << std::endl << "6. Testing iterator for Training and Test model" << std::endl;
+      std::cout              << "====================================================" << std::endl;
 
-   //   ksi::reader_complete reader;
-   //   ksi::train_test_model tt(reader);
-   //   const std::filesystem::path file{ "../data/exp-lab/train.txt" };
-   //   tt.read_and_split_file(file, 5);
+      ksi::reader_complete reader;
+      ksi::train_test_model tt(reader);
+      const std::filesystem::path file{ "../data/exp-lab/train.txt" };
+      tt.read_and_split_file(file, 5);
 
-   //   int licznik = 1;
-   //   for (ksi::train_test_model::iterator it = tt.begin(); it != tt.end(); ++it)
-   //      //for (ksi::train_test_model::const_iterator it = tt.cbegin(); it != tt.cend(); ++it)
-   //   {
-   //      std::cout << "--------------------------" << std::endl;
+      int licznik = 1;
+      for (ksi::train_test_model::iterator it = tt.begin(); it != tt.end(); ++it)
+         //for (ksi::train_test_model::const_iterator it = tt.cbegin(); it != tt.cend(); ++it)
+      {
+         std::cout << "--------------------------" << std::endl;
 
-   //      debug(licznik);
-   //      debug(std::get<0>(*it).size()); // train
-   //      debug(std::get<0>(*it));
-   //      debug(std::get<1>(*it).size()); // test
-   //      debug(std::get<1>(*it));
-   //      ++licznik;
-   //   }
-   //}
+         debug(licznik);
+         debug(std::get<0>(*it).size()); // train
+         debug(std::get<0>(*it));
+         debug(std::get<1>(*it).size()); // test
+         debug(std::get<1>(*it));
+         ++licznik;
+      }
+   }
 
-   //{
-   //   std::cout << std::endl << "7. Testing iterator for Training, Validation and Test model" << std::endl;
-   //   std::cout << "====================================================" << std::endl;
+   {
+      std::cout << std::endl << "7. Testing iterator for Training, Validation and Test model" << std::endl;
+      std::cout << "====================================================" << std::endl;
 
-   //   ksi::reader_complete reader;
-   //   ksi::train_validation_test_model tvt(reader);
-   //   const std::filesystem::path file{ "../data/exp-lab/train.txt" };
-   //   tvt.read_and_split_file(file, 5);
+      ksi::reader_complete reader;
+      ksi::train_validation_test_model tvt(reader);
+      const std::filesystem::path file{ "../data/exp-lab/train.txt" };
+      tvt.read_and_split_file(file, 5);
 
-   //   int licznik = 1;
-   //   for (ksi::train_validation_test_model::iterator it = tvt.begin(); it != tvt.end(); ++it)
-   //      //for (ksi::train_validation_test_model::const_iterator it = tvt.cbegin(); it != tvt.cend(); ++it)
-   //   {
-   //      std::cout << "--------------------------" << std::endl;
+      int licznik = 1;
+      for (ksi::train_validation_test_model::iterator it = tvt.begin(); it != tvt.end(); ++it)
+         //for (ksi::train_validation_test_model::const_iterator it = tvt.cbegin(); it != tvt.cend(); ++it)
+      {
+         std::cout << "--------------------------" << std::endl;
 
-   //      // std::tuple<ksi::dataset, ksi::dataset> t_ds;
-   //   	 // it->swap(t_ds);
+         debug(licznik);
+         debug(std::get<0>(*it).size()); // train
+         debug(std::get<0>(*it));
+         debug(std::get<1>(*it).size()); // validation
+         debug(std::get<1>(*it));
+         debug(std::get<2>(*it).size()); // test
+         debug(std::get<2>(*it));
+         ++licznik;
+      }
+   }
 
-   //      debug(licznik);
-   //      debug(std::get<0>(*it).size()); // train
-   //      debug(std::get<0>(*it));
-   //      debug(std::get<1>(*it).size()); // validation
-   //      debug(std::get<1>(*it));
-   //      debug(std::get<2>(*it).size()); // test
-   //      debug(std::get<2>(*it));
-   //      ++licznik;
-   //   }
-   //}
+   {
+      std::cout << std::endl << "8. Testing iterator for Training, Validation and Test model" << std::endl;
+      std::cout << "====================================================" << std::endl;
 
-   //{
-   //   std::cout << std::endl << "8. Testing iterator for Training, Validation and Test model" << std::endl;
-   //   std::cout << "====================================================" << std::endl;
+      ksi::reader_complete reader;
+      ksi::train_validation_test_model tvt(reader);
+      const std::filesystem::path file{ "../data/exp-lab/train.txt" };
+      tvt.read_and_split_file(file, 5);
 
-   //   ksi::reader_complete reader;
-   //   ksi::train_validation_test_model tvt(reader);
-   //   const std::filesystem::path file{ "../data/exp-lab/train.txt" };
-   //   tvt.read_and_split_file(file, 5);
+      int licznik = 1;
+      for (ksi::train_validation_test_model::iterator it = tvt.begin(); it != tvt.end(); ++it)
+         //for (ksi::train_validation_test_model::const_iterator it = tvt.cbegin(); it != tvt.cend(); ++it)
+      {
+         std::cout << "--------------------------" << std::endl;
 
-   //   int licznik = 1;
-   //   for (ksi::train_validation_test_model::iterator it = tvt.begin(); it != tvt.end(); ++it)
-   //      //for (ksi::train_validation_test_model::const_iterator it = tvt.cbegin(); it != tvt.cend(); ++it)
-   //   {
-   //      std::cout << "--------------------------" << std::endl;
+         debug(licznik);
+         debug(std::get<0>(*it).size()); // train
+         debug(std::get<0>(*it));
+         debug(std::get<1>(*it).size()); // validation
+         debug(std::get<1>(*it));
+         debug(std::get<2>(*it).size()); // test
+         debug(std::get<2>(*it));
+         ++licznik;
+      }
+   }
 
-   //      // std::tuple<ksi::dataset, ksi::dataset, ksi::dataset> t_ds;
-   //      // it->swap(t_ds);
+   {
+      std::cout << std::endl << "9. Testing for each loop for Training and Test model" << std::endl;
+      std::cout << "====================================================" << std::endl;
 
-   //      debug(licznik);
-   //      debug(std::get<0>(*it).size()); // train
-   //      debug(std::get<0>(*it));
-   //      debug(std::get<1>(*it).size()); // validation
-   //      debug(std::get<1>(*it));
-   //      debug(std::get<2>(*it).size()); // test
-   //      debug(std::get<2>(*it));
-   //      ++licznik;
-   //   }
-   //}
+      ksi::reader_complete reader;
+      ksi::train_test_model tt(reader);
+      const std::filesystem::path file{ "../data/exp-lab/train.txt" };
+      tt.read_and_split_file(file, 5);
 
-   //{
-   //   std::cout << std::endl << "9. Testing for each loop for Training and Test model" << std::endl;
-   //   std::cout << "====================================================" << std::endl;
+      int licznik = 1;
+      for (auto [train, test] : tt)
+         //for (const auto& [train, valid, test] : tt)
+      {
+         std::cout << "--------------------------" << std::endl;
 
-   //   ksi::reader_complete reader;
-   //   ksi::train_test_model tt(reader);
-   //   const std::filesystem::path file{ "../data/exp-lab/train.txt" };
-   //   tt.read_and_split_file(file, 5);
+         debug(licznik);
+         debug(train.size());
+         debug(train);
+         debug(test.size());
+         debug(test);
+         ++licznik;
+      }
+   }
 
-   //   int licznik = 1;
-   //   for (auto [train, test] : tt)
-   //      //for (const auto& [train, valid, test] : tt)
-   //   {
-   //      std::cout << "--------------------------" << std::endl;
+   {
+      std::cout << std::endl << "10. Testing for each loop for Training, Validation and Test model" << std::endl;
+      std::cout << "====================================================" << std::endl;
 
-   //      debug(licznik);
-   //      debug(train.size());
-   //      debug(train);
-   //      debug(test.size());
-   //      debug(test);
-   //      ++licznik;
-   //   }
-   //}
+      ksi::reader_complete reader;
+      ksi::train_validation_test_model tvt(reader);
+      const std::filesystem::path file{ "../data/exp-lab/train.txt" };
+      tvt.read_and_split_file(file, 5);
 
-   //{
-   //   std::cout << std::endl << "10. Testing for each loop for Training, Validation and Test model" << std::endl;
-   //   std::cout << "====================================================" << std::endl;
+      int licznik = 1;
+      for (auto [train, valid, test] : tvt)
+         // for (const auto& [train, valid, test] : tvt)
+      {
+         std::cout << "--------------------------" << std::endl;
 
-   //   ksi::reader_complete reader;
-   //   ksi::train_validation_test_model tvt(reader);
-   //   const std::filesystem::path file{ "../data/exp-lab/train.txt" };
-   //   tvt.read_and_split_file(file, 5);
-
-   //   int licznik = 1;
-   //   for (auto [train, valid, test] : tvt)
-   //      // for (const auto& [train, valid, test] : tvt)
-   //   {
-   //      std::cout << "--------------------------" << std::endl;
-
-   //      debug(licznik);
-   //      debug(train.size());
-   //      debug(train);
-   //      debug(valid.size());
-   //      debug(valid);
-   //      debug(test.size());
-   //      debug(test);
-   //      ++licznik;
-   //   }
-   //}
+         debug(licznik);
+         debug(train.size());
+         debug(train);
+         debug(valid.size());
+         debug(valid);
+         debug(test.size());
+         debug(test);
+         ++licznik;
+      }
+   }
 
    return;
 }
@@ -340,72 +325,8 @@ void test_cross_validation_models()
  
 int main (int argc, char ** params)
 {
-    if (argc == 1)
-    {
-        std::cout << "No experiment chosen." << std::endl;
-        std::cout << "Provide number of an experiment as an only parameter, eg." << std::endl;
-        std::cout << params[0] << " 2" << std::endl;
-        std::cout << "to run the 2nd experiment." << std::endl;
-    }   
-    else 
-    {
-        int number = atoi(params[1]);
-        try
-        {
-            switch(number)
-            {
-               case 1: { 
-                          ksi::exp_001 experiment;
-                          experiment.execute();
-                          break;
-                       }
-               case 2: { 
-                          ksi::exp_002 experiment;
-                          experiment.execute();
-                          break;
-                       }
-               case 3: { 
-                          ksi::exp_003 experiment;
-                          experiment.execute();
-                          break;
-                       }
-               case 4: { 
-                          ksi::exp_004 experiment;
-                          experiment.execute();
-                          break;
-                       }
-               case 5: { 
-                          ksi::exp_005 experiment;
-                          experiment.execute();
-                          break;
-                       }
-               case 0: { 
-                          ksi::exp_lab experiment;
-                          experiment.execute();
-                          break;
-                       }
-               case 9: {
-                          test_cross_validation_models();
-                          break;
-                       }
-               default: {
-                           std::cout << "unknown experiment" << std::endl;
-                        }
-            }
-        }
-        catch (std::exception & w)
-        {
-            std::cout << w.what() << std::endl;
-        }
-        catch (std::string & w)
-        {
-            std::cout << w << std::endl;
-        }
-        catch (...)
-        {
-            std::cout << "unknown exception" << std::endl;
-        }
-    } 
+    test_cross_validation_models();
+    
    return 0;
 } 
 
