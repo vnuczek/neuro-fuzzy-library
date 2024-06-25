@@ -250,11 +250,6 @@ std::tuple<ksi::dataset, ksi::dataset> ksi::train_test_model::iterator::operator
     return std::make_tuple(train_dataset, *test_iterator);
 }
 
-std::tuple<ksi::dataset, ksi::dataset> ksi::train_test_model::iterator::operator->() const
-{
-    return std::make_tuple(train_dataset, *test_iterator);
-}
-
 void ksi::train_test_model::iterator::initialize_test_dataset()
 {
     train_dataset = ksi::dataset();
@@ -327,11 +322,6 @@ std::strong_ordering ksi::train_test_model::const_iterator::operator<=>(const ks
 }
 
 std::tuple<const ksi::dataset&, const ksi::dataset&> ksi::train_test_model::const_iterator::operator*() const
-{
-    return std::make_tuple(std::ref(train_dataset), std::ref(*test_iterator));
-}
-
-std::tuple<const ksi::dataset&, const ksi::dataset&> ksi::train_test_model::const_iterator::operator->() const
 {
     return std::make_tuple(std::ref(train_dataset), std::ref(*test_iterator));
 }
