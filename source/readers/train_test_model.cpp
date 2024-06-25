@@ -4,6 +4,8 @@
 #include "../service/exception.h"
 #include "../auxiliary/to_string.h"
 
+#include <filesystem>
+#include <system_error>
 #include <thread>
 #include <fstream>
 #include <ranges>
@@ -77,14 +79,12 @@ void ksi::train_test_model::save(const std::filesystem::path& directory, const s
     try  
     {
         std::filesystem::create_directories(directory);
-
         const auto num_files = datasets.size();
         const auto num_digits = std::to_string(num_files).length();
 
         for (auto i = 0; i < datasets.size(); ++i)
         {
             auto file_path = directory / (filename.string() + "_" + ksi::to_string(i, num_digits) + extension.string());
-
             if (std::filesystem::exists(file_path) && !overwrite)
             {
                 throw ksi::exception("File " + file_path.string() + " already exists. To overwrite, set the overwrite parameter to true.");

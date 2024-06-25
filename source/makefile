@@ -46,8 +46,8 @@ libasan=
 __ : $(release_folder) $(release_folder)/main
 	./$(release_folder)/main
 	
-8 :  $(release_folder) $(release_folder)/main
-	./$(release_folder)/main  8  
+9 :  $(release_folder) $(release_folder)/main
+	./$(release_folder)/main  9  
 		
 1 :  $(release_folder) $(release_folder)/main
 	./$(release_folder)/main  1  
