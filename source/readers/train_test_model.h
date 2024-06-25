@@ -208,8 +208,7 @@ namespace ksi
         /** Iterator pointing to the current test dataset */
         std::vector<dataset>::iterator test_iterator;
 
-        /** Combined train dataset 
-         * @todo Co to znaczy? */
+        /** Combined train dataset of all the datasets without testing dataset  */
         dataset train_dataset;
 
     public:
@@ -333,7 +332,7 @@ namespace ksi
         /** Const iterator pointing to the current test dataset */
         std::vector<dataset>::const_iterator test_iterator;
 
-        /** Combined train dataset */
+        /** Combined train dataset of all the datasets without testing dataset  */
         dataset train_dataset;
 
     public:

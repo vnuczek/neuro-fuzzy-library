@@ -300,9 +300,6 @@ void test_cross_validation_models()
         {
             std::cout << "--------------------------" << std::endl;
 
-            std::tuple<ksi::dataset, ksi::dataset, ksi::dataset> t_ds;
-            (*it).swap(t_ds);    // kompiluje siê 
-
             debug(licznik);
             debug(std::get<0>(*it).size());  // train
             debug(std::get<0>(*it));
@@ -328,9 +325,6 @@ void test_cross_validation_models()
     //      //for (ksi::train_validation_test_model::const_iterator it = tvt.cbegin(); it != tvt.cend(); ++it)
     //   {
     //      std::cout << "--------------------------" << std::endl;
-
-    //      // std::tuple<ksi::dataset, ksi::dataset, ksi::dataset> t_ds;
-    //      // it->swap(t_ds);
 
     //      debug(licznik);
     //      debug(std::get<0>(*it).size()); // train
