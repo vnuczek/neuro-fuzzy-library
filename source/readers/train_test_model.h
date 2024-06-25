@@ -308,24 +308,6 @@ namespace ksi
          */
         std::tuple<dataset, dataset> operator*() const;
 
-        /**
-         * Dereferences the iterator to access the current train_test_model element.
-         *
-         * @return A tuple containing the combined training dataset and the current test dataset.
-         * @date 2024-06-05
-         * @author Konrad Wnuk
-         */
-        std::tuple<dataset, dataset> operator->() const;
-
-        /**
-         * Swaps the current datasets with the provided tuple of datasets.
-         *
-         * @param other Tuple of datasets to swap with.
-         * @date 2024-06-16
-         * @author Konrad Wnuk
-         */
-        void swap(std::tuple<dataset, dataset>& other);
-
     private:
         /**
 		 * Initializes the train dataset by combining all datasets except the current test dataset.
@@ -449,15 +431,6 @@ namespace ksi
          * @author Konrad Wnuk
          */
         std::tuple<const dataset&, const dataset&> operator*() const;
-
-        /**
-         * Dereferences the const iterator to access the current train_test_model element.
-         *
-         * @return A tuple containing the combined training dataset and the current test dataset.
-         * @date 2024-06-05
-         * @author Konrad Wnuk
-         */
-        std::tuple<const dataset&, const dataset&> operator->() const;
 
     private:
         /**
