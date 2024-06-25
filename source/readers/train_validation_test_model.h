@@ -228,10 +228,10 @@ namespace ksi
         /** Const iterator pointing to the current test dataset */
         std::vector<dataset>::iterator test_iterator;
 
-        /** Combined validation dataset */
+        /** Combined validation dataset of with n datasets */
         dataset validation_dataset;
 
-        /** Combined train dataset */
+        /** Combined train dataset of all the datasets without validation datasets and testing dataset  */
         dataset train_dataset;
 
     public:
@@ -356,10 +356,10 @@ namespace ksi
         /** Const iterator pointing to the current test dataset */
         std::vector<dataset>::const_iterator test_iterator;
 
-        /** Combined validation dataset */
+        /** Combined validation dataset of with n datasets */
         dataset validation_dataset;
 
-        /** Combined train dataset */
+        /** Combined train dataset of all the datasets without validation datasets and testing dataset  */
         dataset train_dataset;
 
     public:
