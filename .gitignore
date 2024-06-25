@@ -40,3 +40,5 @@ source/results/
 /results/exp-005
 /doxygen/html
 /.vs
+# Temporary VS file
+*.pdb
