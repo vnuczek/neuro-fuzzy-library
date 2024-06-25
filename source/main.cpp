@@ -302,7 +302,6 @@ void test_cross_validation_models()
 
            std::tuple<ksi::dataset, ksi::dataset, ksi::dataset> t_ds;
            (*it).swap(t_ds);    // kompiluje się 
-      	  // it->swap(t_ds);   /// @todo niekompiluje się
 
          debug(licznik);
          debug(std::get<0>(*it).size());  // train
