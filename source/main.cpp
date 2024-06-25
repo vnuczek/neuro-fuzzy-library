@@ -57,6 +57,7 @@ void test_cross_validation_models()
          std::cout << std::endl << "2. Testing read file and save methods" << std::endl;
          std::cout << "====================================================" << std::endl;
 
+         const bool overwrite { true };
          ksi::reader_complete reader;
          ksi::train_test_model tt(reader);
          const std::string file{ "../data/exp-lab/train.txt" };
@@ -65,16 +66,10 @@ void test_cross_validation_models()
          const std::filesystem::path directory {"./split_data"};
          // std::filesystem::remove_all (directory);
 
-         tt.save (directory, "aaaaaadataset", ".txt", false); /// @todo W implementacji tu się pojawia wyjątek, gdy próbujemy nadpisać istniejące dane. Ale gdy się to uruchomi dwa razy, to wyjątek się nie pojawia. 
-         tt.save (directory, "dataset", ".data", false); /// < to ma być
+         tt.save (directory, "dataset", ".data", overwrite); 
       }
-      catch (...)
-      {
-         std::cerr << "!!!! WYJATEK !!!!" << std::endl;
-         throw;
-      }
+      CATCH;
    }
-   return ;
    {
       std::cout << std::endl << "3. Testing read directory method" << std::endl;
       std::cout << "====================================================" << std::endl;
@@ -85,7 +80,6 @@ void test_cross_validation_models()
       tt.read_directory(directory);
       // tt.read_directory(directory, "[01].data");
       
-      /// @todo Poniższa pętla niczego nie wypisuje. Tak jakby nie wczytały się żadne dane, a katalog nie jest pusty. 
       int licznik = 1;
       for (auto [train, test] : tt)
       {
@@ -98,7 +92,7 @@ void test_cross_validation_models()
          debug(test);
          ++licznik;
       }
-      debug(licznik); /// @todo licznik == 1, czyli pętla się nie wykonuje.
+      debug(licznik); 
    }
    return;
    {
