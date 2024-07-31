@@ -17,7 +17,7 @@ namespace ksi
    protected:
       /** value of the number */
       double value;
-      /** upper value of the inteval number */
+      /** upper value of the interval number */
       double upper_value;
       /** true, if interval number */
       bool _isInterval;
