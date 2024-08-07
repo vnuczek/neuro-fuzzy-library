@@ -413,3 +413,25 @@ void ksi::datum::save_print(std::ostream& os) const
     os << std::endl;
 }
 
+void ksi::datum::is_complete()
+{
+    complete_flag = true;
+
+    std:size_t i = 0;
+    std:size_t attribute_size = attributes.size();
+
+    while (complete_flag || (i != attribute_size)) {
+        complete_flag = is_complete_attribute(i);
+    }
+}
+
+bool ksi::datum::is_complete_attribute(std::size_t attribute_id)
+{
+    return false;
+}
+
+bool ksi::datum::get_complete_flag()
+{
+    return complete_flag;
+}
+

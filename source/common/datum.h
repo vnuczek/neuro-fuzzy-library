@@ -35,6 +35,8 @@ namespace ksi
       long int _id = -1;
       /** ID of an incomplete data item this item imputes. If a data item imputes no other datum _id_incomplete == -1, otherwise it imputes the datum with ID == _id_incomplete. */
       long int _id_incomplete = -1;
+
+      bool complete_flag;
       
    public:
       virtual ~datum();
@@ -221,6 +223,15 @@ namespace ksi
        * @author Konrad Wnuk
        */
       void save_print(std::ostream& os) const;
+            
+      void is_complete();
+
+      /**
+      * @todo co sprawdzaæ
+      */
+      bool is_complete_attribute(std::size_t attribute_id);
+
+      bool get_complete_flag();
    };
 }
 
