@@ -35,8 +35,8 @@ namespace ksi
       long int _id = -1;
       /** ID of an incomplete data item this item imputes. If a data item imputes no other datum _id_incomplete == -1, otherwise it imputes the datum with ID == _id_incomplete. */
       long int _id_incomplete = -1;
-
-      bool complete_flag;
+      /** @todo komentarz */
+      bool _is_complete = true; 
       
    public:
       virtual ~datum();
@@ -224,14 +224,15 @@ namespace ksi
        */
       void save_print(std::ostream& os) const;
             
-      void is_complete();
+      /** @todo Ta metoda jest teraz const, ale moze sie okazac, ze nie bedzie const (jak sie wykrystalizuje koncepcja tej metody). */
+      bool is_complete() const ; // KS: metoda publicza
 
       /**
-      * @todo co sprawdza�
+      * @todo co sprawdzaæ
       */
-      bool is_complete_attribute(std::size_t attribute_id);
+      bool is_complete_attribute(std::size_t attribute_id); // KS: Czy to potrzebujemy? Możemy po prostu sięgnac do metody exists() w number.
 
-      bool get_complete_flag();
+      bool check_completeness(); 
    };
 }
 

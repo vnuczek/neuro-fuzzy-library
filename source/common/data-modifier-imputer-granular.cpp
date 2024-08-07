@@ -1,7 +1,11 @@
-#include "fcm-degranulation.h"
-#include "fcm.h"
 
-std::pair<ksi::dataset, ksi::dataset> ksi::fcm_degranulation::dataset_marginalisation(const dataset& data)
+#include "../common/data-modifier-imputer-granular.h"
+#include "../common/data-modifier-imputer.h"
+#include "../partitions/partitioner.h"
+#include "../common/dataset.h"
+#include "../common/datum.h"
+
+std::pair<ksi::dataset, ksi::dataset> ksi::data_modifier_imputer_granular::dataset_marginalisation(const dataset& data)
 {
 	dataset complete_data, incomplete_data;
 
@@ -18,7 +22,7 @@ std::pair<ksi::dataset, ksi::dataset> ksi::fcm_degranulation::dataset_marginalis
 }
 
 
-ksi::dataset ksi::fcm_degranulation::granular_imputation(cosnt dataset& data, const int& granules_number)
+ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(cosnt dataset& data, const int& granules_number)
 {
 	auto marginalised_data = dataset_marginalisation(data);
 
