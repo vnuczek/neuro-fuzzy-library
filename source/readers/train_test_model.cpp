@@ -5,7 +5,6 @@
 #include "../auxiliary/to_string.h"
 
 #include <filesystem>
-#include <system_error>
 #include <thread>
 #include <fstream>
 #include <ranges>
