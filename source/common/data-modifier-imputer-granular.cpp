@@ -12,7 +12,7 @@ std::pair<ksi::dataset, ksi::dataset> ksi::data_modifier_imputer_granular::datas
 	for (std::size_t i = 0; i < data.size(); ++i)
 	{
 		datum tuple = data.getDatum(i);
-		if (tuple->get_complete_flag())
+		if (tuple.is_complete())
 			complete_data.addDatum(tuple);
 		else
 			incomplete_data.addDatum(tuple);
@@ -21,17 +21,65 @@ std::pair<ksi::dataset, ksi::dataset> ksi::data_modifier_imputer_granular::datas
 	return std::make_pair(complete_data, incomplete_data);
 }
 
-
-ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(cosnt dataset& data, const int& granules_number)
+ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const dataset& data)
 {
-	auto marginalised_data = dataset_marginalisation(data);
-
-
+	auto [marginalised_dataset, incomplete_dataset] = dataset_marginalisation(data);
 
 	for (const auto& : )
 
-	for ()
-	{
+		for ()
+		{
 
+		}
+
+	return dataset();
+}
+
+ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(const partitioner& Partitioner) 
+	: _pPartitioner(std::make_shared<partitioner>(Partitioner))
+{
+}
+
+ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(const data_modifier_imputer_granular& other)
+	: data_modifier_imputer(other), _pPartitioner(other._pPartitioner)
+{
+}
+
+ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(data_modifier_imputer_granular&& other) noexcept
+	: data_modifier_imputer(std::move(other)), _pPartitioner(std::move(other._pPartitioner))
+
+{
+}
+
+ksi::data_modifier_imputer_granular& ksi::data_modifier_imputer_granular::operator=(const data_modifier_imputer_granular& other)
+{
+	if (this != &other)
+	{
+		data_modifier_imputer::operator=(other);
+		_pPartitioner = other._pPartitioner;
 	}
+	return *this;
+}
+
+ksi::data_modifier_imputer_granular& ksi::data_modifier_imputer_granular::operator=(data_modifier_imputer_granular&& other) noexcept
+{
+	if (this != &other)
+	{
+		data_modifier_imputer::operator=(std::move(other));
+		_pPartitioner = std::move(other._pPartitioner);
+	}
+	return *this;
+}
+
+ksi::data_modifier_imputer_granular::~data_modifier_imputer_granular()
+{
+}
+
+ksi::data_modifier* ksi::data_modifier_imputer_granular::clone() const
+{
+	return new data_modifier_imputer_granular(*_pPartitioner->clone());
+}
+
+void ksi::data_modifier_imputer_granular::modify(dataset& ds)
+{
 }

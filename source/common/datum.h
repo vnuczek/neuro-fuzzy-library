@@ -35,7 +35,7 @@ namespace ksi
       long int _id = -1;
       /** ID of an incomplete data item this item imputes. If a data item imputes no other datum _id_incomplete == -1, otherwise it imputes the datum with ID == _id_incomplete. */
       long int _id_incomplete = -1;
-      /** @todo komentarz */
+      /** a flag that stores information about the completeness of data stored in the class */
       bool _is_complete = true; 
       
    public:
@@ -224,15 +224,40 @@ namespace ksi
        */
       void save_print(std::ostream& os) const;
             
-      /** @todo Ta metoda jest teraz const, ale moze sie okazac, ze nie bedzie const (jak sie wykrystalizuje koncepcja tej metody). */
-      bool is_complete() const ; // KS: metoda publicza
+      /** 
+      * Checks the value of the data completeness flag
+      * 
+      * @return Value of the data completeness flag
+      * @date 2024-08-08
+      * @author Konrad Wnuk
+      */
+      bool is_complete() const ;
 
       /**
-      * @todo co sprawdzaæ
+      * @todo dodać logikę wywołań
+      * 
+      * @date 2024-08-08
+      * @author Konrad Wnuk
       */
-      bool is_complete_attribute(std::size_t attribute_id); // KS: Czy to potrzebujemy? Możemy po prostu sięgnac do metody exists() w number.
+      void check_completeness(const std::size_t& attribute_id = 0);
 
-      bool check_completeness(); 
+      private: // KW: te metody zrobiłem prywatene, do przemyślenia czy taka forma jest ok, zanim dodam logikę kiedy metody są wywoływane
+      /**
+      * Checking the completeness of all attributes stored in the class, setting the completeness flag
+      * 
+      * @date 2024-08-08
+      * @author Konrad Wnuk
+      */
+      void check_all_completeness();
+
+      /**
+      * Checking the completeness of attribute with the given id stored in the class, setting the completeness flag
+      *
+      * @param attribute_id Id attribute to check
+      * @date 2024-08-08
+      * @author Konrad Wnuk
+      */
+      void is_complete_attribute(const std::size_t& attribute_id);
    };
 }
 
