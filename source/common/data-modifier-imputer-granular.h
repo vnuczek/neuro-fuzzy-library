@@ -25,17 +25,20 @@ namespace ksi
 		// KS: Wartość ustawiana przez konstruktor. Każdy partitioner ma metodę clone().  
 
 	protected:
-
-	
+			
 		/**
 		*
+		* @date 2024-08-08
+		* @author Konrad Wnuk
 		*/
-		std::pair < dataset, dataset > dataset_marginalisation(const dataset& data);
+		std::pair < dataset, dataset > dataset_marginalisation(const dataset& ds);
 
 		/**
 		*
+		* @date 2024-08-08
+		* @author Konrad Wnuk
 		*/
-		dataset granular_imputation(const dataset& data);
+		dataset granular_imputation(const dataset& ds);
 		
 	public:	
 		
@@ -113,10 +116,10 @@ namespace ksi
 		 * The method first imputes, then calls the modify method in the next data_modifier. 
 		 * 
 		 * @param ds dataset to modify
-		 * @author  
-		 * @date    
+		 * @date 2024-08-08
+		 * @author Konrad Wnuk   
 		 */
-		virtual void modify (dataset & ds);   // KS: Tu będzie całość.
+		virtual void modify (dataset & ds);   // KW: mam tu przełożyć całą logikę działania czy jak?
 	};
 }
 

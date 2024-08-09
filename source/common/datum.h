@@ -241,6 +241,15 @@ namespace ksi
       */
       void check_completeness(const std::size_t& attribute_id = 0);
 
+      /**
+      * Checking the completeness of attribute with the given id stored in the class, setting the completeness flag
+      *
+      * @param attribute_id Id attribute to check
+      * @date 2024-08-08
+      * @author Konrad Wnuk
+      */
+      bool is_complete_attribute(const std::size_t& attribute_id);
+
       private: // KW: te metody zrobiłem prywatene, do przemyślenia czy taka forma jest ok, zanim dodam logikę kiedy metody są wywoływane
       /**
       * Checking the completeness of all attributes stored in the class, setting the completeness flag
@@ -249,16 +258,7 @@ namespace ksi
       * @author Konrad Wnuk
       */
       void check_all_completeness();
-
-      /**
-      * Checking the completeness of attribute with the given id stored in the class, setting the completeness flag
-      *
-      * @param attribute_id Id attribute to check
-      * @date 2024-08-08
-      * @author Konrad Wnuk
-      */
-      void is_complete_attribute(const std::size_t& attribute_id);
-   };
+    };
 }
 
 #endif

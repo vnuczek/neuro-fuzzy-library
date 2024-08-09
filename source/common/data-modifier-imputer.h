@@ -40,10 +40,7 @@ namespace ksi
        * @author Krzysztof Siminski
        * @date   2017-12-31
        */
-      virtual void modify (dataset & ds);  
-      
-     
-      
+      virtual void modify (dataset & ds);     
    };
 }
 
