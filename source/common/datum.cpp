@@ -415,7 +415,7 @@ void ksi::datum::save_print(std::ostream& os) const
 
 void ksi::datum::check_completeness(const std::size_t& attribute_id)
 {
-    if (is_complete)
+    if (is_complete)  // KS: Czy na pewno?
         _is_complete = is_complete_attribute(attribute_id);
     else
         check_all_completeness();

@@ -31,7 +31,7 @@ namespace ksi
 		* @date 2024-08-08
 		* @author Konrad Wnuk
 		*/
-		std::pair < dataset, dataset > dataset_marginalisation(const dataset& ds);
+		std::pair < dataset, dataset > split_complete_incomplete(const dataset& ds);
 
 		/**
 		*
