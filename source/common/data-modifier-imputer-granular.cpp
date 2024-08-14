@@ -30,8 +30,9 @@ ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const data
 	auto U = partitioned_data.getPartitionMatrix();
 	auto V = partitioned_data.getClusterCentres();
    // KS: Trzeba jeszcze wyznaczyc rozmycia klastrow. To jest ta metoda z przypisu w pedeefie. 
+   // KS: [zakładka] Tutaj trzeba chwilę pomyśleć, czy tak na pewno będzie. 
    // auto S = ...
-
+   
 	for (auto i = 0; i < incomplete_dataset.size(); ++i) {
 		auto incmplete_datum = incomplete_dataset.getDatum(i);
 		auto attributes = incmplete_datum->getVector();
