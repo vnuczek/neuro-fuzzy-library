@@ -6,9 +6,9 @@
 #include <memory>
  
 #include "../common/data-modifier-imputer.h"
-#include "../partitions/partitioner.h"
 #include "../common/dataset.h"
 #include "../common/datum.h"
+#include "../partitions/partitioner.h"
 #include "../tnorms/t-norm.h"
 
 namespace ksi
@@ -23,21 +23,19 @@ namespace ksi
 	{
 	protected:
 		std::shared_ptr<ksi::partitioner> _pPartitioner = nullptr; ///< Pointer to a `partitioner` object that manages data partitions.
-
 		std::shared_ptr<ksi::t_norm> _pTnorm = nullptr; ///< @todo dodać komentarze doxy i zmodyfikować konstruktory
-
 		std::vector<std::size_t> incomplete_indices; ///< @todo dodać komentarze doxy
 	protected:
 			
 		/**
-		*
+		* @todo add comment
 		* @date 2024-08-08
 		* @author Konrad Wnuk
 		*/
 		std::pair < dataset, dataset > split_complete_incomplete(const dataset& ds);
 
 		/**
-		*
+		* @todo add comment
 		* @date 2024-08-08
 		* @author Konrad Wnuk
 		*/
@@ -45,7 +43,7 @@ namespace ksi
 		
 	public:	
 		
-		/**
+		/** @todo update comment
 		 * Constructor that initializes the object with a partitioner.
 		 * 
 		 * @param Partitioner The object used to manage data partitions.
@@ -122,7 +120,7 @@ namespace ksi
 		 * @date 2024-08-08
 		 * @author Konrad Wnuk   
 		 */
-		virtual void modify (dataset & ds);   // KW: mam tu przełożyć całą logikę działania czy jak?
+		virtual void modify (dataset & ds);   // KW: mam tu przełożyć całą logikę działania czy jak? KS: Wystarczy wywolac metode.
 
 		private:
 
@@ -145,3 +143,4 @@ namespace ksi
 }
 
 #endif
+
