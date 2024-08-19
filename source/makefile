@@ -609,6 +609,10 @@ $(release_folder)/common-data-modifier-filter.o : common/data-modifier-filter.cp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/common-data-modifier-filter.o : common/data-modifier-filter.cpp
 	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
+$(release_folder)/common-data-modifier-imputer-granular.o : common/data-modifier-imputer-granular.cpp
+	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
+$(debug_folder)/common-data-modifier-imputer-granular.o : common/data-modifier-imputer-granular.cpp
+	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
 $(release_folder)/common-data-modifier-imputer-average.o : common/data-modifier-imputer-average.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/common-data-modifier-imputer-average.o : common/data-modifier-imputer-average.cpp
@@ -1088,6 +1092,7 @@ $(release_folder)/descriptors-descriptor-constant.o \
 $(release_folder)/tnorms-t-norm-schweizer-sklar.o \
 $(release_folder)/partitions-fubi.o \
 $(release_folder)/experiments-exp-005.o \
+$(release_folder)/common-data-modifier-imputer-granular.o \
 $(release_folder)/descriptors-DescriptorStatistics.o \
 $(release_folder)/neuro-fuzzy-consequence.o \
 $(release_folder)/dissimilarities-dis-log.o \
@@ -1302,6 +1307,7 @@ $(debug_folder)/descriptors-descriptor-constant.o \
 $(debug_folder)/tnorms-t-norm-schweizer-sklar.o \
 $(debug_folder)/partitions-fubi.o \
 $(debug_folder)/experiments-exp-005.o \
+$(debug_folder)/common-data-modifier-imputer-granular.o \
 $(debug_folder)/descriptors-DescriptorStatistics.o \
 $(debug_folder)/neuro-fuzzy-consequence.o \
 $(debug_folder)/dissimilarities-dis-log.o \
