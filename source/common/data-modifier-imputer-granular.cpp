@@ -5,7 +5,6 @@
 #include "../partitions/partitioner.h"
 #include "../common/dataset.h"
 #include "../common/datum.h"
-#include "../partitions/fcm-T.h"
 #include "../auxiliary/vector-operators.h"
 
 std::pair<ksi::dataset, ksi::dataset> ksi::data_modifier_imputer_granular::split_complete_incomplete(const dataset& ds)
@@ -29,57 +28,58 @@ std::pair<ksi::dataset, ksi::dataset> ksi::data_modifier_imputer_granular::split
 
 ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const dataset& ds)
 {
-	auto result(ds);
+   auto result(ds);
+   auto [complete_dataset, incomplete_dataset] = split_complete_incomplete(ds);
+   auto partitioned_data = _pPartitioner->doPartition(complete_dataset);
 
-	auto [complete_dataset, incomplete_dataset] = split_complete_incomplete(ds);
-	
-	auto partitioned_data = _pPartitioner->doPartition(complete_dataset);
-	
-	//auto U = partitioned_data.getPartitionMatrix();
-	auto V = partitioned_data.getClusterCentres();
-	auto S = partitioned_data.getClusterFuzzifications();
-   
-	for (auto i = 0; i < incomplete_dataset.size(); ++i) { // dla ka¿dej danej niepe³enej
-		std::vector<std::vector<double>> imputed_tuples; 
-		imputed_tuples.reserve(partitioned_data.getNumberOfClusters());
-		std::vector<double> granule_membership;
-		granule_membership.reserve(partitioned_data.getNumberOfClusters());
+   auto V = partitioned_data.getClusterCentres();
+   auto S = partitioned_data.getClusterFuzzifications();
 
-		auto incmplete_datum = incomplete_dataset.getDatum(i);
+   for (auto i = 0; i < incomplete_dataset.size(); ++i)  // dla kazdej danej niepelnej
+   {
+      std::vector<std::vector<double>> imputed_tuples; 
+      imputed_tuples.reserve(partitioned_data.getNumberOfClusters());
 
-		for (auto j = 0; j < partitioned_data.getNumberOfClusters(); ++j) { // dla ka¿dej granuli
-			auto attributes = incmplete_datum->getVector();
+      std::vector<double> granule_membership;
+      granule_membership.reserve(partitioned_data.getNumberOfClusters());
 
-			for (auto k = 0; k < incmplete_datum->getNumberOfAttributes(); ++k) { // dla ka¿dego atrubutu
-				
-				if (not incmplete_datum->is_attribute_complete(k)) { // niepe³nego
-					attributes[k] = (V[j][k]);
-				}
-			}
+      auto incmplete_datum = incomplete_dataset.getDatum(i);
 
-			imputed_tuples.push_back(attributes);
+      for (auto j = 0; j < partitioned_data.getNumberOfClusters(); ++j)  // dla kazdej granuli
+      {
+         auto attributes = incmplete_datum->getVector();
 
-			granule_membership.push_back(calculate_granule_membership(attributes, V[j], S[j]));
-			}
-		auto imputed_tuple = weighted_average(imputed_tuples, granule_membership);
+         for (auto k = 0; k < incmplete_datum->getNumberOfAttributes(); ++k)  // dla kazdego atrubutu
+         {	
+            if (not incmplete_datum->is_attribute_complete(k))  // niepe³nego
+            {
+               attributes[k] = (V[j][k]);
+            }
+         }
 
-		result.getDatumNonConst(incomplete_indices[i])->setAttributes(imputed_tuple); // @todo
-	}
+         imputed_tuples.push_back(attributes);
 
-	return dataset();
+         granule_membership.push_back(calculate_granule_membership(attributes, V[j], S[j]));
+      }
+      auto imputed_tuple = weighted_average(imputed_tuples, granule_membership);
+
+      result.getDatumNonConst(incomplete_indices[i])->setAttributes(imputed_tuple); // @todo
+   }
+
+   return dataset();
 }
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(const partitioner& Partitioner, const t_norm& Tnorm)
 {
-	_pPartitioner = std::make_shared < ksi::partitioner >(Partitioner.clone());
-	_pTnorm = std::make_shared < ksi::t_norm >(Tnorm.clone());
+	_pPartitioner = std::make_shared < ksi::partitioner >(Partitioner.clone()); ///@todo To sie nie bedzie kompilowac.
+	_pTnorm = std::make_shared < ksi::t_norm >(Tnorm.clone());///@todo To sie nie bedzie kompilowac.
 }
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(const data_modifier_imputer_granular& other)
 	: data_modifier_imputer(other), incomplete_indices(other.incomplete_indices)
 {
-	_pPartitioner = std::make_shared < ksi::partitioner > (other._pPartitioner->clone());
-	_pTnorm = std::make_shared < ksi::t_norm >(other._pTnorm->clone());
+	_pPartitioner = std::make_shared < ksi::partitioner > (other._pPartitioner->clone());///@todo To sie nie bedzie kompilowac.
+	_pTnorm = std::make_shared < ksi::t_norm >(other._pTnorm->clone());///@todo To sie nie bedzie kompilowac.
 }
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(data_modifier_imputer_granular&& other) noexcept
