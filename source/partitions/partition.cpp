@@ -125,6 +125,11 @@ std::vector<std::vector<double>> ksi::partition::getClusterCentres() const
    return V;
 }
 
+std::vector<std::vector<double>> ksi::partition::getClusterFuzzifications() const
+{
+    return S;
+}
+
 std::vector<std::vector<ksi::ext_fuzzy_number_gaussian>> ksi::partition::getGranules() const
 {
     try 
@@ -148,6 +153,11 @@ std::vector<std::vector<double>> ksi::partition::getPartitionMatrix() const
 void ksi::partition::setClusterCentres(const std::vector<std::vector<double>> & cluster_centres)
 {
    V = cluster_centres;
+}
+
+void ksi::partition::setClusterFuzzifications(const std::vector<std::vector<double>>& cluster_fuzzifications)
+{
+    S = cluster_fuzzifications;
 }
 
 void ksi::partition::setClusterCentres(const std::vector<std::vector<ksi::ext_fuzzy_number_gaussian>> & cluster_centres)

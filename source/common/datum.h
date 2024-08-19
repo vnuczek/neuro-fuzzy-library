@@ -35,8 +35,6 @@ namespace ksi
       long int _id = -1;
       /** ID of an incomplete data item this item imputes. If a data item imputes no other datum _id_incomplete == -1, otherwise it imputes the datum with ID == _id_incomplete. */
       long int _id_incomplete = -1;
-      /** a flag that stores information about the completeness of data stored in the class */
-      bool _is_complete = true; 
       
    public:
       virtual ~datum();
@@ -225,39 +223,22 @@ namespace ksi
       void save_print(std::ostream& os) const;
             
       /** 
-      * Checks the value of the data completeness flag
+      * Checks the value of the data
       * 
-      * @return Value of the data completeness flag
+      * @return True if values od all attributes are present, False otherwise
       * @date 2024-08-08
       * @author Konrad Wnuk
       */
-      bool is_complete() const ;
+      bool is_complete() const;
 
       /**
-      * @todo dodać logikę wywołań
-      * 
-      * @date 2024-08-08
-      * @author Konrad Wnuk
-      */
-      void check_completeness(const std::size_t& attribute_id = 0);
-
-      /**
-      * Checking the completeness of attribute with the given id stored in the class, setting the completeness flag
+      * Checking the completeness of attribute with the given index stored in the datum
       *
-      * @param attribute_id Id attribute to check
+      * @param attribute_id Index attribute to check
       * @date 2024-08-08
       * @author Konrad Wnuk
       */
-      bool is_complete_attribute(const std::size_t& attribute_id);
-
-      private: // KW: te metody zrobiłem prywatene, do przemyślenia czy taka forma jest ok, zanim dodam logikę kiedy metody są wywoływane
-      /**
-      * Checking the completeness of all attributes stored in the class, setting the completeness flag
-      * 
-      * @date 2024-08-08
-      * @author Konrad Wnuk
-      */
-      void check_all_completeness();
+      bool is_attribute_complete(const std::size_t& attribute_id) const;
     };
 }
 

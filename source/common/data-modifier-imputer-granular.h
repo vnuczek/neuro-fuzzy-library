@@ -9,6 +9,7 @@
 #include "../partitions/partitioner.h"
 #include "../common/dataset.h"
 #include "../common/datum.h"
+#include "../tnorms/t-norm.h"
 
 namespace ksi
 {
@@ -22,8 +23,10 @@ namespace ksi
 	{
 	protected:
 		std::shared_ptr<ksi::partitioner> _pPartitioner = nullptr; ///< Pointer to a `partitioner` object that manages data partitions.
-		// KS: Wartość ustawiana przez konstruktor. Każdy partitioner ma metodę clone().  
 
+		std::shared_ptr<ksi::t_norm> _pTnorm = nullptr;
+
+		std::vector<std::size_t> incomplete_indices;
 	protected:
 			
 		/**
@@ -120,6 +123,11 @@ namespace ksi
 		 * @author Konrad Wnuk   
 		 */
 		virtual void modify (dataset & ds);   // KW: mam tu przełożyć całą logikę działania czy jak?
+
+		private:
+		std::vector<double> weighted_average(const std::vector < std::vector<double>>& estimated_values, const std::vector<double>& weights);
+
+		double calculate_granule_membership(const std::vector<double>& X, const std::vector<double>& V, const std::vector<double>& S);
 	};
 }
 

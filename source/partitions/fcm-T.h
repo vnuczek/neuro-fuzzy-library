@@ -67,11 +67,14 @@ namespace ksi
        * \f$ v_{ca} \f$ -- value of the \f$a\f$-th attribute of the \f$c\f$-th cluster centre
        * @return calculates the fuzzification of cluster 
         */
+
+   public:
       std::vector<std::vector<T>> calculateClusterFuzzification(
          const std::vector<std::vector<T>> & mU, 
          const std::vector<std::vector<T>> & mV, 
          const std::vector<std::vector<T>> & mX);  
       
+   protected:
       /** The method normalises each column separatedly into range [0, 1].
         @param[in,out] m the matrix to normalise, this object is modified */
       void normaliseByColumns (std::vector<std::vector<T>> & m);

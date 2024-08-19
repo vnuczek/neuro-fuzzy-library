@@ -413,34 +413,23 @@ void ksi::datum::save_print(std::ostream& os) const
     os << std::endl;
 }
 
-void ksi::datum::check_completeness(const std::size_t& attribute_id)
-{
-    if (is_complete)  // KS: Czy na pewno?
-        _is_complete = is_complete_attribute(attribute_id);
-    else
-        check_all_completeness();
-}
-
-void ksi::datum::check_all_completeness()
-{
-    _is_complete = true;
-
-    std::size_t i = 0;
-    std::size_t attribute_size = attributes.size();
-
-    while (_is_complete || (i != attribute_size)) {
-        _is_complete = is_complete_attribute(i);
-        ++i;
-    }
-}
-
-bool ksi::datum::is_complete_attribute(const std::size_t& attribute_id)
+bool ksi::datum::is_attribute_complete(const std::size_t& attribute_id) const
 {
     return attributes[attribute_id]->exists();
 }
 
 bool ksi::datum::is_complete() const
 {
-    return _is_complete;
+    bool is_complete = true;
+
+    std::size_t i = 0;
+    std::size_t attribute_size = attributes.size();
+
+    while (is_complete || (i != attribute_size)) {
+        is_complete = is_attribute_complete(i);
+        ++i;
+    }
+
+    return is_complete;
 }
 

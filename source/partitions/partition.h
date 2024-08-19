@@ -25,6 +25,8 @@ namespace ksi
       std::vector<std::vector<double>> U;
       /** cluster centres */
       std::vector<std::vector<double>> V;
+      /** cluster fuzzifications */
+      std::vector<std::vector<double>> S;
       
    public:
       ~partition();
@@ -72,6 +74,11 @@ namespace ksi
        */
       std::vector<std::vector<double>> getClusterCentres () const; 
       
+      /** @return cluster Fuzzifications 
+       *  @date 2024-08-19
+       */
+      std::vector<std::vector<double>> getClusterFuzzifications () const; 
+      
       /** The method transforms partition into fuzzy gaussian granules.
        @date 2019-02-19
        @return a set of granules composed of extensional fuzzy numbers
@@ -96,6 +103,11 @@ namespace ksi
        @date 2018-12-16
        */
       void setClusterCentres (const std::vector<std::vector<double>> & cluster_centres);
+      
+      /** 
+      * @todo doxygen
+       */
+      void setClusterFuzzifications (const std::vector<std::vector<double>> & cluster_fuzzifications);
 
       /** The method sets cluster centres.
        @param cluster_centres a matrix to set, it is set with cores of gaussian extensional numbers

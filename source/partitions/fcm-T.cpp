@@ -72,6 +72,7 @@ ksi::partition ksi::fcm_T<double>::elaborate_gaussian_partition (
    
    part.setClusterCentres(mV);
    part.setPartitionMatrix(mU);
+   part.setClusterFuzzifications(mS);
    
    return part;
 }
