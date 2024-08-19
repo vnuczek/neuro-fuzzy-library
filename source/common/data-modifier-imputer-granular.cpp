@@ -35,7 +35,7 @@ ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const data
 	
 	auto partitioned_data = _pPartitioner->doPartition(complete_dataset);
 	
-	auto U = partitioned_data.getPartitionMatrix();
+	//auto U = partitioned_data.getPartitionMatrix();
 	auto V = partitioned_data.getClusterCentres();
 	auto S = partitioned_data.getClusterFuzzifications();
    
@@ -52,7 +52,6 @@ ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const data
 
 			for (auto k = 0; k < incmplete_datum->getNumberOfAttributes(); ++k) { // dla ka¿dego atrubutu
 				
-
 				if (not incmplete_datum->is_attribute_complete(k)) { // niepe³nego
 					attributes[k] = (V[j][k]);
 				}
@@ -70,20 +69,23 @@ ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const data
 	return dataset();
 }
 
-ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(const partitioner& Partitioner) 
+ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(const partitioner& Partitioner, const t_norm& Tnorm)
 {
 	_pPartitioner = std::make_shared < ksi::partitioner >(Partitioner.clone());
+	_pTnorm = std::make_shared < ksi::t_norm >(Tnorm.clone());
 }
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(const data_modifier_imputer_granular& other)
-	: data_modifier_imputer(other)
+	: data_modifier_imputer(other), incomplete_indices(other.incomplete_indices)
 {
 	_pPartitioner = std::make_shared < ksi::partitioner > (other._pPartitioner->clone());
+	_pTnorm = std::make_shared < ksi::t_norm >(other._pTnorm->clone());
 }
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(data_modifier_imputer_granular&& other) noexcept
 	: data_modifier_imputer(std::move(other)), _pPartitioner(std::move(other._pPartitioner))
 {
+	std::swap(incomplete_indices, other.incomplete_indices);
 }
 
 ksi::data_modifier_imputer_granular& ksi::data_modifier_imputer_granular::operator=(const data_modifier_imputer_granular& other)
@@ -92,6 +94,8 @@ ksi::data_modifier_imputer_granular& ksi::data_modifier_imputer_granular::operat
 	{
 		data_modifier_imputer::operator=(other); 
 		_pPartitioner = std::make_shared < ksi::partitioner >(other._pPartitioner->clone());
+		_pTnorm = std::make_shared < ksi::t_norm >(other._pTnorm->clone());
+		incomplete_indices = other.incomplete_indices;
 	}
 	return *this;
 }
@@ -102,6 +106,8 @@ ksi::data_modifier_imputer_granular& ksi::data_modifier_imputer_granular::operat
 	{
 		data_modifier_imputer::operator=(std::move(other));
 		_pPartitioner = std::move(other._pPartitioner);
+		_pTnorm = std::move(other._pTnorm);
+		std::swap(incomplete_indices, other.incomplete_indices);
 	}
 	return *this;
 }

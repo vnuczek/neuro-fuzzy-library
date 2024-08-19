@@ -24,9 +24,9 @@ namespace ksi
 	protected:
 		std::shared_ptr<ksi::partitioner> _pPartitioner = nullptr; ///< Pointer to a `partitioner` object that manages data partitions.
 
-		std::shared_ptr<ksi::t_norm> _pTnorm = nullptr;
+		std::shared_ptr<ksi::t_norm> _pTnorm = nullptr; ///< @todo dodać komentarze doxy i zmodyfikować konstruktory
 
-		std::vector<std::size_t> incomplete_indices;
+		std::vector<std::size_t> incomplete_indices; ///< @todo dodać komentarze doxy
 	protected:
 			
 		/**
@@ -52,7 +52,7 @@ namespace ksi
 		 * @date 2024-08-08
 		 * @author Konrad Wnuk
 		 */
-		data_modifier_imputer_granular (const partitioner & Partitioner); 
+		data_modifier_imputer_granular (const partitioner & Partitioner, const t_norm& Tnorm); 
 
 		/**
 		 * @brief Copy constructor.
@@ -125,8 +125,21 @@ namespace ksi
 		virtual void modify (dataset & ds);   // KW: mam tu przełożyć całą logikę działania czy jak?
 
 		private:
+
+		/**
+		* @todo dodać komentarz doxy i zmienić nazwy
+		*
+		* @date 2024-08-19
+		* @author Konrad Wnuk
+		*/
 		std::vector<double> weighted_average(const std::vector < std::vector<double>>& estimated_values, const std::vector<double>& weights);
 
+		/**
+		 * @todo dodać komentarz doxy i zmienić nazwy
+		 *
+		 * @date 2024-08-19
+		 * @author Konrad Wnuk
+		 */
 		double calculate_granule_membership(const std::vector<double>& X, const std::vector<double>& V, const std::vector<double>& S);
 	};
 }
