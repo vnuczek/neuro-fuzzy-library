@@ -29,7 +29,7 @@ std::pair<ksi::dataset, ksi::dataset> ksi::data_modifier_imputer_granular::split
 
 ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const dataset& ds)
 {
-	auto oryginal(ds);
+	auto result(ds);
 
 	auto [complete_dataset, incomplete_dataset] = split_complete_incomplete(ds);
 	
@@ -39,8 +39,6 @@ ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const data
 	auto V = partitioned_data.getClusterCentres();
 	auto S = partitioned_data.getClusterFuzzifications();
    
-	ksi::dataset result;
-
 	for (auto i = 0; i < incomplete_dataset.size(); ++i) { // dla ka¿dej danej niepe³enej
 		std::vector<std::vector<double>> imputed_tuples; 
 		imputed_tuples.reserve(partitioned_data.getNumberOfClusters());
@@ -66,7 +64,7 @@ ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const data
 			}
 		auto imputed_tuple = weighted_average(imputed_tuples, granule_membership);
 
-		oryginal.getDatumNonConst(incomplete_indices[i])->setAttributes(imputed_tuple); // @todo
+		result.getDatumNonConst(incomplete_indices[i])->setAttributes(imputed_tuple); // @todo
 	}
 
 	return dataset();
