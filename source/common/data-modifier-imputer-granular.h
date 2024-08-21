@@ -54,7 +54,7 @@ namespace ksi
 		 * @date 2024-08-08
 		 * @author Konrad Wnuk
 		 */
-		data_modifier_imputer_granular (const partitioner & Partitioner, const t_norm& Tnorm); 
+		data_modifier_imputer_granular (partitioner & Partitioner, t_norm& Tnorm); 
 
 		/**
 		 * @brief Copy constructor.

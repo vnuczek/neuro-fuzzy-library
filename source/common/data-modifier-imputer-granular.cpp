@@ -109,8 +109,8 @@ void ksi::data_modifier_imputer_granular::validate_fuzzifications(const partitio
     }
 }
 
-ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(const partitioner& Partitioner, const t_norm& Tnorm)
-    : _pPartitioner(Partitioner.clone()), _pTnorm(Tnorm.clone())
+ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(partitioner& Partitioner, t_norm& Tnorm)
+    : data_modifier_imputer(), _pPartitioner(Partitioner.clone()), _pTnorm(Tnorm.clone())
 {}
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(const data_modifier_imputer_granular& other)
@@ -118,7 +118,7 @@ ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(const data_m
 {}
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(data_modifier_imputer_granular&& other) noexcept
-	: data_modifier_imputer(std::move(other)), _pPartitioner(std::move(other._pPartitioner))
+	: data_modifier_imputer(std::move(other)), _pPartitioner(std::move(other._pPartitioner)), _pTnorm(std::move(other._pTnorm))
 {
 	std::swap(incomplete_indices, other.incomplete_indices);
 }
@@ -128,8 +128,8 @@ ksi::data_modifier_imputer_granular& ksi::data_modifier_imputer_granular::operat
 	if (this != &other)
 	{
 		data_modifier_imputer::operator=(other); 
-		_pPartitioner = std::make_shared < ksi::partitioner >(other._pPartitioner->clone());
-		_pTnorm = std::make_shared < ksi::t_norm >(other._pTnorm->clone());
+		_pPartitioner = other._pPartitioner;
+		_pTnorm =  other._pTnorm;
 		incomplete_indices = other.incomplete_indices;
 	}
 	return *this;
