@@ -88,6 +88,21 @@ namespace ksi
        */
       double getWeight() const;
       
+      /**
+       * @brief Updates the attributes of the datum.
+       *
+       * This method updates the attributes of the datum by modifying the values of the `number` objects in the `attributes` vector. 
+       * If the number of new attributes provided does not match the number of existing attributes, an exception is thrown.
+       * 
+       * @param new_attributes_values A vector of double values representing the new attributes.
+       * @throw ksi::exception If the number of new attributes does not match the number of existing attributes.
+       * @date 2024-08-21
+       * @author Konrad Wnuk
+       * 
+       * @todo KW::Sprawdziæ czy dobrze obs³u¿y³em wyj¹tek
+       */
+      void changeAttributesValues(const std::vector<double>& new_attributes_values);
+
       /** The method sets a weight value of a datum.
        * @date 2018-03-05
        * @author Krzysztof Siminski       

@@ -60,7 +60,7 @@ void ksi::data_modifier_imputer_granular::handle_incomplete_dataset(dataset& res
 
     auto imputed_tuple = weighted_average(imputed_tuples, granule_membership);
 
-    result.getDatumNonConst(t)->setAttributes(imputed_tuple);
+    result.getDatumNonConst(t)->changeAttributesValues(imputed_tuple);
 }
 
 std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modifier_imputer_granular::calculate_granule_memberships_and_imputations(const datum* incomplete_datum, const partition& partitioned_data)

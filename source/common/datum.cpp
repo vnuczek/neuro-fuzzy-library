@@ -224,6 +224,18 @@ double ksi::datum::getWeight() const
    return _weight;
 }
 
+void ksi::datum::changeAttributesValues(const std::vector<double>& new_attributes_values)
+{
+    try {
+        if (attributes.size() != new_attributes_values.size()) 
+            throw ksi::exception("The number of new attributes does not match the number of existing attributes.");
+
+        for (size_t i = 0; i < attributes.size(); ++i)
+            attributes[i]->setValue(new_attributes_values[i]);
+    }
+    CATCH;
+}
+
 void ksi::datum::setWeight(double weight)
 {
    _weight = std::max (0.0, std::min (1.0, weight));
@@ -264,8 +276,6 @@ void ksi::datum::setIDincomplete(long int id_incomplete)
 {
    _id_incomplete = id_incomplete;
 }
-
-
 
 namespace ksi
 {
