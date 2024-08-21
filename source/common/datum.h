@@ -98,10 +98,8 @@ namespace ksi
        * @throw ksi::exception If the number of new attributes does not match the number of existing attributes.
        * @date 2024-08-21
        * @author Konrad Wnuk
-       * 
-       * @todo KW::Sprawdziæ czy dobrze obs³u¿y³em wyj¹tek
        */
-      void changeAttributesValues(const std::vector<double>& new_attributes_values);
+      void changeAttributesValues(const std::vector<double> & new_attributes_values);
 
       /** The method sets a weight value of a datum.
        * @date 2018-03-05
