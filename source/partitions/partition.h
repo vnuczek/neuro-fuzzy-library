@@ -75,8 +75,8 @@ namespace ksi
       std::vector<std::vector<double>> getClusterCentres () const; 
       
       /** 
-       * @todo doxygen
        * @return cluster Fuzzifications 
+       * @author Konrad Wnuk
        * @date 2024-08-19
        */
       std::vector<std::vector<double>> getClusterFuzzifications () const; 
@@ -107,7 +107,8 @@ namespace ksi
       void setClusterCentres (const std::vector<std::vector<double>> & cluster_centres);
       
       /** 
-       * @todo doxygen
+       * The method sets cluster fuzzificatons.
+       * @author Konrad Wnuk
        * @date 2024-08-19
        */
       void setClusterFuzzifications (const std::vector<std::vector<double>> & cluster_fuzzifications);

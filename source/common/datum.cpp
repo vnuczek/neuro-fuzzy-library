@@ -229,9 +229,7 @@ void ksi::datum::changeAttributesValues(const std::vector<double> & new_attribut
     try 
     {
         if (attributes.size() != new_attributes_values.size()) 
-           /// @todo Bardzo ulatwia zycie, gdy komunikat bledu podaje takze wartosci niepasujacych zmiennych, np.
-           ///       "The number of new attributes (5) does not match the number of existing attributes (4).".
-           throw ksi::exception("The number of new attributes does not match the number of existing attributes.");
+           throw ksi::exception("The number of new attributes (" + std::to_string(new_attributes_values.size()) + ") does not match the number of existing attributes (" + std::to_string(attributes.size()) + ").");
 
         for (size_t i = 0; i < attributes.size(); ++i)
             attributes[i]->setValue(new_attributes_values[i]);
