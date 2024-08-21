@@ -34,69 +34,88 @@ std::pair<ksi::dataset, ksi::dataset> ksi::data_modifier_imputer_granular::split
 
 ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const dataset& ds)
 {
-   try 
-   {
-      auto result(ds);
-      auto [complete_dataset, incomplete_dataset] = split_complete_incomplete(ds);
-      auto partitioned_data = _pPartitioner->doPartition(complete_dataset);
+    try
+    {
+        auto result(ds);
+        auto [complete_dataset, incomplete_dataset] = split_complete_incomplete(ds);
+        auto partitioned_data = _pPartitioner->doPartition(complete_dataset);
 
-      auto V = partitioned_data.getClusterCentres();
-      auto S = partitioned_data.getClusterFuzzifications();
+        validate_fuzzifications(partitioned_data);
 
-      if (S.empty())
-      {
-         throw ksi::exception("The partitioner has not set the fuzzification of granules (the S variable) that I need here. "
-               "It is empty. Please use another partitioner.");
-      }
+        for (auto t = 0; t < incomplete_dataset.size(); ++t) // for each incomplete tuple
+        {
+            handle_incomplete_dataset(result, incomplete_dataset, partitioned_data, t);
+        }
 
-      for (auto t = 0; t < incomplete_dataset.size(); ++t)  // for each incomplete tuple
-      {
-         std::vector<std::vector<double>> imputed_tuples; 
-         imputed_tuples.reserve(partitioned_data.getNumberOfClusters());
+        return result;
+    }
+    CATCH;
+}
 
-         std::vector<double> granule_membership;
-         granule_membership.reserve(partitioned_data.getNumberOfClusters());
+void ksi::data_modifier_imputer_granular::handle_incomplete_dataset(dataset& result, const dataset& incomplete_dataset, const partition& partitioned_data, const std::size_t& t)
+{
+    auto incomplete_datum = incomplete_dataset.getDatum(t);
 
-         auto incmplete_datum = incomplete_dataset.getDatum(t);
+    auto [imputed_tuples, granule_membership] = calculate_granule_memberships_and_imputations(incomplete_datum, partitioned_data);
 
-         for (auto g = 0; g < partitioned_data.getNumberOfClusters(); ++g)  // for each granule 
-         {
-            auto attributes = incmplete_datum->getVector();
+    auto imputed_tuple = weighted_average(imputed_tuples, granule_membership);
 
-            for (auto attr = 0; attr < incmplete_datum->getNumberOfAttributes(); ++attr)  // for each attribute in the incomplete tuple
-            {	
-               if (not incmplete_datum->is_attribute_complete(attr)) 
-               {
-                  attributes[attr] = (V[g][attr]);
-               }
-            }
+    result.getDatumNonConst(t)->setAttributes(imputed_tuple);
+}
 
-            imputed_tuples.push_back(attributes);
+std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modifier_imputer_granular::calculate_granule_memberships_and_imputations(const datum* incomplete_datum, const partition& partitioned_data)
+{
+    std::vector<std::vector<double>> imputed_tuples;
+    imputed_tuples.reserve(partitioned_data.getNumberOfClusters());
 
-            granule_membership.push_back(calculate_granule_membership(attributes, V[g], S[g]));
-         }
-         auto imputed_tuple = weighted_average(imputed_tuples, granule_membership);
+    std::vector<double> granule_membership;
+    granule_membership.reserve(partitioned_data.getNumberOfClusters());
 
-         result.getDatumNonConst(incomplete_indices[t])->setAttributes(imputed_tuple); // @todo
-      }
+    auto granules_centers = partitioned_data.getClusterCentres();
+    auto granules_fuzzifications = partitioned_data.getClusterFuzzifications();
 
-      return dataset();
-   }
-   CATCH;
+    for (auto gran = 0; gran < partitioned_data.getNumberOfClusters(); ++gran) // for each granule 
+    {
+        auto attributes = impute_tuple(incomplete_datum, granules_centers[gran]);
+
+        imputed_tuples.push_back(attributes);
+        granule_membership.push_back(calculate_granule_membership(attributes, granules_centers[gran], granules_fuzzifications[gran]));
+    }
+
+    return std::make_pair(imputed_tuples, granule_membership);
+}
+
+std::vector<double> ksi::data_modifier_imputer_granular::impute_tuple(const datum* incomplete_datum, const std::vector<double>& granule_center)
+{
+    auto attributes = incomplete_datum->getVector();
+
+    for (auto attr = 0; attr < incomplete_datum->getNumberOfAttributes(); ++attr) // for each attribute in the incomplete tuple
+    {
+        if (not incomplete_datum->is_attribute_complete(attr))
+        {
+            attributes[attr] = granule_center[attr];
+        }
+    }
+
+    return attributes;
+}
+
+void ksi::data_modifier_imputer_granular::validate_fuzzifications(const partition& partitioned_data)
+{
+    if (partitioned_data.getClusterFuzzifications().empty())
+    {
+        throw ksi::exception("The partitioner has not set the fuzzification of granules (the S variable) that I need here. "
+            "It is empty. Please use another partitioner.");
+    }
 }
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(const partitioner& Partitioner, const t_norm& Tnorm)
-{
-	_pPartitioner = std::make_shared < ksi::partitioner >(Partitioner.clone()); ///@todo To sie nie bedzie kompilowac.
-	_pTnorm = std::make_shared < ksi::t_norm >(Tnorm.clone());///@todo To sie nie bedzie kompilowac.
-}
+    : _pPartitioner(Partitioner.clone()), _pTnorm(Tnorm.clone())
+{}
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(const data_modifier_imputer_granular& other)
-	: data_modifier_imputer(other), incomplete_indices(other.incomplete_indices)
-{
-	_pPartitioner = std::make_shared < ksi::partitioner > (other._pPartitioner->clone());///@todo To sie nie bedzie kompilowac.
-	_pTnorm = std::make_shared < ksi::t_norm >(other._pTnorm->clone());///@todo To sie nie bedzie kompilowac.
-}
+	: data_modifier_imputer(other), incomplete_indices(other.incomplete_indices), _pPartitioner(other._pPartitioner), _pTnorm(other._pTnorm)
+{}
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(data_modifier_imputer_granular&& other) noexcept
 	: data_modifier_imputer(std::move(other)), _pPartitioner(std::move(other._pPartitioner))
@@ -159,15 +178,15 @@ std::vector<double> ksi::data_modifier_imputer_granular::weighted_average(const 
    CATCH;
 }
 
-double ksi::data_modifier_imputer_granular::calculate_granule_membership(const std::vector<double>& X, const std::vector<double>& V, const std::vector<double>& S)
+double ksi::data_modifier_imputer_granular::calculate_granule_membership(const std::vector<double>& estimated_values, const std::vector<double>& granule_centers, const std::vector<double>& granule_fuzzifications)
 {
    try
    {
       double total_membership = 1.0;
 
-      for (std::size_t attr = 0; attr < X.size(); ++attr) // for each attribute of X tuple
+      for (std::size_t attr = 0; attr < estimated_values.size(); ++attr) // for each attribute of X tuple
       {
-         auto attribute_membership = std::exp( - (std::pow((X[attr] - V[attr]), 2) / (2 * std::pow(S[attr], 2))));
+         auto attribute_membership = std::exp( - (std::pow((estimated_values[attr] - granule_centers[attr]), 2) / (2 * std::pow(granule_fuzzifications[attr], 2))));
          total_membership = _pTnorm->tnorm(total_membership, attribute_membership);
       }
 

@@ -74,8 +74,10 @@ namespace ksi
        */
       std::vector<std::vector<double>> getClusterCentres () const; 
       
-      /** @return cluster Fuzzifications 
-       *  @date 2024-08-19
+      /** 
+       * @todo doxygen
+       * @return cluster Fuzzifications 
+       * @date 2024-08-19
        */
       std::vector<std::vector<double>> getClusterFuzzifications () const; 
       
@@ -105,7 +107,8 @@ namespace ksi
       void setClusterCentres (const std::vector<std::vector<double>> & cluster_centres);
       
       /** 
-      * @todo doxygen
+       * @todo doxygen
+       * @date 2024-08-19
        */
       void setClusterFuzzifications (const std::vector<std::vector<double>> & cluster_fuzzifications);
 
