@@ -179,6 +179,10 @@ ksi::data_modifier* ksi::data_modifier_imputer_granular::clone() const
 void ksi::data_modifier_imputer_granular::modify(dataset& ds)
 {
 	ds = this->granular_imputation(ds);
+    
+    // and call pNext modifier
+    if (pNext)
+       pNext->modify(ds);
 }
 
 std::vector<double> ksi::data_modifier_imputer_granular::weighted_average(const std::vector < std::vector<double>>& estimated_values, const std::vector<double>& weights)
