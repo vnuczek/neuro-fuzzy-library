@@ -168,11 +168,12 @@ namespace ksi
 		 * @param t The index of the tuple to be processed.
 		 * @date 2024-08-20
 		 * @author Konrad Wnuk
+		 * @todo poprawiæ opis
 		 */
-		void handle_incomplete_dataset(dataset& result, const dataset& incomplete_dataset, const partition& partitioned_data, const std::size_t& t);
+		void handle_incomplete_tuple(dataset& result, const datum* incomplete_tuple, const partition& partitioned_data, const std::size_t& t);
 
 		/**
-		 * @brief Calculates granule memberships and imputations for a given incomplete tuple.
+		 * @brief Calculates granule imputations and memberships for a given incomplete tuple.
 		 *
 		 * This method computes the membership of the tuple in each granule and generates the corresponding imputations based on granule centers and fuzzifications.
 		 *
@@ -181,8 +182,9 @@ namespace ksi
 		 * @return A pair containing the list of imputed tuples and their granule memberships.
 		 * @date 2024-08-20
 		 * @author Konrad Wnuk
+		 * @todo poprawiæ opis
 		 */
-		std::pair<std::vector<std::vector<double>>, std::vector<double>> calculate_granule_memberships_and_imputations(const datum* incomplete_datum, const partition& partitioned_data);
+		std::pair<std::vector<std::vector<double>>, std::vector<double>> calculate_granule_imputations_and_memberships(const datum* incomplete_datum, const partition& partitioned_data);
 
 		/**
 		 * @brief Imputes missing attributes in a tuple using the given granule center.

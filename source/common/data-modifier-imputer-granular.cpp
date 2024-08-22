@@ -44,10 +44,7 @@ ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const data
 
         for (auto t = 0; t < incomplete_dataset.size(); ++t) // for each incomplete tuple
         {
-           /// @todo Wydaje mi sie, ze ta nazwa jest mylaca. Mamy "handle_incomplete_dataset",
-           ///       a zajmujemy sie tylko jedna krotka. Czy nie byloby lepiej nazwac 
-           ///       te metode "handle_incomplete_tuple" i przekazywac do niej te wlasnie krotke?
-            handle_incomplete_dataset(result, incomplete_dataset, partitioned_data, t);
+            handle_incomplete_tuple(result, incomplete_dataset.getDatum(t), partitioned_data, t);
         }
 
         return result;
@@ -55,26 +52,24 @@ ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const data
     CATCH;
 }
 
-void ksi::data_modifier_imputer_granular::handle_incomplete_dataset(dataset& result, const dataset& incomplete_dataset, const partition& partitioned_data, const std::size_t& t)
+void ksi::data_modifier_imputer_granular::handle_incomplete_tuple(dataset& result,const datum* incomplete_tuple, const partition& partitioned_data, const std::size_t& t)
 {
+   /// @todo KW: Przemyœleæ ca³¹ hierachie wywo³añ - zwróciæ uwagê na powtarzaj¹ce siê zmienne 
+
    /// @todo Jak Pan tak ladnie porozpisywal na metody, to teraz sie az narzuca pewna optymalizacja.
    ///       Prosze spojrzec: Niezaleznie ile atrybutow krotce brakuje, to my i tak liczymy srednia 
    ///       wazona dla calej krotki. Nawet jak ma ona 1000 atrybutow, a brakuje jej tylko jednego,
    ///       to i tak liczymy te wszystkie srednie dla 1000. A wystarczy sprawdzic, ktorych atrybutow
    ///       brakuje i zajac sie tylko nimi. 
-   ///
-    auto incomplete_datum = incomplete_dataset.getDatum(t);
-
-    /// @todo Metoda nazywa sie "calculate_granule_memberships_and_imputations", ale zwraca
-    ///       imputed_tuples i memberships, czyli odwrotnie.
-    auto [imputed_tuples, granule_membership] = calculate_granule_memberships_and_imputations(incomplete_datum, partitioned_data);
+   
+    auto [imputed_tuples, granule_membership] = calculate_granule_imputations_and_memberships(incomplete_tuple, partitioned_data);
 
     auto imputed_tuple = weighted_average(imputed_tuples, granule_membership);
 
     result.getDatumNonConst(t)->changeAttributesValues(imputed_tuple);
 }
 
-std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modifier_imputer_granular::calculate_granule_memberships_and_imputations(const datum* incomplete_datum, const partition& partitioned_data)
+std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modifier_imputer_granular::calculate_granule_imputations_and_memberships(const datum* incomplete_datum, const partition& partitioned_data)
 {
     std::vector<std::vector<double>> imputed_tuples;
     imputed_tuples.reserve(partitioned_data.getNumberOfClusters());
@@ -83,11 +78,11 @@ std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modif
     /// @todo W tej metodzie wywolujemy metode getNumberOfClusters() trzy razy. 
     ///       Czyli dla kazdej krotki wywolujemy trzy razy. Czyli tych wywolan jest 
     ///       sporo. A wystarczy tylko jedno dla wszystkich krotek. 
-    ///       Zapisalbym te wartosc jako pole klasy.
+    ///       Zapisalbym te wartosc jako pole klasy. - KW:: do zrobienia
     granule_membership.reserve(partitioned_data.getNumberOfClusters());
 
-    auto granules_centers = partitioned_data.getClusterCentres(); ///@todo Wywolujemy metode i kopiujemy granule dla kazdej krotki, a to sie niezmienia. Wystarczy jedna kopia dla wszystkich. 
-    auto granules_fuzzifications = partitioned_data.getClusterFuzzifications(); ///@todo Tu tak samo.
+    auto granules_centers = partitioned_data.getClusterCentres(); ///@todo Wywolujemy metode i kopiujemy granule dla kazdej krotki, a to sie niezmienia. Wystarczy jedna kopia dla wszystkich. - KW:: do przeniesienia wyrzej w hierachi
+    auto granules_fuzzifications = partitioned_data.getClusterFuzzifications(); ///@todo Tu tak samo. - KW:: do przeniesienia wyrzej w hierachi
 
     for (auto gran = 0; gran < partitioned_data.getNumberOfClusters(); ++gran) // for each granule 
     {
@@ -102,9 +97,9 @@ std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modif
 
 std::vector<double> ksi::data_modifier_imputer_granular::impute_tuple(const datum* incomplete_datum, const std::vector<double>& granule_centre)
 {
-    auto attributes = incomplete_datum->getVector(); ///@todo Ta metoda jest kosztowna. Datum przechowuje dane jako wektor wskaznikow na klase number. Lepiej byloby te metode wywolac raz, a potem kopiowac wektor, ktory ona zwracila. Po prostu kopiowanie wektora bedzie szybsze niz wywolanie kosztownej funkcji i zapisanie do wektora.
+    auto attributes = incomplete_datum->getVector(); ///@todo Ta metoda jest kosztowna. Datum przechowuje dane jako wektor wskaznikow na klase number. Lepiej byloby te metode wywolac raz, a potem kopiowac wektor, ktory ona zwracila. Po prostu kopiowanie wektora bedzie szybsze niz wywolanie kosztownej funkcji i zapisanie do wektora. - KW: przerzuciæ wy¿ej w hierachi wywo³añ
 
-    ///@todo getNumberOfAttributes pobierzmy tylko raz. To jest wartosc taka sama dla wszystkich krotek w zbiorze danych. Nie wywolujmy metody setki razy. Zapisalbym te wartosc jako pole klasy. 
+    ///@todo getNumberOfAttributes pobierzmy tylko raz. To jest wartosc taka sama dla wszystkich krotek w zbiorze danych. Nie wywolujmy metody setki razy. Zapisalbym te wartosc jako pole klasy. - KW:: do zrobienia
     for (auto attr = 0; attr < incomplete_datum->getNumberOfAttributes(); ++attr) // for each attribute in the incomplete tuple
     {
         if (not incomplete_datum->is_attribute_complete(attr))
@@ -128,17 +123,21 @@ void ksi::data_modifier_imputer_granular::validate_fuzzifications(const partitio
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(partitioner& Partitioner, t_norm& Tnorm)
     : data_modifier_imputer(), _pPartitioner(Partitioner.clone()), _pTnorm(Tnorm.clone())
 {
-   ///@todo Jeszcze trzeba ustawic pole description z krotkim opisem (nazwa) tego modyfikatora.
+   ///@todo Jeszcze trzeba ustawic pole description z krotkim opisem (nazwa) tego modyfikatora. - KW: nie rozumiem
 }
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(const data_modifier_imputer_granular& other)
-	: data_modifier_imputer(other), incomplete_indices(other.incomplete_indices), _pPartitioner(other._pPartitioner), _pTnorm(other._pTnorm)
-{
-   ///@todo Field 'incomplete_indices' will be initialized after field '_pPartitioner'
-   
+	: data_modifier_imputer(other), _pPartitioner(other._pPartitioner), _pTnorm(other._pTnorm), incomplete_indices(other.incomplete_indices)
+{   
    ///@todo To nie jest dobrze, bo kopiujemy wskazniki _pTnorm i _pPartitioner, czyli robimy plytka kopie obiektu.
    ///      Powinnismy tutaj zrobic kopie gleboka, czyli skopiowac obiekty, na ktore te wskazniki wskazuja.
-   ///      To latwe, bo obiekty, na ktore wskazuja, maja metody clone(); 
+   ///      To latwe, bo obiekty, na ktore wskazuja, maja metody clone();
+   
+   ///@warning KW:: gdy korzystam z metody clone oraz std::make_sahred dostajê b³êdy xmemory - do poprawy równie¿ w poprzenim projekcie ze zbiorami 
+   /*
+    _pPartitioner = std::make_shared<ksi::partitioner>(other._pPartitioner->clone());
+    _pTnorm = std::make_shared<ksi::t_norm>(other._pTnorm->clone());
+    */
 }
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(data_modifier_imputer_granular&& other) noexcept
@@ -153,7 +152,12 @@ ksi::data_modifier_imputer_granular& ksi::data_modifier_imputer_granular::operat
 	{
 		data_modifier_imputer::operator=(other); 
 		_pPartitioner = other._pPartitioner; ///@todo Tu powinna byc gleboka kopia.
-		_pTnorm =  other._pTnorm;///@todo Tu powinna byc gleboka kopia.
+		_pTnorm =  other._pTnorm; ///@todo Tu powinna byc gleboka kopia.
+       ///@warning KW:: gdy korzystam z metody clone oraz std::make_sahred dostajê b³êdy xmemory - do poprawy równie¿ w poprzenim projekcie ze zbiorami 
+       /*
+       _pPartitioner = std::make_shared<ksi::partitioner>(other._pPartitioner->clone());
+       _pTnorm = std::make_shared<ksi::t_norm>(other._pTnorm->clone());
+       */
 		incomplete_indices = other.incomplete_indices;
 	}
 	return *this;
@@ -187,6 +191,7 @@ void ksi::data_modifier_imputer_granular::modify(dataset& ds)
     // and call pNext modifier
     if (pNext)
        pNext->modify(ds);
+    /// @todo KW: mo¿e pan wyjaœniæ co to?
 }
 
 std::vector<double> ksi::data_modifier_imputer_granular::weighted_average(const std::vector < std::vector<double>>& estimated_values, const std::vector<double>& weights)
