@@ -127,11 +127,15 @@ void ksi::data_modifier_imputer_granular::validate_fuzzifications(const partitio
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(partitioner& Partitioner, t_norm& Tnorm)
     : data_modifier_imputer(), _pPartitioner(Partitioner.clone()), _pTnorm(Tnorm.clone())
-{}
+{
+   ///@todo Jeszcze trzeba ustawic pole description z krotkim opisem (nazwa) tego modyfikatora.
+}
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(const data_modifier_imputer_granular& other)
 	: data_modifier_imputer(other), incomplete_indices(other.incomplete_indices), _pPartitioner(other._pPartitioner), _pTnorm(other._pTnorm)
 {
+   ///@todo Field 'incomplete_indices' will be initialized after field '_pPartitioner'
+   
    ///@todo To nie jest dobrze, bo kopiujemy wskazniki _pTnorm i _pPartitioner, czyli robimy plytka kopie obiektu.
    ///      Powinnismy tutaj zrobic kopie gleboka, czyli skopiowac obiekty, na ktore te wskazniki wskazuja.
    ///      To latwe, bo obiekty, na ktore wskazuja, maja metody clone(); 
