@@ -17,7 +17,12 @@ namespace ksi
 	 * @class data_modifier_imputer_granular
 	 * @brief Class responsible for granular data imputation using a partitioner.
 	 *
-	 * This class inherits from `data_modifier_imputer` and extends its functionality by allowing granular data imputation based on partitions.
+	 * This class inherits from `data_modifier_imputer` and extends its functionality by allowing granular data imputation based on partitions. 
+    * @todo KS: Taka mala uwaga dotyczaca komentarza linie wyzej. Z deklaracji klasy widzimy, po czym dziedziczy. Nie musimy zatem tego pisac w komentarzu.
+    *           Wynika to z tego, ze powtarzamy te sama informacje. Jezeli z jakiejkolwiek przyczny zmienimy klase bazowa (np. wprowadzimy jeszcze jedna 
+    *           miedzy data_modifier_imputer i data_modifier_imputer_granular), to musimy pamietac o zmianie komentarza. Jak bym nie pamietal i zostalby 
+    *           nieaktualny komentarz, o to juz nie jest dobrze. 
+    *           Moim zdaniem komentarz w tym miejscu powinien mowic, po co w ogole ta klasa jest, jaka jest uzyta idea uzupelniania brakow.
 	 */
 	class data_modifier_imputer_granular : public data_modifier_imputer 
 	{
@@ -170,7 +175,7 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @todo poprawiæ opis
 		 */
-		void handle_incomplete_tuple(dataset& result, const datum* incomplete_tuple, const partition& partitioned_data, const std::size_t& t);
+		void handle_incomplete_tuple(dataset& result, const datum* incomplete_tuple, const partition& partitioned_data, const std::size_t t);
 
 		/**
 		 * @brief Calculates granule imputations and memberships for a given incomplete tuple.
