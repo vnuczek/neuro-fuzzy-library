@@ -34,7 +34,6 @@ ksi::data_modifier_imputer_median::data_modifier_imputer_median(const ksi::data_
 
 ksi::data_modifier_imputer_median::data_modifier_imputer_median() : data_modifier_imputer()
 {
-   description = "median imputer";
 }
 
 ksi::data_modifier_imputer_median & ksi::data_modifier_imputer_median::operator=(ksi::data_modifier_imputer_median && dm)
@@ -140,5 +139,9 @@ void ksi::data_modifier_imputer_median::modify(ksi::dataset & ds)
    CATCH;
 }
 
+std::string ksi::data_modifier_imputer_median::getDescription() const
+{
+   return "median imputer";
+}
 
 

@@ -30,8 +30,7 @@ ksi::data_modifier_imputer_knn_median::data_modifier_imputer_knn_median(const ks
 }
 
 ksi::data_modifier_imputer_knn_median::data_modifier_imputer_knn_median() 
-{
-   description = "knn median imputer";
+{   
 }
 
 ksi::data_modifier_imputer_knn_median & ksi::data_modifier_imputer_knn_median::operator=(ksi::data_modifier_imputer_knn_median && dm)
@@ -169,4 +168,7 @@ void ksi::data_modifier_imputer_knn_median::modify(ksi::dataset & ds)
    CATCH;
 }
 
- 
+std::string ksi::data_modifier_imputer_knn_median::getDescription() const 
+{
+   return "k nearest neighbours median imputer " + ksi::data_modifier_imputer_knn::getDescription();
+}

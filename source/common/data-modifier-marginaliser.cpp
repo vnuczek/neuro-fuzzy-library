@@ -24,7 +24,6 @@ ksi::data_modifier_marginaliser::data_modifier_marginaliser(const ksi::data_modi
 
 ksi::data_modifier_marginaliser::data_modifier_marginaliser() : data_modifier()
 {
-   description = "marginaliser";
 }
 
 ksi::data_modifier_marginaliser & ksi::data_modifier_marginaliser::operator=(ksi::data_modifier_marginaliser && dm)
@@ -100,5 +99,9 @@ void ksi::data_modifier_marginaliser::modify(ksi::dataset & ds)
    CATCH;
 }
 
+std::string ksi::data_modifier_marginaliser::getDescription() const
+{
+   return "marginaliser";
+}
 
 

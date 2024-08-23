@@ -21,8 +21,7 @@ namespace ksi
       /** the next data_modifier (or derivative) */
       data_modifier * pNext = nullptr;
       
-      /** text description of the modifier */
-      std::string description;
+  
    public:
       /** just a constructor */
       data_modifier ();
@@ -57,6 +56,9 @@ namespace ksi
       
       /** @return name of modifiers in chain */
       virtual std::string print () const ;
+      
+      /** @return description of the modifier */
+      virtual std::string getDescription() const = 0;
       
    };
 }

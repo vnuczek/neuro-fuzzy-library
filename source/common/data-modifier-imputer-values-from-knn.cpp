@@ -30,7 +30,6 @@ ksi::data_modifier_imputer_values_from_knn::data_modifier_imputer_values_from_kn
 
 ksi::data_modifier_imputer_values_from_knn::data_modifier_imputer_values_from_knn() 
 {
-   description = "imputer with values from knn";
 }
 
 ksi::data_modifier_imputer_values_from_knn & ksi::data_modifier_imputer_values_from_knn::operator=(ksi::data_modifier_imputer_values_from_knn && dm)
@@ -195,3 +194,7 @@ std::vector< const ksi::datum* >  ksi::data_modifier_imputer_values_from_knn::ge
    return neighbours;  
 }
  
+std::string ksi::data_modifier_imputer_values_from_knn::getDescription() const
+{
+   return "imputer with values from k nearest neighbours " + ksi::data_modifier_imputer_knn::getDescription();
+}

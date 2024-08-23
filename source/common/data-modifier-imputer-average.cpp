@@ -30,7 +30,6 @@ ksi::data_modifier_imputer_average::data_modifier_imputer_average(const ksi::dat
 
 ksi::data_modifier_imputer_average::data_modifier_imputer_average() : data_modifier_imputer()
 {
-   description = "average imputer";
 }
 
 ksi::data_modifier_imputer_average & ksi::data_modifier_imputer_average::operator=(ksi::data_modifier_imputer_average && dm)
@@ -142,5 +141,9 @@ void ksi::data_modifier_imputer_average::modify(ksi::dataset & ds)
    CATCH;
 }
 
+std::string ksi::data_modifier_imputer_average::getDescription() const
+{
+   return "average imputer";
+}
 
 

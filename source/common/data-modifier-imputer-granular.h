@@ -173,7 +173,7 @@ namespace ksi
 		 * @param t The index of the tuple to be processed.
 		 * @date 2024-08-20
 		 * @author Konrad Wnuk
-		 * @todo poprawiæ opis
+		 * @todo poprawiÃ¦ opis
 		 */
 		void handle_incomplete_tuple(dataset& result, const datum* incomplete_tuple, const partition& partitioned_data, const std::size_t t);
 
@@ -187,7 +187,7 @@ namespace ksi
 		 * @return A pair containing the list of imputed tuples and their granule memberships.
 		 * @date 2024-08-20
 		 * @author Konrad Wnuk
-		 * @todo poprawiæ opis
+		 * @todo poprawiÃ¦ opis
 		 */
 		std::pair<std::vector<std::vector<double>>, std::vector<double>> calculate_granule_imputations_and_memberships(const datum* incomplete_datum, const partition& partitioned_data);
 
@@ -245,6 +245,9 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 */
 		double calculate_granule_membership(const std::vector<double>& estimated_values, const std::vector<double>& granule_centers, const std::vector<double>& granule_fuzzifications);
+		
+	public:
+		virtual std::string getDescription() const override;
 	};
 }
 

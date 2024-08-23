@@ -24,7 +24,6 @@ ksi::data_modifier_outlier_remove_sigma::data_modifier_outlier_remove_sigma(cons
 
 ksi::data_modifier_outlier_remove_sigma::data_modifier_outlier_remove_sigma(const double n) : data_modifier(), _n(n)
 {
-   description = "outlier remove with sigma approach";
 }
 
 ksi::data_modifier_outlier_remove_sigma & ksi::data_modifier_outlier_remove_sigma::operator=(ksi::data_modifier_outlier_remove_sigma && dm)
@@ -126,6 +125,10 @@ void ksi::data_modifier_outlier_remove_sigma::modify(ksi::dataset & ds)
    CATCH;   
 }
 
+std::string ksi::data_modifier_outlier_remove_sigma::getDescription() const
+{
+   return std::string ("outlier remove with sigma approach");
+}
 
 
 

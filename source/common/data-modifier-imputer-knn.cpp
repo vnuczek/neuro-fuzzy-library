@@ -28,7 +28,6 @@ ksi::data_modifier_imputer_knn::data_modifier_imputer_knn(const ksi::data_modifi
 
 ksi::data_modifier_imputer_knn::data_modifier_imputer_knn() 
 {
-   description = "knn imputer";
 }
 
 ksi::data_modifier_imputer_knn & ksi::data_modifier_imputer_knn::operator=(ksi::data_modifier_imputer_knn && dm)
@@ -96,20 +95,8 @@ std::vector<const ksi::datum *> ksi::data_modifier_imputer_knn::getNeighbours(
    return neighbours;   
 }
 
-std::string ksi::data_modifier_imputer_knn::print() const
+std::string ksi::data_modifier_imputer_knn::getDescription() const
 {
-   std::string full_description = description + std::string(" (k == ") +
-               std::to_string(_k) + std::string (")");
-               
-   if (pNext)
-   {
-      auto further_description = pNext->print();
-      if (further_description.empty())
-         return full_description;
-      else 
-         return full_description + " + " + further_description;
-   }
-   else 
-      return full_description;
+   return std::string("(k == ") + std::to_string(_k) + std::string (")");
 } 
 

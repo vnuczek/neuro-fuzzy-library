@@ -17,16 +17,13 @@ ksi::data_modifier::data_modifier(const ksi::data_modifier & dm)
    if (dm.pNext)
       pNext = dm.pNext->clone();
    else
-      pNext = nullptr;
-   
-   description = dm.description;
+      pNext = nullptr; 
 }
 
 ksi::data_modifier::data_modifier(ksi::data_modifier && dm)
 {
    //pNext = nullptr;
-   std::swap(pNext, dm.pNext);
-   std::swap(description, dm.description);
+   std::swap(pNext, dm.pNext); 
 }
 
 ksi::data_modifier & ksi::data_modifier::operator=(const ksi::data_modifier & dm)
@@ -41,9 +38,7 @@ ksi::data_modifier & ksi::data_modifier::operator=(const ksi::data_modifier & dm
       pNext = dm.pNext->clone();
    else
       pNext = nullptr;
-   
-   description = dm.description;
-
+  
    return *this;   
 }
 
@@ -54,18 +49,9 @@ ksi::data_modifier & ksi::data_modifier::operator=(ksi::data_modifier&& dm)
       return *this;
    
    std::swap(pNext, dm.pNext);
-   std::swap(description, dm.description);
-
    
    return *this;
 }
-
-/*
-ksi::data_modifier* ksi::data_modifier::clone() const
-{
-   return new data_modifier (*this);
-}
-*/
 
 ksi::data_modifier::~data_modifier()
 {
@@ -73,16 +59,6 @@ ksi::data_modifier::~data_modifier()
       delete pNext;
 }
 
-/*
-void ksi::data_modifier::modify(ksi::dataset& ds)
-{
-   // empty methods -- modifies nothing
-   
-   // only calles the modify method of the next modifier:
-   if (pNext)
-      pNext->modify(ds);
-}
-*/
 void ksi::data_modifier::addModifier(ksi::data_modifier & dm)
 {
    if (pNext == nullptr)
@@ -94,6 +70,8 @@ void ksi::data_modifier::addModifier(ksi::data_modifier & dm)
 
 std::string ksi::data_modifier::print() const
 {
+   std::string description = getDescription();
+   
    if (pNext)
    {
       auto further_description = pNext->print();

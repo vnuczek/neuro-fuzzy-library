@@ -24,7 +24,6 @@ ksi::data_modifier_normaliser::data_modifier_normaliser(const ksi::data_modifier
 
 ksi::data_modifier_normaliser::data_modifier_normaliser() : data_modifier()
 {
-   description = "normaliser";
 }
 
 ksi::data_modifier_normaliser& ksi::data_modifier_normaliser::operator=(ksi::data_modifier_normaliser&& dm)
@@ -107,5 +106,9 @@ void ksi::data_modifier_normaliser::modify(ksi::dataset & ds)
 }
 
 
+std::string ksi::data_modifier_normaliser::getDescription() const
+{
+   return "normaliser";
+}
 
 

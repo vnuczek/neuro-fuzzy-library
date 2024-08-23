@@ -39,6 +39,9 @@ namespace ksi
        * @date   2021-04-14
        */
       virtual void modify (dataset & ds); 
+      
+      
+      virtual std::string getDescription() const override;
    };
 }
 

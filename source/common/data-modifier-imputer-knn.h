@@ -36,18 +36,10 @@ namespace ksi
       data_modifier_imputer_knn & operator = (const data_modifier_imputer_knn & dm);
       data_modifier_imputer_knn & operator = (data_modifier_imputer_knn && dm);
       
-      virtual ~data_modifier_imputer_knn();
-      virtual data_modifier * clone() const = 0;
+      virtual ~data_modifier_imputer_knn(); 
  
-      /** The method removes from the dataset incomplete datums.
-       * Then calls the modify method in the next data_modifier. 
-       * @param  ds dataset to modify
-       * @author Krzysztof Siminski
-       */
-      virtual void modify (dataset & ds) = 0;  
-      
       /** @return name of modifiers in chain */
-      virtual std::string print () const override;
+      virtual std::string getDescription () const override;
  
       
    };

@@ -243,5 +243,13 @@ double ksi::data_modifier_imputer_granular::calculate_granule_membership(const s
    CATCH;
 }
 
+std::string ksi::data_modifier_imputer_granular::getDescription() const
+{
+   ///@todo zwrot opisu modyfikatora
+   return "";
+}
+
+
+
 // end of file :-) 
 

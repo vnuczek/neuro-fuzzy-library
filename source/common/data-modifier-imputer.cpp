@@ -34,7 +34,6 @@ ksi::data_modifier_imputer::data_modifier_imputer(const ksi::data_modifier_imput
 ksi::data_modifier_imputer::data_modifier_imputer() : data_modifier()
 {
    _value = 0.0;
-   description = "imputer with constant value"; 
 }
 
 ksi::data_modifier_imputer & ksi::data_modifier_imputer::operator=(ksi::data_modifier_imputer && dm)
@@ -131,5 +130,9 @@ void ksi::data_modifier_imputer::modify(ksi::dataset & ds)
    CATCH;
 }
 
+std::string ksi::data_modifier_imputer::getDescription() const
+{
+   return "imputer with constant value"; 
+}
 
 

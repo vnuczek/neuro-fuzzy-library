@@ -16,7 +16,6 @@ ksi::data_modifier* ksi::data_modifier_filter::clone() const
 
 ksi::data_modifier_filter::data_modifier_filter(std::size_t index, std::function<bool (double value)> filter) : data_modifier()
 {
-   description = "filter";
    _index = index;
    _filter = filter;
 }
@@ -51,6 +50,11 @@ void ksi::data_modifier_filter::modify(ksi::dataset & ds)
    CATCH;   
 }
 
+std::string ksi::data_modifier_filter::getDescription() const
+{
+    return "filter";
+    
+}
 
 
 

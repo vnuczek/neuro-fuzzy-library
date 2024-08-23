@@ -31,8 +31,6 @@ ksi::data_modifier_imputer_knn_average::data_modifier_imputer_knn_average(const 
 
 ksi::data_modifier_imputer_knn_average::data_modifier_imputer_knn_average() 
 {
-   description = "knn average imputer";
-    
 }
 
 ksi::data_modifier_imputer_knn_average & ksi::data_modifier_imputer_knn_average::operator=(ksi::data_modifier_imputer_knn_average && dm)
@@ -170,4 +168,8 @@ void ksi::data_modifier_imputer_knn_average::modify(ksi::dataset & ds)
    CATCH;
 }
 
+std::string ksi::data_modifier_imputer_knn_average::getDescription() const
+{
+   return "k nearest neighbours average imputer " + ksi::data_modifier_imputer_knn::getDescription();
+}
  

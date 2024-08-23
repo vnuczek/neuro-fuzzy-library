@@ -143,6 +143,7 @@ void ksi::exp_001::execute()
             std::cout << "marginalization" << std::endl;
             std::cout << marg << std::endl;
             std::cout << std::endl;
+            std::cout << marginaliser.getDescription() << std::endl;
          }
 
          {

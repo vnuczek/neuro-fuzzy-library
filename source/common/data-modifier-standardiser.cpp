@@ -24,7 +24,6 @@ ksi::data_modifier_standardiser::data_modifier_standardiser(const ksi::data_modi
 
 ksi::data_modifier_standardiser::data_modifier_standardiser() : data_modifier()
 {
-   description = "standardiser";
 }
 
 ksi::data_modifier_standardiser & ksi::data_modifier_standardiser::operator=(ksi::data_modifier_standardiser && dm)
@@ -116,6 +115,10 @@ void ksi::data_modifier_standardiser::modify(ksi::dataset & ds)
 }
 
 
+std::string ksi::data_modifier_standardiser::getDescription() const
+{
+   return std::string("standardiser");
+}
 
 
 
