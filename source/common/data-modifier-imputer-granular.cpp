@@ -134,7 +134,9 @@ void ksi::data_modifier_imputer_granular::validate_fuzzifications(const partitio
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(partitioner& Partitioner, t_norm& Tnorm)
     : data_modifier_imputer(), _pPartitioner(Partitioner.clone()), _pTnorm(Tnorm.clone())
 {
-   ///@todo Jeszcze trzeba ustawic pole description z krotkim opisem (nazwa) tego modyfikatora. - KW: nie rozumiem
+   ///@todo Jeszcze trzeba ustawic pole description z krotkim opisem (nazwa) tego modyfikatora. - 
+   ///      KW: nie rozumiem
+   ///      KS: Zmienilem koncepcje i usunalem description z calej hierarchii. Nie trzeba juz niczego dodawac tutaj w konstruktorze.
 }
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(const data_modifier_imputer_granular& other)
@@ -245,8 +247,7 @@ double ksi::data_modifier_imputer_granular::calculate_granule_membership(const s
 
 std::string ksi::data_modifier_imputer_granular::getDescription() const
 {
-   ///@todo zwrot opisu modyfikatora
-   return "";
+   return "granular imputation";
 }
 
 
