@@ -6,7 +6,7 @@ ksi::cross_validation_model::cross_validation_model(ksi::reader& source_reader)
 	: pReader(source_reader.clone()) {}
 
 ksi::cross_validation_model::cross_validation_model(const cross_validation_model& other)
-	: pReader(other.pReader)
+	: pReader(pReader->clone())
 {
     std::lock_guard<std::mutex> lock(other.datasets_mutex);
     datasets = other.datasets;
@@ -23,7 +23,7 @@ ksi::cross_validation_model& ksi::cross_validation_model::operator=(const cross_
 {
     if (this != &other)
     {
-        pReader = other.pReader;
+        pReader = other.pReader->clone();
         std::lock_guard<std::mutex> lock(other.datasets_mutex);
         datasets = other.datasets;
     }

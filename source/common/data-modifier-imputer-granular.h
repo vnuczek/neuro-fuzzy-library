@@ -18,11 +18,7 @@ namespace ksi
 	 * @brief Class responsible for granular data imputation using a partitioner.
 	 *
 	 * This class inherits from `data_modifier_imputer` and extends its functionality by allowing granular data imputation based on partitions. 
-    * @todo KS: Taka mala uwaga dotyczaca komentarza linie wyzej. Z deklaracji klasy widzimy, po czym dziedziczy. Nie musimy zatem tego pisac w komentarzu.
-    *           Wynika to z tego, ze powtarzamy te sama informacje. Jezeli z jakiejkolwiek przyczny zmienimy klase bazowa (np. wprowadzimy jeszcze jedna 
-    *           miedzy data_modifier_imputer i data_modifier_imputer_granular), to musimy pamietac o zmianie komentarza. Jak bym nie pamietal i zostalby 
-    *           nieaktualny komentarz, o to juz nie jest dobrze. 
-    *           Moim zdaniem komentarz w tym miejscu powinien mowic, po co w ogole ta klasa jest, jaka jest uzyta idea uzupelniania brakow.
+     * @todo KW: napisać co robi klasa
 	 */
 	class data_modifier_imputer_granular : public data_modifier_imputer 
 	{
@@ -132,6 +128,11 @@ namespace ksi
 		 * @author Konrad Wnuk   
 		 */
 		virtual void modify (dataset & ds);
+		
+		/**
+		 * @todo Dodać opis - do wykonania przez KS 
+		 */
+		virtual std::string getDescription() const override;
 
 	protected:
 		/**
@@ -167,15 +168,13 @@ namespace ksi
 	 	 * This method handles the imputation of missing attributes for a specific tuple.
 		 * It calculates the granule memberships and imputes the attributes based on the weighted average.
 		 *
-		 * @param result The dataset that will store the imputed values.
 		 * @param incomplete_dataset The dataset containing incomplete tuples.
 		 * @param partitioned_data The partitioned data with granules.
-		 * @param t The index of the tuple to be processed.
 		 * @date 2024-08-20
 		 * @author Konrad Wnuk
-		 * @todo poprawiæ opis
+		 * @todo poprawić opis
 		 */
-		void handle_incomplete_tuple(dataset& result, const datum* incomplete_tuple, const partition& partitioned_data, const std::size_t t);
+		std::vector<double> handle_incomplete_tuple(const datum* incomplete_tuple, const partition& partitioned_data);
 
 		/**
 		 * @brief Calculates granule imputations and memberships for a given incomplete tuple.
@@ -187,7 +186,7 @@ namespace ksi
 		 * @return A pair containing the list of imputed tuples and their granule memberships.
 		 * @date 2024-08-20
 		 * @author Konrad Wnuk
-		 * @todo poprawiæ opis
+		 * @todo poprawić opis
 		 */
 		std::pair<std::vector<std::vector<double>>, std::vector<double>> calculate_granule_imputations_and_memberships(const datum* incomplete_datum, const partition& partitioned_data);
 
@@ -247,7 +246,7 @@ namespace ksi
 		double calculate_granule_membership(const std::vector<double>& estimated_values, const std::vector<double>& granule_centers, const std::vector<double>& granule_fuzzifications);
 		
 	public:
-		virtual std::string getDescription() const override;
+		
 	};
 }
 
