@@ -60,6 +60,8 @@ ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const data
 
 std::vector<double> ksi::data_modifier_imputer_granular::handle_incomplete_tuple(const datum * incomplete_tuple, const partition & partitioned_data, const std::size_t& cluster_numbers, const std::vector<std::vector<double>>& granules_centers ,const std::vector<std::vector<double>>& granules_fuzzifications)
 {
+   // KS: Moim zdaniem byloby lepiej przekazywac incomplete_tuple przez referencje. Nie tracimy mozliwosci polimorfizmu, a troche milej pracuje sie na referencji obiektu niz na wskazniku. 
+
    /// @todo Jak Pan tak ladnie porozpisywal na metody, to teraz sie az narzuca pewna optymalizacja.
    ///       Prosze spojrzec: Niezaleznie ile atrybutow krotce brakuje, to my i tak liczymy srednia 
    ///       wazona dla calej krotki. Nawet jak ma ona 1000 atrybutow, a brakuje jej tylko jednego,
@@ -75,18 +77,20 @@ std::vector<double> ksi::data_modifier_imputer_granular::handle_incomplete_tuple
 
 std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modifier_imputer_granular::calculate_granule_imputations_and_memberships(const datum* incomplete_datum, const partition& partitioned_data, const std::size_t& cluster_numbers, const std::vector<std::vector<double>>& granules_centers, const std::vector<std::vector<double>>& granules_fuzzifications)
 {
+   // KS: Chyba w tej metodzie argument partitioned_data jest nieuzywany.
+
     std::vector<std::vector<double>> imputed_tuples;
     imputed_tuples.reserve(cluster_numbers);
 
     std::vector<double> granule_membership;
     granule_membership.reserve(cluster_numbers);
 
-    auto incomplite_tuple_attributes = incomplete_datum->getVector();
-    auto incomplite_tuple_atributes_size = incomplete_datum->getNumberOfAttributes(); /// @todo KW: czy przenieść to jeszcze wyżej, zakładając że liczba ta jest zawsze stała?
+    auto incomplete_tuple_attributes = incomplete_datum->getVector();
+    auto incomplete_tuple_atributes_size = incomplete_datum->getNumberOfAttributes(); /// @todo KW: czy przenieść to jeszcze wyżej, zakładając że liczba ta jest zawsze stała? // KS: Tak, bo teraz pobieramy to dla kazdej niekompletnej krotki. A w sumie wystarczy tylko raz.
 
     for (auto gran = 0; gran < cluster_numbers; ++gran) // for each granule 
     {
-       auto attributes = impute_tuple(incomplete_datum, incomplite_tuple_attributes, incomplite_tuple_atributes_size, granules_centers[gran]);
+       auto attributes = impute_tuple(incomplete_datum, incomplete_tuple_attributes, incomplete_tuple_atributes_size, granules_centers[gran]);
 
        imputed_tuples.push_back(attributes);
        granule_membership.push_back(calculate_granule_membership(attributes, granules_centers[gran], granules_fuzzifications[gran]));
@@ -112,22 +116,26 @@ std::vector<double> ksi::data_modifier_imputer_granular::impute_tuple(const datu
 
 void ksi::data_modifier_imputer_granular::validate_fuzzifications(const std::vector<std::vector<double>>& granules_fuzzifications)
 {
-    if (granules_fuzzifications.empty())
-    {
-        throw ksi::exception("The partitioner has not set the fuzzification of granules (the S variable) that I need here. "
-            "It is empty. Please use another partitioner.");
-    }
+   try 
+   {
+      if (granules_fuzzifications.empty())
+      {
+         throw ksi::exception("The partitioner has not set the fuzzification of granules (the S variable) that I need here. "
+               "It is empty. Please use another partitioner.");
+      }
+   }
+   CATCH;
 }
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(partitioner& Partitioner, t_norm& Tnorm)
-    : data_modifier_imputer(), _pPartitioner(Partitioner.clone()), _pTnorm(Tnorm.clone())
+    : data_modifier_imputer(), _pPartitioner(Partitioner.clone()), _pTnorm(Tnorm.clone()) // KS: Dlaczego tutaj inicjujemy _pTnorm zwykłym wskaznikiem, ...
 {}
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(const data_modifier_imputer_granular& other)
 	: data_modifier_imputer(other), incomplete_indices(other.incomplete_indices)
 { 
     _pPartitioner = std::shared_ptr<ksi::partitioner>(other._pPartitioner->clone());
-    _pTnorm = std::shared_ptr<ksi::t_norm>(other._pTnorm->clone());
+    _pTnorm = std::shared_ptr<ksi::t_norm>(other._pTnorm->clone()); // KS: ... a tutaj przerabiamy go na shared_ptr? 
 }
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(data_modifier_imputer_granular&& other) noexcept
@@ -190,7 +198,7 @@ std::vector<double> ksi::data_modifier_imputer_granular::weighted_average(const 
          denominator += weights[i];
       }
 
-      return numerator / denominator;
+      return numerator / denominator; // KS: Co się stanie, gdy wszytkie wagi beda zerami?
    }
    CATCH;
 }

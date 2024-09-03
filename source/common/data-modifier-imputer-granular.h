@@ -116,7 +116,7 @@ namespace ksi
 		 * @date 2024-08-08
 		 * @author Konrad Wnuk
 		 */
-		virtual data_modifier * clone() const;
+		virtual data_modifier * clone() const override;
 		
 		/** 
 		 * @brief Modifies a dataset using granular imputation.
@@ -127,10 +127,10 @@ namespace ksi
 		 * @date 2024-08-08
 		 * @author Konrad Wnuk   
 		 */
-		virtual void modify (dataset & ds);
+		virtual void modify (dataset & ds) override;
 		
 		/**
-		 * @todo Dodać opis - KS 
+		 * @return short description of the modifier 
 		 */
 		virtual std::string getDescription() const override;
 
