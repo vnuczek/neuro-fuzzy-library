@@ -1,3 +1,4 @@
+/** @file */
 
 #include <cmath>
 
@@ -40,11 +41,15 @@ ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const data
         auto [complete_dataset, incomplete_dataset] = split_complete_incomplete(ds);
         auto partitioned_data = _pPartitioner->doPartition(complete_dataset);
 
-        validate_fuzzifications(partitioned_data);
+        auto granules_fuzzifications = partitioned_data.getClusterFuzzifications();
+        validate_fuzzifications(granules_fuzzifications);
+
+        auto cluster_numbers = partitioned_data.getNumberOfClusters();
+        auto granules_centers = partitioned_data.getClusterCentres();
 
         for (auto t = 0; t < incomplete_dataset.size(); ++t) // for each incomplete tuple
         {
-            auto imputed_tuple = handle_incomplete_tuple(incomplete_dataset.getDatum(t), partitioned_data);
+            auto imputed_tuple = handle_incomplete_tuple(incomplete_dataset.getDatum(t), partitioned_data, cluster_numbers, granules_centers, granules_fuzzifications);
             result.getDatumNonConst(t)->changeAttributesValues(imputed_tuple);
         }
 
@@ -53,53 +58,45 @@ ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const data
     CATCH;
 }
 
-std::vector<double> ksi::data_modifier_imputer_granular::handle_incomplete_tuple(const datum * incomplete_tuple, const partition & partitioned_data)
+std::vector<double> ksi::data_modifier_imputer_granular::handle_incomplete_tuple(const datum * incomplete_tuple, const partition & partitioned_data, const std::size_t& cluster_numbers, const std::vector<std::vector<double>>& granules_centers ,const std::vector<std::vector<double>>& granules_fuzzifications)
 {
-   /// @todo KW: Przemyslec cala hierachie wywolan - zwr�cic uwage na powtarzajace sie zmienne.
-
    /// @todo Jak Pan tak ladnie porozpisywal na metody, to teraz sie az narzuca pewna optymalizacja.
    ///       Prosze spojrzec: Niezaleznie ile atrybutow krotce brakuje, to my i tak liczymy srednia 
    ///       wazona dla calej krotki. Nawet jak ma ona 1000 atrybutow, a brakuje jej tylko jednego,
    ///       to i tak liczymy te wszystkie srednie dla 1000. A wystarczy sprawdzic, ktorych atrybutow
    ///       brakuje i zajac sie tylko nimi. 
-   
-    auto [imputed_tuples, granule_membership] = calculate_granule_imputations_and_memberships(incomplete_tuple, partitioned_data);
+    auto [imputed_tuples, granule_membership] = calculate_granule_imputations_and_memberships(incomplete_tuple, partitioned_data, cluster_numbers, granules_centers, granules_fuzzifications);
 
     return weighted_average(imputed_tuples, granule_membership);
 }
 
-std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modifier_imputer_granular::calculate_granule_imputations_and_memberships(const datum* incomplete_datum, const partition& partitioned_data)
+std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modifier_imputer_granular::calculate_granule_imputations_and_memberships(const datum* incomplete_datum, const partition& partitioned_data, const std::size_t& cluster_numbers, const std::vector<std::vector<double>>& granules_centers, const std::vector<std::vector<double>>& granules_fuzzifications)
 {
     std::vector<std::vector<double>> imputed_tuples;
-    imputed_tuples.reserve(partitioned_data.getNumberOfClusters());
+    imputed_tuples.reserve(cluster_numbers);
 
     std::vector<double> granule_membership;
-    /// @todo W tej metodzie wywolujemy metode getNumberOfClusters() trzy razy. 
-    ///       Czyli dla kazdej krotki wywolujemy trzy razy. Czyli tych wywolan jest 
-    ///       sporo. A wystarczy tylko jedno dla wszystkich krotek. 
-    ///       Zapisalbym te wartosc jako pole klasy. - KW:: do zrobienia
-    granule_membership.reserve(partitioned_data.getNumberOfClusters());
+    granule_membership.reserve(cluster_numbers);
 
-    auto granules_centers = partitioned_data.getClusterCentres(); ///@todo Wywolujemy metode i kopiujemy granule dla kazdej krotki, a to sie niezmienia. Wystarczy jedna kopia dla wszystkich. - KW:: do przeniesienia wyzej w hierarchii
-    auto granules_fuzzifications = partitioned_data.getClusterFuzzifications(); ///@todo Tu tak samo. - KW:: do przeniesienia wyzej w hierarchii
+    auto incomplite_tuple_attributes = incomplete_datum->getVector();
+    auto incomplite_tuple_atributes_size = incomplete_datum->getNumberOfAttributes(); //** @todo KW: czy przenieść to jeszcze wyżej, zakładając że liczba ta jest zawsze stała? */
 
-    for (auto gran = 0; gran < partitioned_data.getNumberOfClusters(); ++gran) // for each granule 
+    for (auto gran = 0; gran < cluster_numbers; ++gran) // for each granule 
     {
-        auto attributes = impute_tuple(incomplete_datum, granules_centers[gran]);
+       auto attributes = impute_tuple(incomplete_datum, incomplite_tuple_attributes, incomplite_tuple_atributes_size, granules_centers[gran]);
 
-        imputed_tuples.push_back(attributes);
-        granule_membership.push_back(calculate_granule_membership(attributes, granules_centers[gran], granules_fuzzifications[gran]));
+       imputed_tuples.push_back(attributes);
+       granule_membership.push_back(calculate_granule_membership(attributes, granules_centers[gran], granules_fuzzifications[gran]));
     }
 
     return std::make_pair(imputed_tuples, granule_membership);
 }
 
-std::vector<double> ksi::data_modifier_imputer_granular::impute_tuple(const datum* incomplete_datum, const std::vector<double>& granule_centre)
+std::vector<double> ksi::data_modifier_imputer_granular::impute_tuple(const datum* incomplete_datum, const std::vector<double>& incomplite_tuple_attributes, const std::size_t& incomplite_tuple_atributes_size, const std::vector<double>& granule_centre)
 {
-    auto attributes = incomplete_datum->getVector(); ///@todo Ta metoda jest kosztowna. Datum przechowuje dane jako wektor wskaznikow na klase number. Lepiej byloby te metode wywolac raz, a potem kopiowac wektor, ktory ona zwracila. Po prostu kopiowanie wektora bedzie szybsze niz wywolanie kosztownej funkcji i zapisanie do wektora. - KW: przerzuci� wy�ej w hierachi wywo�a�   
+    auto attributes = incomplite_tuple_attributes; 
 
-    ///@todo getNumberOfAttributes pobierzmy tylko raz. To jest wartosc taka sama dla wszystkich krotek w zbiorze danych. Nie wywolujmy metody setki razy. Zapisalbym te wartosc jako pole klasy. - KW:: do zrobienia
-    for (auto attr = 0; attr < incomplete_datum->getNumberOfAttributes(); ++attr) // for each attribute in the incomplete tuple
+    for (auto attr = 0; attr < incomplite_tuple_atributes_size; ++attr) // for each attribute in the incomplete tuple
     {
         if (not incomplete_datum->is_attribute_complete(attr))
         {
@@ -110,9 +107,9 @@ std::vector<double> ksi::data_modifier_imputer_granular::impute_tuple(const datu
     return attributes;
 }
 
-void ksi::data_modifier_imputer_granular::validate_fuzzifications(const partition& partitioned_data)
+void ksi::data_modifier_imputer_granular::validate_fuzzifications(const std::vector<std::vector<double>>& granules_fuzzifications)
 {
-    if (partitioned_data.getClusterFuzzifications().empty())
+    if (granules_fuzzifications.empty())
     {
         throw ksi::exception("The partitioner has not set the fuzzification of granules (the S variable) that I need here. "
             "It is empty. Please use another partitioner.");
