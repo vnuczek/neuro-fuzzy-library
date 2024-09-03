@@ -65,9 +65,7 @@ std::vector<double> ksi::data_modifier_imputer_granular::handle_incomplete_tuple
    
     auto [imputed_tuples, granule_membership] = calculate_granule_imputations_and_memberships(incomplete_tuple, partitioned_data);
 
-    auto imputed_tuple = weighted_average(imputed_tuples, granule_membership);
-
-    return imputed_tuple;
+    return weighted_average(imputed_tuples, granule_membership);
 }
 
 std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modifier_imputer_granular::calculate_granule_imputations_and_memberships(const datum* incomplete_datum, const partition& partitioned_data)
