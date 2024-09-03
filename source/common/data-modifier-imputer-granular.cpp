@@ -65,6 +65,9 @@ std::vector<double> ksi::data_modifier_imputer_granular::handle_incomplete_tuple
    ///       wazona dla calej krotki. Nawet jak ma ona 1000 atrybutow, a brakuje jej tylko jednego,
    ///       to i tak liczymy te wszystkie srednie dla 1000. A wystarczy sprawdzic, ktorych atrybutow
    ///       brakuje i zajac sie tylko nimi. 
+
+   /// @todo Gruntownie przemyśleć wieczorem - KW
+
     auto [imputed_tuples, granule_membership] = calculate_granule_imputations_and_memberships(incomplete_tuple, partitioned_data, cluster_numbers, granules_centers, granules_fuzzifications);
 
     return weighted_average(imputed_tuples, granule_membership);
@@ -79,7 +82,7 @@ std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modif
     granule_membership.reserve(cluster_numbers);
 
     auto incomplite_tuple_attributes = incomplete_datum->getVector();
-    auto incomplite_tuple_atributes_size = incomplete_datum->getNumberOfAttributes(); //** @todo KW: czy przenieść to jeszcze wyżej, zakładając że liczba ta jest zawsze stała? */
+    auto incomplite_tuple_atributes_size = incomplete_datum->getNumberOfAttributes(); /// @todo KW: czy przenieść to jeszcze wyżej, zakładając że liczba ta jest zawsze stała?
 
     for (auto gran = 0; gran < cluster_numbers; ++gran) // for each granule 
     {
