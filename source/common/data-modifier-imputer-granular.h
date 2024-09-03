@@ -244,9 +244,6 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 */
 		double calculate_granule_membership(const std::vector<double>& estimated_values, const std::vector<double>& granule_centers, const std::vector<double>& granule_fuzzifications);
-		
-	public:
-		
 	};
 }
 
