@@ -121,21 +121,24 @@ void ksi::data_modifier_imputer_granular::validate_fuzzifications(const std::vec
       if (granules_fuzzifications.empty())
       {
          throw ksi::exception("The partitioner has not set the fuzzification of granules (the S variable) that I need here. "
-               "It is empty. Please use another partitioner.");
+                              "It is empty. Please use another partitioner.");
       }
    }
    CATCH;
 }
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(partitioner& Partitioner, t_norm& Tnorm)
-    : data_modifier_imputer(), _pPartitioner(Partitioner.clone()), _pTnorm(Tnorm.clone()) // KS: Dlaczego tutaj inicjujemy _pTnorm zwykłym wskaznikiem, ...
-{}
+    : data_modifier_imputer()
+{
+    _pPartitioner = std::shared_ptr<ksi::partitioner>(Partitioner.clone());
+    _pTnorm = std::shared_ptr<ksi::t_norm>(Partitioner.clone());
+}
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(const data_modifier_imputer_granular& other)
 	: data_modifier_imputer(other), incomplete_indices(other.incomplete_indices)
 { 
     _pPartitioner = std::shared_ptr<ksi::partitioner>(other._pPartitioner->clone());
-    _pTnorm = std::shared_ptr<ksi::t_norm>(other._pTnorm->clone()); // KS: ... a tutaj przerabiamy go na shared_ptr? 
+    _pTnorm = std::shared_ptr<ksi::t_norm>(other._pTnorm->clone());
 }
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(data_modifier_imputer_granular&& other) noexcept
@@ -150,7 +153,7 @@ ksi::data_modifier_imputer_granular& ksi::data_modifier_imputer_granular::operat
 	{
 		data_modifier_imputer::operator=(other); 
 		_pPartitioner = std::shared_ptr<ksi::partitioner>(other._pPartitioner->clone());
-      _pTnorm = std::shared_ptr<ksi::t_norm>(other._pTnorm->clone());
+        _pTnorm = std::shared_ptr<ksi::t_norm>(other._pTnorm->clone());
 		incomplete_indices = other.incomplete_indices;
 	}
 	return *this;
