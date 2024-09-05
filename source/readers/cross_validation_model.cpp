@@ -4,12 +4,12 @@
 
 ksi::cross_validation_model::cross_validation_model(ksi::reader& source_reader)
 {
-    pReader = std::shared_ptr<ksi::reader>(source_reader.clone())
+    pReader = std::shared_ptr<ksi::reader>(source_reader.clone());
 }
 
 ksi::cross_validation_model::cross_validation_model(const cross_validation_model& other)
 {
-    pReader = std::shared_ptr<ksi::reader>(other.pReader->clone())
+    pReader = std::shared_ptr<ksi::reader>(other.pReader->clone());
     std::lock_guard<std::mutex> lock(other.datasets_mutex);
     datasets = other.datasets;
 }

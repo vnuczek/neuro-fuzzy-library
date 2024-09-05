@@ -202,7 +202,7 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @todo poprawić opis - KW
 		 */
-		std::vector<double> impute_tuple(const datum* incomplete_datum, const std::vector<double>& incomplite_tuple_attributes, const std::size_t& incomplite_tuple_atributes_size, const std::vector<double>& granule_center);
+		std::vector<double> impute_tuple(const datum* incomplete_datum, const std::vector<double>& incomplete_tuple_attributes, const std::size_t& incomplite_tuple_atributes_size, const std::vector<double>& granule_center);
 
 		/**
 		 * @brief Validates the fuzzifications of the granules in the partitioned data.
