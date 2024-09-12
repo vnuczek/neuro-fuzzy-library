@@ -184,7 +184,7 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @todo poprawić opis - KW
 		 */
-		std::vector<double> handle_incomplete_tuple(const datum& incomplete_tuple, const partition& partitioned_data);
+		std::vector<double> handle_incomplete_tuple(const datum& incomplete_tuple);
 
 		/**
 		 * @brief Calculates granule imputations and memberships for a given incomplete tuple.
@@ -198,9 +198,11 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @todo poprawić opis - KW
 		 */
-		std::pair<std::vector<std::vector<double>>, std::vector<double>> calculate_granule_imputations_and_memberships(const datum& incomplete_datum, const partition& partitioned_data);
+		std::pair<std::vector<std::vector<double>>, std::vector<double>> calculate_granule_imputations_and_memberships(const std::vector<double>& incomplete_tuple_attributes, const std::vector<std::size_t>& incomplete_attributes_indice);
 
-		std::vector<std::size_t> get_incomplete_attributes_indices(const ksi::datum& incomplete_datum);
+		std::vector<double> impute_granule_attributes(const std::vector<std::size_t> &incomplete_attributes_indice, const std::vector<double> &granule_centers);
+
+		std::vector<std::size_t> get_incomplete_attributes_indices(const ksi::datum& incomplete_tuple);
 
 		/**
 		 * @brief Imputes missing attributes in a tuple using the given granule center.
@@ -214,7 +216,7 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @todo poprawić opis - KW
 		 */
-		std::vector<double> impute_tuple(const datum& incomplete_datum, const std::vector<double>& incomplete_tuple_attributes, const std::vector<double>& granule_center);
+		std::vector<double> impute_tuple_attributes(const std::vector<double>& incomplete_tuple_attributes, std::vector<double>& imputed_granule_attributes, const std::vector<std::size_t>& incomplete_attributes_indice);
 
 		void set_granules_atributes(const ksi::partition& partitioned_data);
 
@@ -245,7 +247,7 @@ namespace ksi
 		 * @date 2024-08-20
 		 * @author Konrad Wnuk
 		 */
-		double calculate_granule_membership(const std::vector<double>& estimated_values, const std::vector<double>& granule_centers, const std::vector<double>& granule_fuzzifications);
+		double calculate_granule_membership(const std::vector<double>& estimated_tuple_attributes, const std::vector<double>& granule_centers, const std::vector<double>& granule_fuzzifications);
 	};
 }
 
