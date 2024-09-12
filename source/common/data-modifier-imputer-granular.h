@@ -37,11 +37,9 @@ namespace ksi
 		std::shared_ptr<ksi::t_norm> _pTnorm = nullptr;
 
 		/** 
-         * @brief Indices of complete data tuples.
-         * 
-         * Stores the indices of the complete tuples in the dataset after partitioning.
+         * @todo
          */
-		std::vector<std::size_t> complete_indices;
+		ksi::dataset complete_dataset;
 
 		/** 
          * @brief Indices of incomplete data tuples.
@@ -193,19 +191,11 @@ namespace ksi
 		 */
 		ksi::dataset granular_imputation(const dataset& ds);
 
-		/**
-		 * @brief Splits the dataset into complete and incomplete subsets.
-         * 
-         * Separates the complete and incomplete data tuples, storing their indices for further processing.
-         * 
-         * @param ds The dataset to be split.
-         * @return A pair of datasets: complete data and incomplete data.
-         * @date 2024-08-20
-         * @author Konrad Wnuk
-		 */
-		std::pair < dataset, dataset > split_complete_incomplete(const dataset& ds);
-
 	private:
+		/**
+		 * @todo
+		 */
+		void extract_complete_dataset_and_incomplete_indices(const dataset& ds);
 
 		/**
          * @brief Processes an incomplete tuple and imputes its missing values.
@@ -229,13 +219,13 @@ namespace ksi
          * @date 2024-08-20
          * @author Konrad Wnuk
          */
-		std::pair<std::vector<std::vector<double>>, std::vector<double>> calculate_granule_imputations_and_memberships(const std::vector<double>& incomplete_tuple_attributes, const std::vector<std::size_t>& incomplete_attributes_indice);
+		std::pair<std::vector<std::vector<double>>, std::vector<double>> calculate_granule_imputations_and_memberships(const std::vector<double>& incomplete_tuple_attributes, const std::vector<std::size_t>& incomplete_attributes_indices);
 
 		/** @todo KW */
-		std::vector<double> impute_granule_attributes(const std::vector<std::size_t> &incomplete_attributes_indice, const std::vector<double> &granule_centers);
+		std::vector<double> impute_granule_attributes(const std::vector<std::size_t> &incomplete_attributes_indices, const std::vector<double> &granule_centers);
 
 		/** @todo KW */
-		std::vector<std::size_t> get_incomplete_attributes_indices(const ksi::datum& incomplete_tuple);
+		std::vector<std::size_t> get_incomplete_attributes_indices(const ksi::datum& incomplete_tuple) const;
 
 		/**
 		 * @brief Imputes missing attributes in a tuple using the given granule center.
@@ -249,7 +239,7 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @todo poprawić opis - KW
 		 */
-		std::vector<double> impute_tuple_attributes(const std::vector<double>& incomplete_tuple_attributes, std::vector<double>& imputed_granule_attributes, const std::vector<std::size_t>& incomplete_attributes_indice);
+		std::vector<double> insert_missing_attributes(const std::vector<double>& incomplete_tuple_attributes, std::vector<double>& imputed_granule_attributes, const std::vector<std::size_t>& incomplete_attributes_indices);
 
 		/**
          * @brief Sets the attributes of the granules.
@@ -257,7 +247,7 @@ namespace ksi
          * Sets the centers and fuzzifications of the granules using the partitioned complete data.
          * 
          * @param complete_ds The dataset containing complete data.
-         * @date 2024-08-20
+         * @date 2024-00-11
          * @author Konrad Wnuk
          */
 		void set_granules_atributes(const ksi::partition& partitioned_data);
