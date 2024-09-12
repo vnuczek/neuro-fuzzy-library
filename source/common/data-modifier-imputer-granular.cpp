@@ -47,11 +47,11 @@ ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const data
         auto cluster_numbers = partitioned_data.getNumberOfClusters();
         auto granules_centers = partitioned_data.getClusterCentres();
 
-
+        auto incomplete_tuple_attributes_size = incomplete_dataset.getDatum(0)->getNumberOfAttributes();
 
         for (auto t = 0; t < incomplete_dataset.size(); ++t) // for each incomplete tuple
         {
-            auto imputed_tuple = handle_incomplete_tuple(incomplete_dataset.getDatum(t), partitioned_data, cluster_numbers, granules_centers, granules_fuzzifications);
+            auto imputed_tuple = handle_incomplete_tuple(*incomplete_dataset.getDatum(t), incomplete_tuple_attributes_size, partitioned_data, cluster_numbers, granules_centers, granules_fuzzifications);
             result.getDatumNonConst(t)->changeAttributesValues(imputed_tuple);
         }
 
@@ -60,24 +60,19 @@ ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const data
     CATCH;
 }
 
-std::vector<double> ksi::data_modifier_imputer_granular::handle_incomplete_tuple(const datum * incomplete_tuple, const partition & partitioned_data, const std::size_t& cluster_numbers, const std::vector<std::vector<double>>& granules_centers ,const std::vector<std::vector<double>>& granules_fuzzifications)
+std::vector<double> ksi::data_modifier_imputer_granular::handle_incomplete_tuple(const datum& incomplete_tuple, const std::size_t& incomplite_tuple_atributes_size, const partition & partitioned_data, const std::size_t& cluster_numbers, const std::vector<std::vector<double>>& granules_centers ,const std::vector<std::vector<double>>& granules_fuzzifications)
 {
-   // KS: Moim zdaniem byloby lepiej przekazywac incomplete_tuple przez referencje. Nie tracimy mozliwosci polimorfizmu, a troche milej pracuje sie na referencji obiektu niz na wskazniku. 
-
    /// @todo Jak Pan tak ladnie porozpisywal na metody, to teraz sie az narzuca pewna optymalizacja.
    ///       Prosze spojrzec: Niezaleznie ile atrybutow krotce brakuje, to my i tak liczymy srednia 
    ///       wazona dla calej krotki. Nawet jak ma ona 1000 atrybutow, a brakuje jej tylko jednego,
    ///       to i tak liczymy te wszystkie srednie dla 1000. A wystarczy sprawdzic, ktorych atrybutow
    ///       brakuje i zajac sie tylko nimi. 
-
-   /// @todo Gruntownie przemyśleć wieczorem - KW
-
-    auto [imputed_tuples, granule_membership] = calculate_granule_imputations_and_memberships(incomplete_tuple, partitioned_data, cluster_numbers, granules_centers, granules_fuzzifications);
+    auto [imputed_tuples, granule_membership] = calculate_granule_imputations_and_memberships(incomplete_tuple, incomplete_tuple_attributes_size, partitioned_data, cluster_numbers, granules_centers, granules_fuzzifications);
 
     return weighted_average(imputed_tuples, granule_membership);
 }
 
-std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modifier_imputer_granular::calculate_granule_imputations_and_memberships(const datum* incomplete_datum, const partition& partitioned_data, const std::size_t& cluster_numbers, const std::vector<std::vector<double>>& granules_centers, const std::vector<std::vector<double>>& granules_fuzzifications)
+std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modifier_imputer_granular::calculate_granule_imputations_and_memberships(const datum& incomplete_datum, const std::size_t& incomplite_tuple_atributes_size, const partition& partitioned_data, const std::size_t& cluster_numbers, const std::vector<std::vector<double>>& granules_centers, const std::vector<std::vector<double>>& granules_fuzzifications)
 {
    // KS: Chyba w tej metodzie argument partitioned_data jest nieuzywany.
 
@@ -87,11 +82,9 @@ std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modif
     std::vector<double> granule_membership;
     granule_membership.reserve(cluster_numbers);
 
-    auto incomplete_tuple_attributes = incomplete_datum->getVector();
+    auto incomplete_tuple_attributes = incomplete_datum.getVector();
 
-    std::vector<std::size_t> missing_attributes = get_incomplete_attributes(*incomplete_datum);
-
-	auto incomplete_tuple_attributes_size = incomplete_datum->getNumberOfAttributes(); /// @todo KW: czy przenieść to jeszcze wyżej, zakładając że liczba ta jest zawsze stała? // KS: Tak, bo teraz pobieramy to dla kazdej niekompletnej krotki. A w sumie wystarczy tylko raz.
+    std::vector<std::size_t> missing_attributes = get_incomplete_attributes(incomplete_datum);
 
     for (auto gran = 0; gran < cluster_numbers; ++gran) // for each granule 
     {
@@ -104,18 +97,18 @@ std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modif
     return std::make_pair(imputed_tuples, granule_membership);
 }
 
-get_incomplete_attributes()
+std::vector<std::size_t> get_incomplete_attributes()
 {
 	
 }
 
-std::vector<double> ksi::data_modifier_imputer_granular::impute_tuple(const datum* incomplete_datum, const std::vector<double>& incomplete_tuple_attributes, const std::size_t& incomplite_tuple_atributes_size, const std::vector<double>& granule_centre)
+std::vector<double> ksi::data_modifier_imputer_granular::impute_tuple(const datum& incomplete_datum, const std::vector<double>& incomplete_tuple_attributes, const std::size_t& incomplite_tuple_atributes_size, const std::vector<double>& granule_centre)
 {
     auto attributes = incomplete_tuple_attributes; 
 
     for (auto attr = 0; attr < incomplite_tuple_atributes_size; ++attr) // for each attribute in the incomplete tuple
     {
-        if (not incomplete_datum->is_attribute_complete(attr))
+        if (not incomplete_datum.is_attribute_complete(attr))
         {
             attributes[attr] = granule_centre[attr];
         }
