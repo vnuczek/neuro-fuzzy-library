@@ -86,7 +86,7 @@ std::vector<double> ksi::data_modifier_imputer_granular::handle_incomplete_tuple
    auto incomplete_tuple_attributes = incomplete_tuple.getVector();
    auto incomplete_attributes_indice = get_incomplete_attributes_indices(incomplete_tuple);
 
-   auto [imputed_attributes, granule_membership] = calculate_granule_imputations_and_memberships(incomplete_tuple, incomplete_attributes_indice);
+   auto [imputed_attributes, granule_membership] = calculate_granule_imputations_and_memberships(incomplete_tuple_attributes, incomplete_attributes_indice);
 
    auto imputed_average_attributes = weighted_average(imputed_attributes, granule_membership);
 
@@ -193,23 +193,22 @@ std::vector<double> ksi::data_modifier_imputer_granular::weighted_average(const 
 }
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(partitioner& Partitioner, t_norm& Tnorm)
-    : data_modifier_imputer()
+    : data_modifier_imputer(), complete_indices(), incomplete_indices(),granules_fuzzifications(), cluster_numbers(), granules_centers(), number_of_tuple_attributes()
 {
     _pPartitioner = std::shared_ptr<ksi::partitioner>(Partitioner.clone());
     _pTnorm = std::shared_ptr<ksi::t_norm>(Tnorm.clone());
 }
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(const data_modifier_imputer_granular& other)
-	: data_modifier_imputer(other), incomplete_indices(other.incomplete_indices)
+	: data_modifier_imputer(other), complete_indices(other.complete_indices), incomplete_indices(other.incomplete_indices), granules_fuzzifications(other.granules_fuzzifications), cluster_numbers(other.cluster_numbers), granules_centers(other.granules_centers), number_of_tuple_attributes(other.number_of_tuple_attributes)
 { 
     _pPartitioner = std::shared_ptr<ksi::partitioner>(other._pPartitioner->clone());
     _pTnorm = std::shared_ptr<ksi::t_norm>(other._pTnorm->clone());
 }
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(data_modifier_imputer_granular&& other) noexcept
-	: data_modifier_imputer(std::move(other)), _pPartitioner(std::move(other._pPartitioner)), _pTnorm(std::move(other._pTnorm))
+	: data_modifier_imputer(std::move(other)), _pPartitioner(std::move(other._pPartitioner)), _pTnorm(std::move(other._pTnorm)), complete_indices(std::move(other.complete_indices)), incomplete_indices(std::move(other.incomplete_indices)), granules_fuzzifications(std::move(other.granules_fuzzifications)), cluster_numbers(std::move(other.cluster_numbers)), granules_centers(std::move(other.granules_centers)), number_of_tuple_attributes(std::move(other.number_of_tuple_attributes))
 {
-	std::swap(incomplete_indices, other.incomplete_indices);
 }
 
 ksi::data_modifier_imputer_granular& ksi::data_modifier_imputer_granular::operator=(const data_modifier_imputer_granular& other)
@@ -218,9 +217,14 @@ ksi::data_modifier_imputer_granular& ksi::data_modifier_imputer_granular::operat
 	{
 		data_modifier_imputer::operator=(other); 
 		_pPartitioner = std::shared_ptr<ksi::partitioner>(other._pPartitioner->clone());
-        _pTnorm = std::shared_ptr<ksi::t_norm>(other._pTnorm->clone());
-		incomplete_indices = other.incomplete_indices;
-	}
+      _pTnorm = std::shared_ptr<ksi::t_norm>(other._pTnorm->clone());
+		complete_indices = other.complete_indices;
+      incomplete_indices =other.incomplete_indices;
+      granules_fuzzifications = other.granules_fuzzifications;
+      cluster_numbers = other.cluster_numbers;
+      granules_centers =other.granules_centers;
+      number_of_tuple_attributes = other.number_of_tuple_attributes;
+   }
 	return *this;
 }
 
@@ -231,8 +235,13 @@ ksi::data_modifier_imputer_granular& ksi::data_modifier_imputer_granular::operat
 		data_modifier_imputer::operator=(std::move(other));
 		_pPartitioner = std::move(other._pPartitioner);
 		_pTnorm = std::move(other._pTnorm);
-		std::swap(incomplete_indices, other.incomplete_indices);
-	}
+		complete_indices = std::move(other.complete_indices);
+      incomplete_indices = std::move(other.incomplete_indices);
+      granules_fuzzifications = std::move(other.granules_fuzzifications);
+      cluster_numbers = std::move(other.cluster_numbers);
+      granules_centers = std::move(other.granules_centers);
+      number_of_tuple_attributes = std::move(other.number_of_tuple_attributes);
+   }
 	return *this;
 }
 
