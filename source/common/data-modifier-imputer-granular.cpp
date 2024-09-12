@@ -14,7 +14,7 @@ std::pair<ksi::dataset, ksi::dataset> ksi::data_modifier_imputer_granular::split
 {
    try
    {
-      incomplete_indices.clear();
+      this->incomplete_indices.clear();
       dataset complete_data, incomplete_data;
 
       for (std::size_t i = 0; i < ds.size(); ++i)
@@ -24,7 +24,7 @@ std::pair<ksi::dataset, ksi::dataset> ksi::data_modifier_imputer_granular::split
             complete_data.addDatum(*data_item);
          else {
             incomplete_data.addDatum(*data_item);
-            incomplete_indices.push_back(i);
+            this->incomplete_indices.push_back(i);
          }
       }
 
@@ -41,17 +41,13 @@ ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const data
         auto [complete_dataset, incomplete_dataset] = split_complete_incomplete(ds);
         auto partitioned_data = _pPartitioner->doPartition(complete_dataset);
 
-        auto granules_fuzzifications = partitioned_data.getClusterFuzzifications();
-        validate_fuzzifications(granules_fuzzifications);
+        set_granules_atributes(partitioned_data);
 
-        auto cluster_numbers = partitioned_data.getNumberOfClusters();
-        auto granules_centers = partitioned_data.getClusterCentres();
+        this->number_of_tuple_attributes = ds.getDatum(0)->getNumberOfAttributes();
 
-        auto incomplete_tuple_attributes_size = incomplete_dataset.getDatum(0)->getNumberOfAttributes();
-
-        for (auto t = 0; t < incomplete_dataset.size(); ++t) // for each incomplete tuple
+        for (std::size_t t = 0; t < incomplete_dataset.size(); ++t) // for each incomplete tuple
         {
-            auto imputed_tuple = handle_incomplete_tuple(*incomplete_dataset.getDatum(t), incomplete_tuple_attributes_size, partitioned_data, cluster_numbers, granules_centers, granules_fuzzifications);
+            auto imputed_tuple = handle_incomplete_tuple(*incomplete_dataset.getDatum(t), partitioned_data);
             result.getDatumNonConst(t)->changeAttributesValues(imputed_tuple);
         }
 
@@ -60,22 +56,20 @@ ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const data
     CATCH;
 }
 
-std::vector<double> ksi::data_modifier_imputer_granular::handle_incomplete_tuple(const datum& incomplete_tuple, const std::size_t& incomplite_tuple_atributes_size, const partition & partitioned_data, const std::size_t& cluster_numbers, const std::vector<std::vector<double>>& granules_centers ,const std::vector<std::vector<double>>& granules_fuzzifications)
+std::vector<double> ksi::data_modifier_imputer_granular::handle_incomplete_tuple(const datum& incomplete_tuple, const partition & partitioned_data)
 {
    /// @todo Jak Pan tak ladnie porozpisywal na metody, to teraz sie az narzuca pewna optymalizacja.
    ///       Prosze spojrzec: Niezaleznie ile atrybutow krotce brakuje, to my i tak liczymy srednia 
    ///       wazona dla calej krotki. Nawet jak ma ona 1000 atrybutow, a brakuje jej tylko jednego,
    ///       to i tak liczymy te wszystkie srednie dla 1000. A wystarczy sprawdzic, ktorych atrybutow
    ///       brakuje i zajac sie tylko nimi. 
-    auto [imputed_tuples, granule_membership] = calculate_granule_imputations_and_memberships(incomplete_tuple, incomplete_tuple_attributes_size, partitioned_data, cluster_numbers, granules_centers, granules_fuzzifications);
+    auto [imputed_tuples, granule_membership] = calculate_granule_imputations_and_memberships(incomplete_tuple, partitioned_data);
 
     return weighted_average(imputed_tuples, granule_membership);
 }
 
-std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modifier_imputer_granular::calculate_granule_imputations_and_memberships(const datum& incomplete_datum, const std::size_t& incomplite_tuple_atributes_size, const partition& partitioned_data, const std::size_t& cluster_numbers, const std::vector<std::vector<double>>& granules_centers, const std::vector<std::vector<double>>& granules_fuzzifications)
+std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modifier_imputer_granular::calculate_granule_imputations_and_memberships(const datum& incomplete_datum, const partition& partitioned_data)
 {
-   // KS: Chyba w tej metodzie argument partitioned_data jest nieuzywany.
-
     std::vector<std::vector<double>> imputed_tuples;
     imputed_tuples.reserve(cluster_numbers);
 
@@ -83,12 +77,11 @@ std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modif
     granule_membership.reserve(cluster_numbers);
 
     auto incomplete_tuple_attributes = incomplete_datum.getVector();
-
-    std::vector<std::size_t> missing_attributes = get_incomplete_attributes(incomplete_datum);
+    auto incomplete_attributes_indices = get_incomplete_attributes_indices(incomplete_datum);
 
     for (auto gran = 0; gran < cluster_numbers; ++gran) // for each granule 
     {
-       auto attributes = impute_tuple(incomplete_datum, incomplete_tuple_attributes, incomplete_tuple_attributes_size, granules_centers[gran]);
+       auto attributes = impute_tuple(incomplete_datum, incomplete_tuple_attributes, granules_centers[gran]);
 
        imputed_tuples.push_back(attributes);
        granule_membership.push_back(calculate_granule_membership(attributes, granules_centers[gran], granules_fuzzifications[gran]));
@@ -97,18 +90,28 @@ std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modif
     return std::make_pair(imputed_tuples, granule_membership);
 }
 
-std::vector<std::size_t> get_incomplete_attributes()
+std::vector<std::size_t> ksi::data_modifier_imputer_granular::get_incomplete_attributes_indices(const ksi::datum& incomplete_datum)
 {
-	
+   std::vector<std::size_t> incomplete_attributes_indices;
+
+   for (std::size_t attr = 0; attr < number_of_tuple_attributes; ++attr) // for each attribute in the incomplete tuple
+    {
+        if (!incomplete_datum.is_attribute_complete(attr))
+        {
+            incomplete_attributes_indices.push_back(attr);
+        }
+    }
+
+    return incomplete_attributes_indices;
 }
 
-std::vector<double> ksi::data_modifier_imputer_granular::impute_tuple(const datum& incomplete_datum, const std::vector<double>& incomplete_tuple_attributes, const std::size_t& incomplite_tuple_atributes_size, const std::vector<double>& granule_centre)
+std::vector<double> ksi::data_modifier_imputer_granular::impute_tuple(const datum& incomplete_datum, const std::vector<double>& incomplete_tuple_attributes, const std::vector<double>& granule_centre)
 {
     auto attributes = incomplete_tuple_attributes; 
 
-    for (auto attr = 0; attr < incomplite_tuple_atributes_size; ++attr) // for each attribute in the incomplete tuple
+    for (auto attr = 0; attr < number_of_tuple_attributes; ++attr) // for each attribute in the incomplete tuple
     {
-        if (not incomplete_datum.is_attribute_complete(attr))
+        if (!incomplete_datum.is_attribute_complete(attr))
         {
             attributes[attr] = granule_centre[attr];
         }
@@ -117,8 +120,10 @@ std::vector<double> ksi::data_modifier_imputer_granular::impute_tuple(const datu
     return attributes;
 }
 
-void ksi::data_modifier_imputer_granular::validate_fuzzifications(const std::vector<std::vector<double>>& granules_fuzzifications)
-{
+void ksi::data_modifier_imputer_granular::set_granules_atributes(const ksi::partition& partitioned_data)
+{  
+   this->granules_fuzzifications = partitioned_data.getClusterFuzzifications();
+
    try 
    {
       if (granules_fuzzifications.empty())
@@ -127,7 +132,10 @@ void ksi::data_modifier_imputer_granular::validate_fuzzifications(const std::vec
                               "It is empty. Please use another partitioner.");
       }
    }
-   CATCH;
+   CATCH; 
+
+   this->cluster_numbers = partitioned_data.getNumberOfClusters();
+   this->granules_centers = partitioned_data.getClusterCentres();   
 }
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(partitioner& Partitioner, t_norm& Tnorm)
@@ -196,7 +204,7 @@ std::vector<double> ksi::data_modifier_imputer_granular::weighted_average(const 
 {
    try
    {
-      std::vector<auto> numerator(estimated_values[0].size(), 0.0);
+      std::vector<double> numerator(estimated_values[0].size(), 0.0);
       double denominator = 0.0;
 
       for (auto i = 0; i < weights.size(); ++i) {

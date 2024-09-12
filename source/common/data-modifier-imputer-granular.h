@@ -44,7 +44,15 @@ namespace ksi
 		 * These indices are used to identify and process the incomplete tuples during imputation.
 		 */
 		std::vector<std::size_t> incomplete_indices;
-		
+
+		std::vector<std::vector<double>> granules_fuzzifications;
+
+		std::size_t cluster_numbers;
+
+		std::vector<std::vector<double>> granules_centers;
+
+		std::size_t number_of_tuple_attributes;
+
 	public:	
 		
 		/**
@@ -174,7 +182,7 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @todo poprawić opis - KW
 		 */
-		std::vector<double> handle_incomplete_tuple(const datum* incomplete_tuple, const partition& partitioned_data, const std::size_t& cluster_numbers, const std::vector<std::vector<double>>& granules_centers, const std::vector<std::vector<double>>& granules_fuzzifications);
+		std::vector<double> handle_incomplete_tuple(const datum& incomplete_tuple, const partition& partitioned_data);
 
 		/**
 		 * @brief Calculates granule imputations and memberships for a given incomplete tuple.
@@ -188,7 +196,9 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @todo poprawić opis - KW
 		 */
-		std::pair<std::vector<std::vector<double>>, std::vector<double>> calculate_granule_imputations_and_memberships(const datum* incomplete_datum, const partition& partitioned_data, const std::size_t& cluster_numbers, const std::vector<std::vector<double>>& granules_centers, const std::vector<std::vector<double>>& granules_fuzzifications);
+		std::pair<std::vector<std::vector<double>>, std::vector<double>> calculate_granule_imputations_and_memberships(const datum& incomplete_datum, const partition& partitioned_data);
+
+		std::vector<std::size_t> get_incomplete_attributes_indices(const ksi::datum& incomplete_datum);
 
 		/**
 		 * @brief Imputes missing attributes in a tuple using the given granule center.
@@ -202,21 +212,9 @@ namespace ksi
 		 * @author Konrad Wnuk
 		 * @todo poprawić opis - KW
 		 */
-		std::vector<double> impute_tuple(const datum* incomplete_datum, const std::vector<double>& incomplete_tuple_attributes, const std::size_t& incomplite_tuple_atributes_size, const std::vector<double>& granule_center);
+		std::vector<double> impute_tuple(const datum& incomplete_datum, const std::vector<double>& incomplete_tuple_attributes, const std::vector<double>& granule_center);
 
-		/**
-		 * @brief Validates the fuzzifications of the granules in the partitioned data.
-		 *
-		 * This method checks whether the fuzzifications (S variable) are properly set in the partitioned data. 
-		 * If they are not set, an exception is thrown.
-		 *
-		 * @param partitioned_data The partitioned data containing granules information.
-		 * @throws ksi::exception If the fuzzifications are not set.
-		 * @date 2024-08-20
-		 * @author Konrad Wnuk
-		 * @todo poprawić opis - KW
-		 */
-		void validate_fuzzifications(const std::vector<std::vector<double>>& granules_fuzzifications);
+		void set_granules_atributes(const ksi::partition& partitioned_data);
 
 		/**
 		 * @brief Computes the weighted average of estimated values using the provided weights.
@@ -250,4 +248,3 @@ namespace ksi
 }
 
 #endif
-
