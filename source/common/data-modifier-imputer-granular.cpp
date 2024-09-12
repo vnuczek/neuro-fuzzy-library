@@ -12,16 +12,21 @@
 
 std::pair<ksi::dataset, ksi::dataset> ksi::data_modifier_imputer_granular::split_complete_incomplete(const dataset& ds)
 {
+   /// KW: Czy zmieniamy metodę by niezwracała zbiorów?
+
    try
    {
+      this->complete_indices.clear();
       this->incomplete_indices.clear();
       dataset complete_data, incomplete_data;
 
       for (std::size_t i = 0; i < ds.size(); ++i)
       {
          auto data_item = ds.getDatum(i);
-         if (data_item->is_complete())
+         if (data_item->is_complete()) {
             complete_data.addDatum(*data_item);
+            this->complete_indices.push_back(i);
+         }
          else {
             incomplete_data.addDatum(*data_item);
             this->incomplete_indices.push_back(i);
@@ -35,6 +40,8 @@ std::pair<ksi::dataset, ksi::dataset> ksi::data_modifier_imputer_granular::split
 
 ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const dataset& ds)
 {
+   /// KW: Czy usuwamy incomplete_dataset?
+
     try
     {
         auto result(ds);
@@ -45,10 +52,10 @@ ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const data
 
         this->number_of_tuple_attributes = ds.getDatum(0)->getNumberOfAttributes();
 
-        for (std::size_t t = 0; t < incomplete_dataset.size(); ++t) // for each incomplete tuple
+        for (const auto& tup_index: incomplete_indices) // for each incomplete tuple
         {
-            auto imputed_tuple = handle_incomplete_tuple(*incomplete_dataset.getDatum(t), partitioned_data);
-            result.getDatumNonConst(t)->changeAttributesValues(imputed_tuple);
+            auto imputed_tuple = handle_incomplete_tuple(*ds.getDatum(tup_index));
+            result.getDatumNonConst(tup_index)->changeAttributesValues(imputed_tuple);
         }
 
         return result;
@@ -56,47 +63,22 @@ ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const data
     CATCH;
 }
 
-std::vector<double> ksi::data_modifier_imputer_granular::handle_incomplete_tuple(const datum& incomplete_tuple, const partition & partitioned_data)
+std::vector<double> ksi::data_modifier_imputer_granular::handle_incomplete_tuple(const datum& incomplete_tuple)
 {
-   /// @todo Jak Pan tak ladnie porozpisywal na metody, to teraz sie az narzuca pewna optymalizacja.
-   ///       Prosze spojrzec: Niezaleznie ile atrybutow krotce brakuje, to my i tak liczymy srednia 
-   ///       wazona dla calej krotki. Nawet jak ma ona 1000 atrybutow, a brakuje jej tylko jednego,
-   ///       to i tak liczymy te wszystkie srednie dla 1000. A wystarczy sprawdzic, ktorych atrybutow
-   ///       brakuje i zajac sie tylko nimi. 
-    auto [imputed_tuples, granule_membership] = calculate_granule_imputations_and_memberships(incomplete_tuple, partitioned_data);
+   auto incomplete_attributes_indice = get_incomplete_attributes_indices(incomplete_tuple);
 
-    return weighted_average(imputed_tuples, granule_membership);
+   auto [imputed_tuples, granule_membership] = calculate_granule_imputations_and_memberships(incomplete_tuple, incomplete_attributes_indice);
+
+   return weighted_average(imputed_tuples, granule_membership);
 }
 
-std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modifier_imputer_granular::calculate_granule_imputations_and_memberships(const datum& incomplete_datum, const partition& partitioned_data)
-{
-    std::vector<std::vector<double>> imputed_tuples;
-    imputed_tuples.reserve(cluster_numbers);
-
-    std::vector<double> granule_membership;
-    granule_membership.reserve(cluster_numbers);
-
-    auto incomplete_tuple_attributes = incomplete_datum.getVector();
-    auto incomplete_attributes_indices = get_incomplete_attributes_indices(incomplete_datum);
-
-    for (auto gran = 0; gran < cluster_numbers; ++gran) // for each granule 
-    {
-       auto attributes = impute_tuple(incomplete_datum, incomplete_tuple_attributes, granules_centers[gran]);
-
-       imputed_tuples.push_back(attributes);
-       granule_membership.push_back(calculate_granule_membership(attributes, granules_centers[gran], granules_fuzzifications[gran]));
-    }
-
-    return std::make_pair(imputed_tuples, granule_membership);
-}
-
-std::vector<std::size_t> ksi::data_modifier_imputer_granular::get_incomplete_attributes_indices(const ksi::datum& incomplete_datum)
+std::vector<std::size_t> ksi::data_modifier_imputer_granular::get_incomplete_attributes_indices(const ksi::datum& incomplete_tuple)
 {
    std::vector<std::size_t> incomplete_attributes_indices;
 
    for (std::size_t attr = 0; attr < number_of_tuple_attributes; ++attr) // for each attribute in the incomplete tuple
     {
-        if (!incomplete_datum.is_attribute_complete(attr))
+        if (!incomplete_tuple.is_attribute_complete(attr))
         {
             incomplete_attributes_indices.push_back(attr);
         }
@@ -105,17 +87,33 @@ std::vector<std::size_t> ksi::data_modifier_imputer_granular::get_incomplete_att
     return incomplete_attributes_indices;
 }
 
-std::vector<double> ksi::data_modifier_imputer_granular::impute_tuple(const datum& incomplete_datum, const std::vector<double>& incomplete_tuple_attributes, const std::vector<double>& granule_centre)
+std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modifier_imputer_granular::calculate_granule_imputations_and_memberships(const datum& incomplete_tuple, const std::vector<std::size_t>& incomplete_attributes_indice)
 {
-    auto attributes = incomplete_tuple_attributes; 
+    std::vector<std::vector<double>> imputed_attributes;
+    imputed_attributes.reserve(cluster_numbers);
 
-    for (auto attr = 0; attr < number_of_tuple_attributes; ++attr) // for each attribute in the incomplete tuple
+    std::vector<double> granule_membership;
+    granule_membership.reserve(cluster_numbers);
+
+    for (auto gran = 0; gran < cluster_numbers; ++gran) // for each granule 
     {
-        if (!incomplete_datum.is_attribute_complete(attr))
-        {
-            attributes[attr] = granule_centre[attr];
-        }
+       auto attributes = impute_attributes(incomplete_attributes_indice, granules_centers[gran]);
+       imputed_attributes.push_back(attributes);
+
+       granule_membership.push_back(calculate_granule_membership(attributes, granules_centers[gran], granules_fuzzifications[gran]));
     }
+
+    return std::make_pair(imputed_tuples, granule_membership);
+}
+
+std::vector<double> ksi::data_modifier_imputer_granular::impute_attributes(const std::vector<std::size_t>& incomplete_attributes_indice, const std::vector<double>& granule_centers)
+{
+   std::vector<std::size_t> incomplete_attributes_indices;
+
+   for (const auto& attr_index: incomplete_attributes_indice) // for each missing attribute in the incomplete tuple
+   {
+      attributes.push_back(granule_centers[attr_index]);
+   }
 
     return attributes;
 }

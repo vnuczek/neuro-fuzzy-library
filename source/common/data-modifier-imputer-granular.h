@@ -37,6 +37,8 @@ namespace ksi
 		 */
 		std::shared_ptr<ksi::t_norm> _pTnorm = nullptr;
 
+		std::vector<std::size_t> complete_indices;
+
 		/**
 		 * @brief Stores the indices of incomplete tuples in the dataset.
 		 *
