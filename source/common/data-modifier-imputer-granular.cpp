@@ -12,8 +12,6 @@
 
 ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const dataset& ds)
 {
-   /// KW: Czy usuwamy incomplete_dataset?
-
     try
     {
         auto result(ds);

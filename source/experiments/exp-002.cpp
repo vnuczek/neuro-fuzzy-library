@@ -348,7 +348,7 @@ void ksi::exp_002::execute()
 
       {  // DBSCAN
          const double epsilon = 5;    // 1.5
-         const double minPts = 10;
+         const int minPts = 10;
          ksi::metric_euclidean metric;
          
          std::string dataDir ("../data/exp-002");
