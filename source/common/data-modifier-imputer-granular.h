@@ -272,7 +272,7 @@ namespace ksi
          * Uses a Gaussian function to compute the membership value for the tuple with respect to a granule.
          * 
          * @param incomplete_tuple_attributes Attributes of the incomplete tuple.
-         * @param granule_center The center of the granule.
+         * @param granule_centers The center of the granule.
          * @param granule_fuzzification The fuzzification of the granule.
          * @return The calculated membership value.
          * @date 2024-08-20

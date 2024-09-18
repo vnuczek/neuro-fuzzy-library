@@ -314,13 +314,13 @@ void ksi::exp_001::execute()
           std::cout << "=====================================" << std::endl;
           std::cout << "data granulation using the FCM method" << std::endl;
           std::cout << "=====================================" << std::endl;
+
+          std::string resultDir = "../results/exp-001";
           
           {
               std::cout << std::endl;
               std::cout << "test of the first incomplete data set" << std::endl;
               std::cout << std::endl;
-
-              ksi::reader_complete DataReader;
 
               std::string IncompleteDataset("/Gr-2-m00.txt");
 
@@ -334,13 +334,13 @@ void ksi::exp_001::execute()
               ksi::fcm_T_metrics<double> test_partitioner(met);
               test_partitioner.setEpsilonForFrobeniusNorm(EPSILON);
               test_partitioner.setNumberOfClusters(NUMBER_OF_CLUSTERS);
-              t_norm_einstein test_t_norm();
+              ksi::t_norm_einstein tnorm;
 
-              data_modifier_imputer_granular dm(test_partitioner, test_t_norm);
+              data_modifier_imputer_granular dm(test_partitioner, tnorm);
 
               dm.modify(data);
               
-              const std::string result_file_path = dataDir + "/fcm_modify_results/Gr-2-m00_result.txt";
+              const std::string result_file_path = resultDir + "/fcm_modify_results/Gr-2-m00_result.txt";
               std::cout << "Saving result of modifiyng into: " << result_file_path << std::endl;
 
               std::ofstream result_file(result_file_path);
@@ -359,8 +359,6 @@ void ksi::exp_001::execute()
               std::cout << std::endl;
               std::cout << "test of the first incomplete data set" << std::endl;
               std::cout << std::endl;
-
-              ksi::reader_complete DataReader;
 
               std::string IncompleteDataset("/Gr-2-m05.txt");
 
@@ -374,13 +372,13 @@ void ksi::exp_001::execute()
               ksi::fcm_T_metrics<double> test_partitioner(met);
               test_partitioner.setEpsilonForFrobeniusNorm(EPSILON);
               test_partitioner.setNumberOfClusters(NUMBER_OF_CLUSTERS);
-              t_norm_einstein test_t_norm();
+              ksi::t_norm_einstein tnorm;
 
-              data_modifier_imputer_granular dm(test_partitioner, test_t_norm);
+              data_modifier_imputer_granular dm(test_partitioner, tnorm);
 
               dm.modify(data);
 
-              const std::string result_file_path = dataDir + "/fcm_modify_results/Gr-2-m05_result.txt";
+              const std::string result_file_path = resultDir + "/fcm_modify_results/Gr-2-m05_result.txt";
               std::cout << "Saving result of modifiyng into: " << result_file_path << std::endl;
 
               std::ofstream result_file(result_file_path);
@@ -399,8 +397,6 @@ void ksi::exp_001::execute()
               std::cout << std::endl;
               std::cout << "test of the first incomplete data set" << std::endl;
               std::cout << std::endl;
-
-              ksi::reader_complete DataReader;
 
               std::string IncompleteDataset("/Gr-2-m10.txt");
 
@@ -414,13 +410,13 @@ void ksi::exp_001::execute()
               ksi::fcm_T_metrics<double> test_partitioner(met);
               test_partitioner.setEpsilonForFrobeniusNorm(EPSILON);
               test_partitioner.setNumberOfClusters(NUMBER_OF_CLUSTERS);
-              t_norm_einstein test_t_norm();
+              ksi::t_norm_einstein tnorm;
 
-              data_modifier_imputer_granular dm(test_partitioner, test_t_norm);
+              data_modifier_imputer_granular dm(test_partitioner, tnorm);
 
               dm.modify(data);
 
-              const std::string result_file_path = dataDir + "/fcm_modify_results/Gr-2-m10_result.txt";
+              const std::string result_file_path = resultDir + "/fcm_modify_results/Gr-2-m10_result.txt";
               std::cout << "Saving result of modifiyng into: " << result_file_path << std::endl;
 
               std::ofstream result_file(result_file_path);
@@ -440,8 +436,6 @@ void ksi::exp_001::execute()
               std::cout << "test of the first incomplete data set" << std::endl;
               std::cout << std::endl;
 
-              ksi::reader_complete DataReader;
-
               std::string IncompleteDataset("/Gr-2-m15.txt");
 
               ksi::reader_incomplete DataReader;
@@ -454,13 +448,13 @@ void ksi::exp_001::execute()
               ksi::fcm_T_metrics<double> test_partitioner(met);
               test_partitioner.setEpsilonForFrobeniusNorm(EPSILON);
               test_partitioner.setNumberOfClusters(NUMBER_OF_CLUSTERS);
-              t_norm_einstein test_t_norm();
+              ksi::t_norm_einstein tnorm;
 
-              data_modifier_imputer_granular dm(test_partitioner, test_t_norm);
+              data_modifier_imputer_granular dm(test_partitioner, tnorm);
 
               dm.modify(data);
 
-              const std::string result_file_path = dataDir + "/fcm_modify_results/Gr-2-m15_result.txt";
+              const std::string result_file_path = resultDir + "/fcm_modify_results/Gr-2-m15_result.txt";
               std::cout << "Saving result of modifiyng into: " << result_file_path << std::endl;
 
               std::ofstream result_file(result_file_path);
@@ -480,8 +474,6 @@ void ksi::exp_001::execute()
               std::cout << "test of the first incomplete data set" << std::endl;
               std::cout << std::endl;
 
-              ksi::reader_complete DataReader;
-
               std::string IncompleteDataset("/Gr-2-m15.txt");
 
               ksi::reader_incomplete DataReader;
@@ -494,13 +486,13 @@ void ksi::exp_001::execute()
               ksi::fcm_T_metrics<double> test_partitioner(met);
               test_partitioner.setEpsilonForFrobeniusNorm(EPSILON);
               test_partitioner.setNumberOfClusters(NUMBER_OF_CLUSTERS);
-              t_norm_einstein test_t_norm();
+              ksi::t_norm_einstein tnorm;
 
-              data_modifier_imputer_granular dm(test_partitioner, test_t_norm);
+              data_modifier_imputer_granular dm(test_partitioner, tnorm);
 
               dm.modify(data);
 
-              const std::string result_file_path = dataDir + "/fcm_modify_results/Gr-2-m15_result.txt";
+              const std::string result_file_path = resultDir + "/fcm_modify_results/Gr-2-m15_result.txt";
               std::cout << "Saving result of modifiyng into: " << result_file_path << std::endl;
 
               std::ofstream result_file(result_file_path);

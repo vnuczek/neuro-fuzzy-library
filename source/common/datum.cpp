@@ -435,7 +435,7 @@ bool ksi::datum::is_complete() const
     std::size_t i = 0;
     std::size_t attribute_size = attributes.size();
 
-    while (is_complete || (i != attribute_size)) {
+    while (is_complete && (i != attribute_size)) {
         is_complete = is_attribute_complete(i);
         ++i;
     }

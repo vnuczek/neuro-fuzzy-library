@@ -441,7 +441,9 @@ T ksi::fcm_T_metrics<T>::calculateDistance(
       }
       else
       {
-         return _pMetric->calculateDistance(x,y);
+		  /// @todo !!! warning: this is a temporary solution
+        //return _pMetric->calculateDistance(x,y);
+          return T();
       }
    }
    CATCH;
