@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
  
 #include "../readers/reader-complete.h"
 #include "../readers/reader-incomplete.h"
@@ -19,6 +20,13 @@
 #include "../common/data-modifier-imputer-knn-median.h"
 #include "../common/data-modifier-imputer-values-from-knn.h"
 #include "../common/data-modifier-outlier-remove-sigma.h"
+
+#include "../tnorms/t-norm-einstein.h"
+#include "../common/data-modifier-imputer-granular.h"
+#include "../partitions/partitioner.h" 
+#include "../partitions/fcm.h"
+#include "../partitions/fcm-T-metrics.h"
+#include "../metrics/metric-euclidean.h"
 
 #include "../experiments/exp-001.h"
 
@@ -300,6 +308,213 @@ void ksi::exp_001::execute()
             }
          }
       } 
+
+      {
+          std::cout << std::endl;
+          std::cout << "=====================================" << std::endl;
+          std::cout << "data granulation using the FCM method" << std::endl;
+          std::cout << "=====================================" << std::endl;
+          
+          {
+              std::cout << std::endl;
+              std::cout << "test of the first incomplete data set" << std::endl;
+              std::cout << std::endl;
+
+              ksi::reader_complete DataReader;
+
+              std::string IncompleteDataset("/Gr-2-m00.txt");
+
+              ksi::reader_incomplete DataReader;
+              auto data = DataReader.read(dataDir + IncompleteDataset);
+
+              const double EPSILON = 1e-8;
+              const int NUMBER_OF_CLUSTERS = 10;
+
+              ksi::metric_euclidean met;
+              ksi::fcm_T_metrics<double> test_partitioner(met);
+              test_partitioner.setEpsilonForFrobeniusNorm(EPSILON);
+              test_partitioner.setNumberOfClusters(NUMBER_OF_CLUSTERS);
+              t_norm_einstein test_t_norm();
+
+              data_modifier_imputer_granular dm(test_partitioner, test_t_norm);
+
+              dm.modify(data);
+              
+              const std::string result_file_path = dataDir + "/fcm_modify_results/Gr-2-m00_result.txt";
+              std::cout << "Saving result of modifiyng into: " << result_file_path << std::endl;
+
+              std::ofstream result_file(result_file_path);
+
+              if (!result_file.is_open()) {
+                  std::cerr << "Unable to open file: " << result_file_path << std::endl;
+              }
+              else
+              {
+                  result_file << data;
+                  result_file.close();
+              }
+          }
+
+          {
+              std::cout << std::endl;
+              std::cout << "test of the first incomplete data set" << std::endl;
+              std::cout << std::endl;
+
+              ksi::reader_complete DataReader;
+
+              std::string IncompleteDataset("/Gr-2-m05.txt");
+
+              ksi::reader_incomplete DataReader;
+              auto data = DataReader.read(dataDir + IncompleteDataset);
+
+              const double EPSILON = 1e-8;
+              const int NUMBER_OF_CLUSTERS = 10;
+
+              ksi::metric_euclidean met;
+              ksi::fcm_T_metrics<double> test_partitioner(met);
+              test_partitioner.setEpsilonForFrobeniusNorm(EPSILON);
+              test_partitioner.setNumberOfClusters(NUMBER_OF_CLUSTERS);
+              t_norm_einstein test_t_norm();
+
+              data_modifier_imputer_granular dm(test_partitioner, test_t_norm);
+
+              dm.modify(data);
+
+              const std::string result_file_path = dataDir + "/fcm_modify_results/Gr-2-m05_result.txt";
+              std::cout << "Saving result of modifiyng into: " << result_file_path << std::endl;
+
+              std::ofstream result_file(result_file_path);
+
+              if (!result_file.is_open()) {
+                  std::cerr << "Unable to open file: " << result_file_path << std::endl;
+              }
+              else
+              {
+                  result_file << data;
+                  result_file.close();
+              }
+          }
+
+          {
+              std::cout << std::endl;
+              std::cout << "test of the first incomplete data set" << std::endl;
+              std::cout << std::endl;
+
+              ksi::reader_complete DataReader;
+
+              std::string IncompleteDataset("/Gr-2-m10.txt");
+
+              ksi::reader_incomplete DataReader;
+              auto data = DataReader.read(dataDir + IncompleteDataset);
+
+              const double EPSILON = 1e-8;
+              const int NUMBER_OF_CLUSTERS = 10;
+
+              ksi::metric_euclidean met;
+              ksi::fcm_T_metrics<double> test_partitioner(met);
+              test_partitioner.setEpsilonForFrobeniusNorm(EPSILON);
+              test_partitioner.setNumberOfClusters(NUMBER_OF_CLUSTERS);
+              t_norm_einstein test_t_norm();
+
+              data_modifier_imputer_granular dm(test_partitioner, test_t_norm);
+
+              dm.modify(data);
+
+              const std::string result_file_path = dataDir + "/fcm_modify_results/Gr-2-m10_result.txt";
+              std::cout << "Saving result of modifiyng into: " << result_file_path << std::endl;
+
+              std::ofstream result_file(result_file_path);
+
+              if (!result_file.is_open()) {
+                  std::cerr << "Unable to open file: " << result_file_path << std::endl;
+              }
+              else
+              {
+                  result_file << data;
+                  result_file.close();
+              }
+          }
+
+          {
+              std::cout << std::endl;
+              std::cout << "test of the first incomplete data set" << std::endl;
+              std::cout << std::endl;
+
+              ksi::reader_complete DataReader;
+
+              std::string IncompleteDataset("/Gr-2-m15.txt");
+
+              ksi::reader_incomplete DataReader;
+              auto data = DataReader.read(dataDir + IncompleteDataset);
+
+              const double EPSILON = 1e-8;
+              const int NUMBER_OF_CLUSTERS = 10;
+
+              ksi::metric_euclidean met;
+              ksi::fcm_T_metrics<double> test_partitioner(met);
+              test_partitioner.setEpsilonForFrobeniusNorm(EPSILON);
+              test_partitioner.setNumberOfClusters(NUMBER_OF_CLUSTERS);
+              t_norm_einstein test_t_norm();
+
+              data_modifier_imputer_granular dm(test_partitioner, test_t_norm);
+
+              dm.modify(data);
+
+              const std::string result_file_path = dataDir + "/fcm_modify_results/Gr-2-m15_result.txt";
+              std::cout << "Saving result of modifiyng into: " << result_file_path << std::endl;
+
+              std::ofstream result_file(result_file_path);
+
+              if (!result_file.is_open()) {
+                  std::cerr << "Unable to open file: " << result_file_path << std::endl;
+              }
+              else
+              {
+                  result_file << data;
+                  result_file.close();
+              }
+          }
+
+          {
+              std::cout << std::endl;
+              std::cout << "test of the first incomplete data set" << std::endl;
+              std::cout << std::endl;
+
+              ksi::reader_complete DataReader;
+
+              std::string IncompleteDataset("/Gr-2-m15.txt");
+
+              ksi::reader_incomplete DataReader;
+              auto data = DataReader.read(dataDir + IncompleteDataset);
+
+              const double EPSILON = 1e-8;
+              const int NUMBER_OF_CLUSTERS = 10;
+
+              ksi::metric_euclidean met;
+              ksi::fcm_T_metrics<double> test_partitioner(met);
+              test_partitioner.setEpsilonForFrobeniusNorm(EPSILON);
+              test_partitioner.setNumberOfClusters(NUMBER_OF_CLUSTERS);
+              t_norm_einstein test_t_norm();
+
+              data_modifier_imputer_granular dm(test_partitioner, test_t_norm);
+
+              dm.modify(data);
+
+              const std::string result_file_path = dataDir + "/fcm_modify_results/Gr-2-m15_result.txt";
+              std::cout << "Saving result of modifiyng into: " << result_file_path << std::endl;
+
+              std::ofstream result_file(result_file_path);
+
+              if (!result_file.is_open()) {
+                  std::cerr << "Unable to open file: " << result_file_path << std::endl;
+              }
+              else
+              {
+                  result_file << data;
+                  result_file.close();
+              }
+          }
+      }
    }
    catch (...)
    {
