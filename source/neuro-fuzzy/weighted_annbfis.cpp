@@ -1,5 +1,7 @@
 
 #include <deque>
+#include <numeric>
+
 
 #include "../neuro-fuzzy/neuro-fuzzy-system.h"
 #include "../neuro-fuzzy/abstract-annbfis.h"

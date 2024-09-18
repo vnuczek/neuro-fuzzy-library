@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
  
 #include "../readers/reader-complete.h"
 #include "../readers/reader-incomplete.h"
@@ -20,7 +21,16 @@
 #include "../common/data-modifier-imputer-values-from-knn.h"
 #include "../common/data-modifier-outlier-remove-sigma.h"
 
+#include "../tnorms/t-norm-einstein.h"
+#include "../common/data-modifier-imputer-granular.h"
+#include "../partitions/partitioner.h" 
+#include "../partitions/fcm.h"
+#include "../partitions/fcm-T-metrics.h"
+#include "../metrics/metric-euclidean.h"
+
 #include "../experiments/exp-001.h"
+
+#include "../auxiliary/directory.h"
 
 
 void ksi::exp_001::execute()
@@ -300,6 +310,49 @@ void ksi::exp_001::execute()
             }
          }
       } 
+
+      {
+          std::cout << std::endl;
+          std::cout << "=====================================" << std::endl;
+          std::cout << "data granulation using the FCM method" << std::endl;
+          std::cout << "=====================================" << std::endl;
+
+          std::filesystem::path resultDir = "../results/exp-001";
+		  std::filesystem::path result_folder_path = resultDir / "fcm_modify_results";
+		  std::filesystem::create_directories(result_folder_path);
+          ksi::reader_incomplete DataReader;
+
+          const double EPSILON = 1e-8;
+          const int NUMBER_OF_CLUSTERS = 10;
+          const int NUMBER_OF_ITERATIONS = 100;
+          ksi::fcm test_partitioner(NUMBER_OF_CLUSTERS, NUMBER_OF_ITERATIONS);
+          ksi::t_norm_einstein tnorm;
+
+          for (const std::string& file : { "Gr-2-m00", "Gr-2-m05", "Gr-2-m10", "Gr-2-m15", "Gr-2-m20" })
+          {
+			  std::cout << std::endl;
+			  std::cout << "test of the "<< file << " incomplete data set" << std::endl;
+			  std::cout << std::endl;
+			  
+			  auto data = DataReader.read((std::filesystem::path(dataDir)/ (file + ".txt")).string());
+			  data_modifier_imputer_granular dm(test_partitioner, tnorm);
+
+			  dm.modify(data);
+
+			  const std::filesystem::path result_file_path = result_folder_path / (file + "_result.txt");
+			  std::cout << "Saving result of modifiyng into: " << result_file_path << std::endl;
+
+              std::ofstream result_file(result_file_path);
+			  if (!result_file.is_open()) {
+				  std::cerr << "Unable to open file: " << result_file_path << std::endl;
+			  }
+			  else
+			  {
+				  result_file << data;
+				  result_file.close();
+			  }
+          }
+      }
    }
    catch (...)
    {

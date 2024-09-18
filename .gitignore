@@ -39,6 +39,8 @@ source/results/
 /neuro-fu.993AC922/x64
 /results/exp-005
 /doxygen/html
+
+# Temporary VS/VSC file
 /.vs
-# Temporary VS file
+/.vscode
 *.pdb
