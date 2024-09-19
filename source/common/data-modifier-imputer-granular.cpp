@@ -112,7 +112,8 @@ std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modif
        auto imputed_granule_attributes = impute_granule_attributes(incomplete_attributes_indices, granules_centers[gran]);
        imputed_attributes.push_back(imputed_granule_attributes);
 
-       auto imputed_tuple_attributes = insert_missing_attributes(incomplete_tuple_attributes, imputed_granule_attributes, incomplete_attributes_indices);       
+       auto imputed_tuple_attributes = insert_missing_attributes(incomplete_tuple_attributes, imputed_granule_attributes, incomplete_attributes_indices);
+
        granule_membership.push_back(calculate_granule_membership(imputed_tuple_attributes, granules_centers[gran], granules_fuzzifications[gran]));
     }
 
@@ -136,12 +137,13 @@ std::vector<double> ksi::data_modifier_imputer_granular::insert_missing_attribut
 {
    auto imputed_tuple_attributes = incomplete_tuple_attributes; 
 
-   for (const auto& attr_index: incomplete_attributes_indices) // for each missing attribute in the incomplete tuple
+   for (std::size_t index = 0; index < imputed_attributes.size(); ++index) // for each missing attribute in the incomplete tuple
    {
-      imputed_tuple_attributes[attr_index] = imputed_attributes[attr_index];
+   	  auto attr_index = incomplete_attributes_indices[index];
+      imputed_tuple_attributes[attr_index] = imputed_attributes[index];
    }
 
-    return imputed_tuple_attributes;
+	return imputed_tuple_attributes;
 }
 
 double ksi::data_modifier_imputer_granular::calculate_granule_membership(const std::vector<double>& estimated_tuple_attributes, const std::vector<double>& granule_centers, const std::vector<double>& granule_fuzzifications)

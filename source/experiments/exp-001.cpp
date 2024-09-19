@@ -31,6 +31,7 @@
 #include "../experiments/exp-001.h"
 
 #include "../auxiliary/directory.h"
+#include "../tnorms/t-norm-min.h"
 
 
 void ksi::exp_001::execute()
@@ -320,52 +321,49 @@ void ksi::exp_001::execute()
           ksi::reader_incomplete DataReader;
 
           const double EPSILON = 1e-8;
-          const int NUMBER_OF_CLUSTERS = 10;
           const int NUMBER_OF_ITERATIONS = 100;
-          ksi::fcm test_partitioner(NUMBER_OF_CLUSTERS, NUMBER_OF_ITERATIONS);
-          ksi::t_norm_einstein tnorm;
-
-          std::filesystem::path sub_folder = "CO2";
-
-		  std::filesystem::path path = dataDir / sub_folder;
-		  
-          std::vector<std::filesystem::path> files_names;
-
-          if (std::filesystem::exists(path) && std::filesystem::is_directory(path)) {
-              for (const auto& entry : std::filesystem::directory_iterator(path)) {
-                  if (entry.is_regular_file()) {
-                      files_names.push_back(entry.path());
-                  }
-              }
-          }
 
           std::filesystem::path resultDir = "../results/exp-001";
-          std::filesystem::path result_folder_path = resultDir / "fcm_modify_results" / sub_folder;
-          std::filesystem::create_directories(result_folder_path);
 
-          for (const auto& file_path : files_names)
+          ksi::t_norm_min tnorm;
+
+          for (const std::filesystem::path& sub_folder : { "Gr-2", "missing", "CO2" })
           {
-			  std::cout << std::endl;
-			  std::cout << "test of the "<< file_path << " incomplete data set" << std::endl;
-			  std::cout << std::endl;
-			  
-			  auto data = DataReader.read(file_path.string());
-			  data_modifier_imputer_granular dm(test_partitioner, tnorm);
+              std::filesystem::path path = dataDir / sub_folder;
 
-			  dm.modify(data);
+              std::filesystem::path result_folder_path = resultDir / "fcm_modify_results" / sub_folder;
+              std::filesystem::create_directories(result_folder_path);
 
-			  const std::filesystem::path result_file_path = result_folder_path / (file_path.stem().string() + "_result" + file_path.extension().string());
-			  std::cout << "Saving result of modifiyng into: " << result_file_path << std::endl;
+              for (const auto& entry : std::filesystem::directory_iterator(path)) {
+                  if (entry.is_regular_file()) {
+                      std::filesystem::path file_path = entry.path();
 
-              std::ofstream result_file(result_file_path);
-			  if (!result_file.is_open()) {
-				  std::cerr << "Unable to open file: " << result_file_path << std::endl;
-			  }
-			  else
-			  {
-				  result_file << data;
-				  result_file.close();
-			  }
+                      std::cout << std::endl;
+                      std::cout << "test of the " << file_path << " incomplete data set" << std::endl;
+                      std::cout << std::endl;
+
+                      auto data = DataReader.read(file_path.string());
+
+                      auto NUMBER_OF_CLUSTERS = data.getNumberOfData() / 10;
+                      ksi::fcm test_partitioner(NUMBER_OF_CLUSTERS, NUMBER_OF_ITERATIONS);
+                      data_modifier_imputer_granular dm(test_partitioner, tnorm);
+
+                      dm.modify(data);
+
+                      const std::filesystem::path result_file_path = result_folder_path / (file_path.stem().string() + "_result" + file_path.extension().string());
+                      std::cout << "Saving result of modifying into: " << result_file_path << std::endl;
+
+                      std::ofstream result_file(result_file_path);
+                      if (!result_file.is_open()) {
+                          std::cerr << "Unable to open file: " << result_file_path << std::endl;
+                      }
+                      else
+                      {
+                          result_file << data;
+                          result_file.close();
+                      }
+                  }
+              }
           }
       }
    }
