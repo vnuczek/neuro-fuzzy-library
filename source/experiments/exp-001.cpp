@@ -321,7 +321,7 @@ void ksi::exp_001::execute()
           ksi::reader_incomplete DataReader;
 
           const double EPSILON = 1e-8;
-          const int NUMBER_OF_ITERATIONS = 100;
+          const int NUMBER_OF_ITERATIONS = 1000;
 
           std::filesystem::path resultDir = "../results/exp-001";
 
