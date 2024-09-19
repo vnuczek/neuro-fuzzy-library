@@ -317,9 +317,6 @@ void ksi::exp_001::execute()
           std::cout << "data granulation using the FCM method" << std::endl;
           std::cout << "=====================================" << std::endl;
 
-          std::filesystem::path resultDir = "../results/exp-001";
-		  std::filesystem::path result_folder_path = resultDir / "fcm_modify_results";
-		  std::filesystem::create_directories(result_folder_path);
           ksi::reader_incomplete DataReader;
 
           const double EPSILON = 1e-8;
@@ -328,18 +325,36 @@ void ksi::exp_001::execute()
           ksi::fcm test_partitioner(NUMBER_OF_CLUSTERS, NUMBER_OF_ITERATIONS);
           ksi::t_norm_einstein tnorm;
 
-          for (const std::string& file : { "Gr-2-m00", "Gr-2-m05", "Gr-2-m10", "Gr-2-m15", "Gr-2-m20" })
+          std::filesystem::path sub_folder = "CO2";
+
+		  std::filesystem::path path = dataDir / sub_folder;
+		  
+          std::vector<std::filesystem::path> files_names;
+
+          if (std::filesystem::exists(path) && std::filesystem::is_directory(path)) {
+              for (const auto& entry : std::filesystem::directory_iterator(path)) {
+                  if (entry.is_regular_file()) {
+                      files_names.push_back(entry.path());
+                  }
+              }
+          }
+
+          std::filesystem::path resultDir = "../results/exp-001";
+          std::filesystem::path result_folder_path = resultDir / "fcm_modify_results" / sub_folder;
+          std::filesystem::create_directories(result_folder_path);
+
+          for (const auto& file_path : files_names)
           {
 			  std::cout << std::endl;
-			  std::cout << "test of the "<< file << " incomplete data set" << std::endl;
+			  std::cout << "test of the "<< file_path << " incomplete data set" << std::endl;
 			  std::cout << std::endl;
 			  
-			  auto data = DataReader.read((std::filesystem::path(dataDir)/ (file + ".txt")).string());
+			  auto data = DataReader.read(file_path.string());
 			  data_modifier_imputer_granular dm(test_partitioner, tnorm);
 
 			  dm.modify(data);
 
-			  const std::filesystem::path result_file_path = result_folder_path / (file + "_result.txt");
+			  const std::filesystem::path result_file_path = result_folder_path / (file_path.stem().string() + "_result" + file_path.extension().string());
 			  std::cout << "Saving result of modifiyng into: " << result_file_path << std::endl;
 
               std::ofstream result_file(result_file_path);
