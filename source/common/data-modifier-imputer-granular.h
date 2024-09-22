@@ -36,9 +36,7 @@ namespace ksi
          */
 		std::shared_ptr<ksi::t_norm> _pTnorm = nullptr;
 
-		/** 
-         * @todo
-         */
+		
 		ksi::dataset complete_dataset;
 
 		/** 
@@ -179,106 +177,139 @@ namespace ksi
 		virtual std::string getDescription() const override;
 
 	protected:
-		/**
-		 * @brief Performs granular imputation on a dataset.
-         * 
-         * This method imputes missing values by first partitioning the complete tuples into granules and then imputing the incomplete tuples using these granules.
-         * 
-         * @param ds The dataset on which imputation is performed.
-         * @return A new dataset with imputed values.
-         * @date 2024-08-20
-         * @author Konrad Wnuk
-		 */
-		ksi::dataset granular_imputation(const dataset& ds);
-
-	private:
-		/**
-		 * @todo
-		 */
-		void extract_complete_dataset_and_incomplete_indices(const dataset& ds);
-
-		/**
-         * @brief Processes an incomplete tuple and imputes its missing values.
-         * 
-         * Imputes missing attributes by calculating granule memberships and weighted averages.
-         * 
-         * @param incomplete_tuple The tuple with missing attributes to be imputed.
-         * @return A vector of imputed attribute values.
+        /**
+		 * @brief Performs granular imputation on the given dataset.
+		 *
+		 * This function processes the dataset by first partitioning the complete dataset, setting the granule attributes,
+		 * and then imputing missing values for each incomplete tuple. For each incomplete tuple, missing attribute values
+		 * are imputed based on a weighted average calculated from the relevant granule memberships.
+		 *
+		 * @param ds The dataset on which the granular imputation is performed.
+		 * @return A new dataset with imputed missing values.
+		 * @throws ksi::exception If an error occurs during imputation.
          * @date 2024-08-20
          * @author Konrad Wnuk
          */
-		std::vector<double> handle_incomplete_tuple(const datum& incomplete_tuple);
+		ksi::dataset granular_imputation(const dataset& ds);
 
-		/**
-         * @brief Processes an incomplete tuple and imputes its missing values.
-         * 
-         * Imputes missing attributes by calculating granule memberships and weighted averages.
-         * 
-         * @param incomplete_tuple The tuple with missing attributes to be imputed.
-         * @return A vector of imputed attribute values.
+	private:
+        /**
+         * @brief Extracts complete data and finds incomplete tuples.
+         *
+         * This method separates complete data tuples from incomplete ones in the dataset.
+         * It identifies incomplete tuples and stores their indices.
+         *
+         * @param ds The dataset to extract from.
+         * @date 2024-09-11
+         * @author Konrad Wnuk
+         */
+		void extract_complete_dataset_and_incomplete_indices(const dataset& ds);
+
+        /**
+         * @brief Sets the attributes of granules.
+         *
+         * This method initializes the granules' centers and fuzzification values, which are essential for the imputation process.
+         * It uses the partitioned dataset to assign these attributes.
+         *
+         * @param partitioned_data The partitioned dataset containing granule information.
+         * @date 2024-08-20
+         * @author Konrad Wnuk
+         */
+        void set_granules_attributes(const ksi::partition& partitioned_data);
+
+        /**
+		 * @brief Handles the imputation of missing attributes for an incomplete tuple.
+		 *
+		 * This function identifies the missing attribute indices in the tuple and calculates
+		 * the imputed values by considering relevant granule memberships. A weighted average is
+		 * then computed to produce the final imputed values.
+		 *
+		 * @param incomplete_tuple The incomplete tuple containing missing attributes.
+		 * @return A pair consisting of the vector of imputed attribute values and the vector of missing attribute indices.
+		 * @date 2024-09-22
+		 * @author Konrad Wnuk
+		 */
+        std::pair<std::vector<double>, std::vector<std::size_t>> handle_incomplete_tuple(const datum& incomplete_tuple);
+
+        /**
+         * @brief Retrieves indices of incomplete attributes in a tuple.
+         *
+         * This method identifies the positions of missing attributes in an incomplete tuple.
+         *
+         * @param incomplete_tuple The tuple containing missing attributes.
+         * @return A vector of indices representing the positions of the missing attributes.
+         * @date 2024-09-11
+         * @author Konrad Wnuk
+         */
+        std::vector<std::size_t> get_incomplete_attributes_indices(const ksi::datum& incomplete_tuple) const;
+
+        /**
+         * @brief Calculates imputed values and memberships for each granule.
+         *
+         * This method computes the imputed attributes and their corresponding membership values for each granule.
+         *
+         * @param incomplete_tuple_attributes The incomplete tuple attributes.
+         * @param incomplete_attributes_indices Indices of missing attributes.
+         * @return A pair containing the imputed attributes and the membership values for each granule.
          * @date 2024-08-20
          * @author Konrad Wnuk
          */
 		std::pair<std::vector<std::vector<double>>, std::vector<double>> calculate_granule_imputations_and_memberships(const std::vector<double>& incomplete_tuple_attributes, const std::vector<std::size_t>& incomplete_attributes_indices);
 
-		/** @todo KW */
-		std::vector<double> impute_granule_attributes(const std::vector<std::size_t> &incomplete_attributes_indices, const std::vector<double> &granule_centers);
-
-		/** @todo KW */
-		std::vector<std::size_t> get_incomplete_attributes_indices(const ksi::datum& incomplete_tuple) const;
-
-		/**
-		 * @brief Imputes missing attributes in a tuple using the given granule center.
-		 *
-		 * This method replaces the missing attributes in the tuple with the corresponding values from the specified granule center.
-		 *
-		 * @param incomplete_datum The incomplete tuple to be imputed.
-		 * @param granule_center The center of the granule used for imputation.
-		 * @return A vector containing the attributes of the tuple after imputation.
-		 * @date 2024-08-20
-		 * @author Konrad Wnuk
-		 * @todo poprawić opis - KW
-		 */
-		std::vector<double> insert_missing_attributes(const std::vector<double>& incomplete_tuple_attributes, std::vector<double>& imputed_granule_attributes, const std::vector<std::size_t>& incomplete_attributes_indices);
-
-		/**
-         * @brief Sets the attributes of the granules.
-         * 
-         * Sets the centers and fuzzifications of the granules using the partitioned complete data.
-         * 
-         * @param complete_ds The dataset containing complete data.
-         * @date 2024-00-11
+        /**
+         * @brief Imputes missing values for a specific granule.
+         *
+         * This method imputes the missing attributes of a tuple by using the corresponding granule's centers.
+         *
+         * @param incomplete_attributes_indices Indices of missing attributes in the tuple.
+         * @param granule_centers The center values of the granule used for imputation.
+         * @return A vector of imputed values for the missing attributes.
+         * @date 2024-09-11
          * @author Konrad Wnuk
          */
-		void set_granules_atributes(const ksi::partition& partitioned_data);
+		std::vector<double> impute_granule_attributes(const std::vector<std::size_t> &incomplete_attributes_indices, const std::vector<double> &granule_centers);
 
-		/**
-		 * @brief Computes the weighted average of estimated values using the provided weights.
-		 *
-		 * This method calculates the weighted average of a set of estimated values by multiplying each value by its corresponding weight, summing these products, and then dividing by the sum of the weights.
-		 *
-		 * @param estimated_values A vector of vectors containing the estimated values to be averaged. 
-		 *						   Each inner vector represents a set of estimated values for a particular dimension.
-		 * @param weights A vector of weights corresponding to each set of estimated values.
-		 * @return A vector representing the weighted average of the estimated values.
-		 * @date 2024-08-20
-		 * @author Konrad Wnuk
-		 */
-		std::vector<double> weighted_average(const std::vector < std::vector<double>>& estimated_values, const std::vector<double>& weights);
-
-		/**
-         * @brief Calculates the membership of a tuple in a granule.
-         * 
-         * Uses a Gaussian function to compute the membership value for the tuple with respect to a granule.
-         * 
-         * @param incomplete_tuple_attributes Attributes of the incomplete tuple.
-         * @param granule_centers The center of the granule.
-         * @param granule_fuzzification The fuzzification of the granule.
-         * @return The calculated membership value.
+        /**
+         * @brief Inserts imputed values into the incomplete tuple.
+         *
+         * This method replaces the missing values in an incomplete tuple with the corresponding imputed values.
+         *
+         * @param incomplete_tuple_attributes The incomplete tuple attributes.
+         * @param imputed_granule_attributes The imputed attributes for the granule.
+         * @param incomplete_attributes_indices Indices of missing attributes in the tuple.
+         * @return The tuple with missing values replaced by imputed values.
          * @date 2024-08-20
          * @author Konrad Wnuk
          */
-		double calculate_granule_membership(const std::vector<double>& estimated_tuple_attributes, const std::vector<double>& granule_centers, const std::vector<double>& granule_fuzzifications);
+		std::vector<double> insert_missing_attributes(const std::vector<double>& incomplete_tuple_attributes, std::vector<double>& imputed_granule_attributes, const std::vector<std::size_t>& incomplete_attributes_indices);
+
+        /**
+         * @brief Calculates the membership of a tuple in a granule.
+         *
+         * This method computes the membership of an imputed tuple within a granule based on the attribute values, granule centers, and fuzzifications.
+         *
+         * @param estimated_tuple_attributes The imputed attributes of the tuple.
+         * @param granule_centers The center values of the granule.
+         * @param granule_fuzzifications The fuzzification values of the granule.
+         * @return The membership value of the tuple within the granule.
+         * @date 2024-08-20
+         * @author Konrad Wnuk
+         */
+        double calculate_granule_membership(const std::vector<double>& estimated_tuple_attributes, const std::vector<double>& granule_centers, const std::vector<double>& granule_fuzzifications);
+
+        /**
+         * @brief Computes the weighted average of estimated values.
+         *
+         * This method calculates the weighted average of imputed values from different granules, using the membership values as weights.
+         *
+         * @param estimated_values The imputed values from different granules.
+         * @param weights The membership values used as weights.
+         * @return The weighted average of the imputed values.
+         * @date 2024-08-20
+         * @author Konrad Wnuk
+         */
+        std::vector<double> weighted_average(const std::vector < std::vector<double>>& estimated_values, const std::vector<double>& weights);
+		
 	};
 }
 

@@ -236,6 +236,17 @@ void ksi::datum::changeAttributesValues(const std::vector<double> & new_attribut
     CATCH;
 }
 
+void ksi::datum::changeMissingAttributesValues(const std::vector<double>& new_attributes_values, const std::vector<std::size_t>& attributes_indices) {
+	try {
+        for(std::size_t index = 0; index < new_attributes_values.size(); ++index) {
+            auto attr_index = attributes_indices[index];
+            attributes[attr_index]->setValue(new_attributes_values[index]);
+        }
+	}
+	CATCH;
+}
+
+
 void ksi::datum::setWeight(double weight)
 {
    _weight = std::max (0.0, std::min (1.0, weight));

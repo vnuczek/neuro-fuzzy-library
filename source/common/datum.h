@@ -101,6 +101,20 @@ namespace ksi
        */
       void changeAttributesValues(const std::vector<double> & new_attributes_values);
 
+      /**
+	   * @brief Replaces missing attribute values in the tuple.
+	   *
+	   * This function updates the missing attributes in the datum with new imputed values,
+	   * based on the provided indices of the missing attributes.
+	   *
+	   * @param new_attributes_values A vector of new imputed values for the missing attributes.
+	   * @param attributes_indices A vector of indices corresponding to the missing attributes in the tuple.
+	   * @throws ksi::exception If an error occurs while setting the attribute values.
+	   * @date 2024-09-22
+       * @author Konrad Wnuk
+	   */
+      void changeMissingAttributesValues(const std::vector<double>& new_attributes_values, const std::vector<std::size_t>& attributes_indices);
+
       /** The method sets a weight value of a datum.
        * @date 2018-03-05
        * @author Krzysztof Siminski       
