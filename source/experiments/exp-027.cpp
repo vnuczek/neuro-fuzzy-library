@@ -38,6 +38,11 @@ void ksi::exp_027::execute()
 {
    try
    {
+      // KS: Ode mnie galaz main → fcm 
+      //     Pana galaz fcm → Pan gałęzi badania
+      //     git merge galaz – scalenie galezi do biezacej 
+
+
       // dla zbioru danych: CH4, Concrete, BoxJ290
       {
          // 1. wczytanie pliku do datasetu ksi::reader_complete DataReader;
