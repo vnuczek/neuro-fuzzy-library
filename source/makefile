@@ -717,6 +717,10 @@ $(release_folder)/experiments-exp-005.o : experiments/exp-005.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/experiments-exp-005.o : experiments/exp-005.cpp
 	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
+$(release_folder)/experiments-exp-027.o : experiments/exp-027.cpp
+	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
+$(debug_folder)/experiments-exp-027.o : experiments/exp-027.cpp
+	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
 $(release_folder)/partitions-fubi.o : partitions/fubi.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/partitions-fubi.o : partitions/fubi.cpp
@@ -1106,6 +1110,7 @@ $(release_folder)/tnorms-t-norm-fodor.o \
 $(release_folder)/neuro-fuzzy-consequence-MA.o \
 $(release_folder)/heuristics-ridders-test.o \
 $(release_folder)/descriptors-descriptor-gaussian-subspace.o \
+$(release_folder)/experiments-exp-027.o \
 $(release_folder)/descriptors-descriptor-singleton.o \
 $(release_folder)/common-datum.o \
 $(release_folder)/neuro-fuzzy-fac_prototype_minkowski_regression.o \
@@ -1321,6 +1326,7 @@ $(debug_folder)/tnorms-t-norm-fodor.o \
 $(debug_folder)/neuro-fuzzy-consequence-MA.o \
 $(debug_folder)/heuristics-ridders-test.o \
 $(debug_folder)/descriptors-descriptor-gaussian-subspace.o \
+$(debug_folder)/experiments-exp-027.o \
 $(debug_folder)/descriptors-descriptor-singleton.o \
 $(debug_folder)/common-datum.o \
 $(debug_folder)/neuro-fuzzy-fac_prototype_minkowski_regression.o \
