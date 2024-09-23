@@ -27,6 +27,12 @@
 #include "../tnorms/t-norm-lukasiewicz.h"
 #include "../tnorms/t-norm-einstein.h"
 
+#include "../implications/imp-reichenbach.h"
+
+#include "../neuro-fuzzy/neuro-fuzzy-system.h"
+#include "../neuro-fuzzy/annbfis.h"
+#include "../neuro-fuzzy/tsk.h"
+
 
 void ksi::exp_027::execute()
 {
@@ -46,14 +52,27 @@ void ksi::exp_027::execute()
 //       ksi::data_modifier_marginaliser marginaliser;
       
       
-
-     
-       
-
+      const int NUMBER_OF_RULES = 5;
+      const int NUMBER_OF_CLUSTERING_ITERATIONS = 100;
+      const int NUMBER_OF_TUNING_ITERATIONS = 100;  
       
+      const bool NORMALISATION = false;
+      
+      const double ETA = 0.001;
+      ksi::t_norm_product tnorm;
+      ksi::imp_reichenbach implication;
 
- 
+        
+        ksi::tsk     t (NUMBER_OF_RULES, NUMBER_OF_CLUSTERING_ITERATIONS, NUMBER_OF_TUNING_ITERATIONS, ETA, NORMALISATION, tnorm);
+        ksi::annbfis a (NUMBER_OF_RULES, NUMBER_OF_CLUSTERING_ITERATIONS, NUMBER_OF_TUNING_ITERATIONS, ETA, NORMALISATION, tnorm, implication);
 
+        ksi::dataset train, test;
+        std::string output_file;
+        
+        auto result_t = t.experiment_regression(train, test, output_file);
+        auto result_a = a.experiment_regression(train, test, output_file);
+        
+        
       
    }
    catch (...)
