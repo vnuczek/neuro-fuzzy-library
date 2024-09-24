@@ -2,8 +2,6 @@ source/dane/
 source/exec/
 source/results/
 
-
-
 # Prerequisites
 *.d
 
