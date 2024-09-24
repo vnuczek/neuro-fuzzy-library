@@ -1,8 +1,10 @@
 /** @file */
 
 #include <iostream>
+#include <vector>
 #include <string>
-#include <fstream>
+#include <fstream> 
+
  
 #include "../readers/reader-complete.h"
 #include "../readers/reader-incomplete.h"
@@ -20,6 +22,8 @@
 #include "../common/data-modifier-imputer-knn-median.h"
 #include "../common/data-modifier-imputer-values-from-knn.h"
 #include "../common/data-modifier-outlier-remove-sigma.h"
+#include "../common/data_modifier_incompleter_random.h"
+#include "../common/data_modifier_incompleter_random_without_last.h"
 
 #include "../tnorms/t-norm-einstein.h"
 #include "../common/data-modifier-imputer-granular.h"
@@ -82,6 +86,26 @@ void ksi::exp_001::execute()
             ksi::data_modifier_filter filter (attribute, filtering_function);
             filter.modify(data);
             std::cout << "filtered data" << std::endl;
+            std::cout << data << std::endl;
+            std::cout << std::endl;
+         }
+         
+         {
+            auto data = dane;
+            const double probability {0.2};
+            ksi::data_modifier_incompleter_random incompleter (probability);
+            incompleter.modify(data);
+            std::cout << "all attributes missing at random with probability p = " << probability << std::endl;
+            std::cout << data << std::endl;
+            std::cout << std::endl;
+         }
+         
+         {
+            auto data = dane;
+            const double probability {0.2};
+            ksi::data_modifier_incompleter_random_without_last incompleter (probability);
+            incompleter.modify(data);
+            std::cout << "all attributes but last missing at random with probability p = " << probability << std::endl;
             std::cout << data << std::endl;
             std::cout << std::endl;
          }
@@ -323,44 +347,46 @@ void ksi::exp_001::execute()
           const double EPSILON = 1e-8;
           const int NUMBER_OF_ITERATIONS = 1000;
 
+		  std::filesystem::path incompleteDir = std::filesystem::path(dataDir) / "incomplete_data";
           std::filesystem::path resultDir = "../results/exp-001";
 
           ksi::t_norm_min tnorm;
 
-          for (const std::filesystem::path& sub_folder : { "Gr-2", "missing", "CO2" })
-          {
-              std::filesystem::path path = dataDir / sub_folder;
+          for (const auto& incomplete_path : std::filesystem::directory_iterator(incompleteDir)) {
+              if (std::filesystem::is_directory(incomplete_path.path())) {
+                  std::filesystem::path sub_folder = incomplete_path.path().filename();
 
-              std::filesystem::path result_folder_path = resultDir / "fcm_modify_results" / sub_folder;
-              std::filesystem::create_directories(result_folder_path);
+                  std::filesystem::path result_folder_path = resultDir / "fcm_modify_results" / sub_folder;
+                  std::filesystem::create_directories(result_folder_path);
 
-              for (const auto& entry : std::filesystem::directory_iterator(path)) {
-                  if (entry.is_regular_file()) {
-                      std::filesystem::path file_path = entry.path();
+                  for (const auto& entry : std::filesystem::directory_iterator(incomplete_path)) {
+                      if (entry.is_regular_file()) {
+                          std::filesystem::path file_path = entry.path();
 
-                      std::cout << std::endl;
-                      std::cout << "test of the " << file_path << " incomplete data set" << std::endl;
-                      std::cout << std::endl;
+                          std::cout << std::endl;
+                          std::cout << "test of the " << file_path << " incomplete data set" << std::endl;
+                          std::cout << std::endl;
 
-                      auto data = DataReader.read(file_path.string());
+                          auto data = DataReader.read(file_path.string());
 
-                      auto NUMBER_OF_CLUSTERS = data.getNumberOfData() / 10;
-                      ksi::fcm test_partitioner(NUMBER_OF_CLUSTERS, NUMBER_OF_ITERATIONS);
-                      data_modifier_imputer_granular dm(test_partitioner, tnorm);
+                          auto NUMBER_OF_CLUSTERS = data.getNumberOfData() / 10;
+                          ksi::fcm test_partitioner(NUMBER_OF_CLUSTERS, NUMBER_OF_ITERATIONS);
+                          data_modifier_imputer_granular dm(test_partitioner, tnorm);
 
-                      dm.modify(data);
+                          dm.modify(data);
 
-                      const std::filesystem::path result_file_path = result_folder_path / (file_path.stem().string() + "_result" + file_path.extension().string());
-                      std::cout << "Saving result of modifying into: " << result_file_path << std::endl;
+                          const std::filesystem::path result_file_path = result_folder_path / (file_path.stem().string() + "_result" + file_path.extension().string());
+                          std::cout << "Saving result of modifying into: " << result_file_path << std::endl;
 
-                      std::ofstream result_file(result_file_path);
-                      if (!result_file.is_open()) {
-                          std::cerr << "Unable to open file: " << result_file_path << std::endl;
-                      }
-                      else
-                      {
-                          result_file << data;
-                          result_file.close();
+                          std::ofstream result_file(result_file_path);
+                          if (!result_file.is_open()) {
+                              std::cerr << "Unable to open file: " << result_file_path << std::endl;
+                          }
+                          else
+                          {
+                              result_file << data;
+                              result_file.close();
+                          }
                       }
                   }
               }

@@ -67,7 +67,6 @@ void ksi::data_modifier::addModifier(ksi::data_modifier & dm)
       pNext->addModifier(dm);
 }
 
-
 std::string ksi::data_modifier::print() const
 {
    std::string description = getDescription();
