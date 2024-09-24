@@ -25,8 +25,6 @@ ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const data
         for (const auto& tup_index: incomplete_indices) // for each incomplete tuple
         {
             auto [imputed_average_attributes, incomplete_attributes_indices] = handle_incomplete_tuple(*ds.getDatum(tup_index));
-
-
             result.getDatumNonConst(tup_index)->changeMissingAttributesValues(imputed_average_attributes, incomplete_attributes_indices);
         }
 
@@ -115,6 +113,8 @@ std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modif
        imputed_attributes.push_back(imputed_granule_attributes);
 
        auto imputed_tuple_attributes = insert_missing_attributes(incomplete_tuple_attributes, imputed_granule_attributes, incomplete_attributes_indices);
+
+       debug(imputed_tuple_attributes);
 
        granule_membership.push_back(calculate_granule_membership(imputed_tuple_attributes, granules_centers[gran], granules_fuzzifications[gran]));
     }

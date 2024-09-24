@@ -35,8 +35,11 @@ namespace ksi
          * This shared pointer holds the instance of the t-norm operator, which is used to aggregate membership values across different attributes of a tuple.
          */
 		std::shared_ptr<ksi::t_norm> _pTnorm = nullptr;
-
-		
+		/**
+		 * @brief Complete dataset.
+		 *
+		 * Stores the complete dataset, which is used to create granules and impute missing values.
+		 */
 		ksi::dataset complete_dataset;
 
 		/** 
