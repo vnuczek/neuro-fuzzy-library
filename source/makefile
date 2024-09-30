@@ -613,15 +613,13 @@ $(release_folder)/common-data-modifier-filter.o : common/data-modifier-filter.cp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/common-data-modifier-filter.o : common/data-modifier-filter.cpp
 	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
-<<<<<<< HEAD
 $(release_folder)/common-data-modifier-imputer-granular.o : common/data-modifier-imputer-granular.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/common-data-modifier-imputer-granular.o : common/data-modifier-imputer-granular.cpp
-=======
+	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
 $(release_folder)/common-data_modifier_incompleter_random_without_last.o : common/data_modifier_incompleter_random_without_last.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/common-data_modifier_incompleter_random_without_last.o : common/data_modifier_incompleter_random_without_last.cpp
->>>>>>> 99ccd86e1acbc17f748e2436f3debf2302089611
 	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
 $(release_folder)/common-data-modifier-imputer-average.o : common/data-modifier-imputer-average.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
