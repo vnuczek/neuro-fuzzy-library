@@ -26,18 +26,21 @@ namespace ksi
       virtual ~data_modifier_incompleter_random () = default;
       virtual data_modifier * clone () const override;  // prototype design pattern
       
-      virtual std::string print() const override;
+      virtual std::string getDescription() const override;
+      
       virtual void modify (dataset & ds) override;   
+      
+      double getMissingRatio() const;
       
    protected:
       virtual void make_tuple_incomplete_range (datum * pDatum, const std::size_t begin, const std::size_t end);
-      std::size_t number_of_attributes;
+      std::size_t _number_of_attributes;
       
    private:
       double _missing_ratio; 
-      std::default_random_engine random_engine;
-      std::uniform_real_distribution<double> distribution;
-      std::size_t number_of_data_items;
+      std::default_random_engine _random_engine;
+      std::uniform_real_distribution<double> _distribution;
+      std::size_t _number_of_data_items;
       
       virtual void make_tuple_incomplete(datum * pDatum);
    };

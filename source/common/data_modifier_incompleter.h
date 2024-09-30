@@ -22,6 +22,7 @@ namespace ksi
       data_modifier_incompleter & operator= (data_modifier_incompleter && other) = default;
       
       virtual ~data_modifier_incompleter (); 
+      
    };
 }
 

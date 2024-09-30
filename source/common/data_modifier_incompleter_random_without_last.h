@@ -24,6 +24,8 @@ namespace ksi
       virtual data_modifier * clone () const override;  // prototype design pattern
       
       virtual void make_tuple_incomplete(datum * p) override;
+      
+      virtual std::string getDescription() const override;
    };
 }
 

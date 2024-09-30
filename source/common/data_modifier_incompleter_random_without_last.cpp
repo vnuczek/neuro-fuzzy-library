@@ -1,5 +1,6 @@
 
 #include <utility>
+#include <sstream>
 
 #include "data-modifier.h"
 #include "data_modifier_incompleter_random.h"
@@ -11,7 +12,7 @@ ksi::data_modifier_incompleter_random_without_last::data_modifier_incompleter_ra
 
 void ksi::data_modifier_incompleter_random_without_last::make_tuple_incomplete(datum* pDatum)
 {
-   make_tuple_incomplete_range(pDatum, std::size_t{0}, number_of_attributes - 1);
+   make_tuple_incomplete_range(pDatum, std::size_t{0}, _number_of_attributes - 1);
 }
  
 ksi::data_modifier * ksi::data_modifier_incompleter_random_without_last::clone () const
@@ -20,5 +21,11 @@ ksi::data_modifier * ksi::data_modifier_incompleter_random_without_last::clone (
    return new ksi::data_modifier_incompleter_random_without_last(*this);
 }
 
+std::string ksi::data_modifier_incompleter_random_without_last::getDescription() const
+{
+   std::stringstream sos;
+   sos << "random incompleter without last attribute (missing ratio: " << getMissingRatio() << ")";
+   return sos.str();
+}
 
 
