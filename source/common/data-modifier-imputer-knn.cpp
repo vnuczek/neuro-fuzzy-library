@@ -100,3 +100,7 @@ std::string ksi::data_modifier_imputer_knn::getDescription() const
    return std::string("(k == ") + std::to_string(_k) + std::string (")");
 } 
 
+std::string std::getName() const
+{
+	return "data_modifier_imputer_knn";
+}
