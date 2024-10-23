@@ -12,6 +12,7 @@
 #include "../common/datum.h"
 #include "../partitions/partitioner.h"
 #include "../service/exception.h"
+#include "../service/debug.h"
 
 ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const dataset& ds)
 {
@@ -19,8 +20,11 @@ ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const data
     {
         auto result(ds);
         extract_complete_dataset_and_incomplete_indices(ds);
+        debug(_pPartitioner->getAbbreviation());
         auto partitioned_data = _pPartitioner->doPartition(this->complete_dataset);
+        debug(partitioned_data.getClusterFuzzifications());
 
+        exit(0);
         set_granules_attributes(partitioned_data);
 
         this->number_of_tuple_attributes = ds.getNumberOfAttributes();
@@ -40,14 +44,14 @@ void ksi::data_modifier_imputer_granular::extract_complete_dataset_and_incomplet
 {
    try
    {
-   	  this->complete_dataset = ksi::dataset();
+      this->complete_dataset = ksi::dataset();
       this->incomplete_indices.clear();
 
       for (std::size_t i = 0; i < ds.size(); ++i)
       {
          auto data_item = ds.getDatum(i);
          if (data_item->is_complete()) {
-             complete_dataset.addDatum(*data_item);
+            complete_dataset.addDatum(*data_item);
          }
          else {
             this->incomplete_indices.push_back(i);

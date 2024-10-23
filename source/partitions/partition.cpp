@@ -28,6 +28,19 @@ ksi::partition::partition()
 {
 }
 
+void ksi::partition::copy_fields (const ksi::partition & p)
+{
+   U = p.U;
+   V = p.V;
+   S = p.S; 
+}
+
+void ksi::partition::swap_fields (ksi::partition & p)
+{
+   std::swap(U, p.U);
+   std::swap(V, p.V);
+   std::swap(S, p.S); 
+}
 
 ksi::partition::~partition()
 {
@@ -40,15 +53,13 @@ ksi::partition::partition(const ksi::partition & part)
    for (auto & p : part.clusters)
       clusters.push_back(new ksi::cluster(*p));
    
-   U = part.U;
-   V = part.V;
+   copy_fields(part);
 }
 
 ksi::partition::partition(ksi::partition && part)
 {
    std::swap (clusters, part.clusters);
-   std::swap (U, part.U);
-   std::swap (V, part.V);
+   swap_fields(part);
 }
 
 ksi::partition& ksi::partition::operator=(const ksi::partition & part)
@@ -62,8 +73,7 @@ ksi::partition& ksi::partition::operator=(const ksi::partition & part)
    for (auto & p : part.clusters)
       addCluster(p);
    
-   U = part.U;
-   V = part.V;
+   copy_fields(part);
    
    return * this;
 }
@@ -75,9 +85,7 @@ ksi::partition& ksi::partition::operator=(ksi::partition && part)
       return * this;
    
    std::swap (clusters, part.clusters);
-   
-   std::swap (U, part.U);
-   std::swap (V, part.V);
+   swap_fields(part);
    
    return *this;
 }
