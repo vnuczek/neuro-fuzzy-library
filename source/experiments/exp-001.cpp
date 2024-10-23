@@ -93,7 +93,7 @@ void ksi::exp_001::execute()
          {
             auto data = dane;
             const double probability {0.2};
-            ksi::data_modifier_incompleter_random incompleter (probability);
+            ksi::data_modifier_incompleter_random incompleter(probability);
             incompleter.modify(data);
             std::cout << "all attributes missing at random with probability p = " << probability << std::endl;
             std::cout << data << std::endl;
@@ -103,7 +103,7 @@ void ksi::exp_001::execute()
          {
             auto data = dane;
             const double probability {0.2};
-            ksi::data_modifier_incompleter_random_without_last incompleter (probability);
+            ksi::data_modifier_incompleter_random_without_last incompleter(probability);
             incompleter.modify(data);
             std::cout << "all attributes but last missing at random with probability p = " << probability << std::endl;
             std::cout << data << std::endl;
