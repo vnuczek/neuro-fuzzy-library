@@ -4,6 +4,9 @@
 
 #include "../auxiliary/vector-operators.h"
 #include "../common/data-modifier-imputer-granular.h"
+
+#include <numeric>
+
 #include "../common/data-modifier-imputer.h"
 #include "../common/dataset.h"
 #include "../common/datum.h"
@@ -114,10 +117,21 @@ std::pair<std::vector<std::vector<double>>, std::vector<double>> ksi::data_modif
 
        auto imputed_tuple_attributes = insert_missing_attributes(incomplete_tuple_attributes, imputed_granule_attributes, incomplete_attributes_indices);
 
-       debug(imputed_tuple_attributes);
+       // debug(imputed_tuple_attributes);
 
        granule_membership.push_back(calculate_granule_membership(imputed_tuple_attributes, granules_centers[gran], granules_fuzzifications[gran]));
     }
+
+    /*if (std::accumulate(granule_membership.begin(), granule_membership.end(), 0.0) == 0.0)
+    {
+        debug(incomplete_tuple_attributes);
+        debug(incomplete_attributes_indices);
+        debug(imputed_attributes);
+        debug(granule_membership);
+
+        debug(granules_centers);
+		debug(granules_fuzzifications);
+    }*/
 
     return std::make_pair(imputed_attributes, granule_membership);
 }
@@ -156,9 +170,27 @@ double ksi::data_modifier_imputer_granular::calculate_granule_membership(const s
 
       for (std::size_t attr = 0; attr < estimated_tuple_attributes.size(); ++attr) // for each attribute of X tuple
       {
-         auto attribute_membership = std::exp( - (std::pow((estimated_tuple_attributes[attr] - granule_centers[attr]), 2) / (2 * std::pow(granule_fuzzifications[attr], 2))));
+         auto attribute_membership = 
+             std::exp( - (std::pow((estimated_tuple_attributes[attr] - granule_centers[attr]), 2) / (2 * std::pow(granule_fuzzifications[attr], 2))));
+
+      	if (attribute_membership == 0.0)
+		 {
+			debug("-----------------");
+			debug(estimated_tuple_attributes[attr]);
+            debug(granule_centers[attr]);
+            debug(granule_fuzzifications[attr]);
+            debug((std::pow((estimated_tuple_attributes[attr] - granule_centers[attr]), 2) / (2 * std::pow(granule_fuzzifications[attr], 2))));
+		 }
+      	
          total_membership = _pTnorm->tnorm(total_membership, attribute_membership);
       }
+
+	  /*if (total_membership == 0.0)
+	  {
+		  debug(estimated_tuple_attributes);
+		  debug(granule_centers);
+		  debug(granule_fuzzifications);
+	  }*/
 
       return total_membership;
    }
@@ -179,6 +211,9 @@ std::vector<double> ksi::data_modifier_imputer_granular::weighted_average(const 
 
       if (denominator == 0.0)
       {
+          /*debug(estimated_values);
+		  debug(weights);*/
+
           throw ksi::exception("Sum of weights is zero!");
       }
 

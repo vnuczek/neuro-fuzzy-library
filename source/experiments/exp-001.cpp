@@ -345,7 +345,7 @@ void ksi::exp_001::execute()
           ksi::reader_incomplete DataReader;
 
           const double EPSILON = 1e-8;
-          const int NUMBER_OF_ITERATIONS = 1000;
+          const int NUMBER_OF_ITERATIONS = 100;
 
 		  std::filesystem::path incompleteDir = std::filesystem::path(dataDir) / "incomplete_data";
           std::filesystem::path resultDir = "../results/exp-001";
@@ -362,14 +362,17 @@ void ksi::exp_001::execute()
                   for (const auto& entry : std::filesystem::directory_iterator(incomplete_path)) {
                       if (entry.is_regular_file()) {
                           std::filesystem::path file_path = entry.path();
+                          if (file_path.string() == "../data/exp-001\\incomplete_data\\CO2\\CO2-m0.10.data")
+                          {
 
-                          std::cout << std::endl;
+                              std::cout << std::endl;
                           std::cout << "test of the " << file_path << " incomplete data set" << std::endl;
                           std::cout << std::endl;
 
                           auto data = DataReader.read(file_path.string());
 
-                          auto NUMBER_OF_CLUSTERS = data.getNumberOfData() / 10;
+                          //auto NUMBER_OF_CLUSTERS = data.getNumberOfData() / 10;
+                          auto NUMBER_OF_CLUSTERS = 10;
                           ksi::fcm test_partitioner(NUMBER_OF_CLUSTERS, NUMBER_OF_ITERATIONS);
                           data_modifier_imputer_granular dm(test_partitioner, tnorm);
 
@@ -387,6 +390,7 @@ void ksi::exp_001::execute()
                               result_file << data;
                               result_file.close();
                           }
+                      }
                       }
                   }
               }
