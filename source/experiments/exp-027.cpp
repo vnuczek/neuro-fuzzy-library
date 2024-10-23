@@ -54,7 +54,8 @@ void ksi::exp_027::execute()
         const bool NORMALISATION = false;
 
         std::vector<std::thread> threads;
-        for (int iteration = 0; iteration < 13; iteration++) {
+        // for (int iteration = 0; iteration < 13; iteration++) {
+        for (int iteration = 0; iteration < 3; iteration++) {
             for (const auto& entry : std::filesystem::directory_iterator(dataDir))
             {
                 if (entry.is_regular_file())
@@ -102,10 +103,13 @@ void ksi::exp_027::execute()
                                     //**@todo Zaimplementowac imputer.getName() */
 
                                     std::string output_name = imputer->getName() + '-' + std::to_string(missing_ratio) + "-r-" + std::to_string(iteration) + ".txt";
-                                    std::string output_file_t = resultDir.string() + "/tsk-" + output_name;
-                                    std::string output_file_a = resultDir.string() + "/annbfis-" + output_name;
 
+                                	std::string output_file_t = resultDir.string() + "/tsk-" + output_name;
                                     auto result_t = t.experiment_regression(train, test, output_file_t);
+                                    results[datasetName]["tsk"][missing_ratio][imputer->getName()].train.push_back(result_t.rmse_train);
+                                    results[datasetName]["tsk"][missing_ratio][imputer->getName()].test.push_back(result_t.rmse_test);
+
+                                	std::string output_file_a = resultDir.string() + "/annbfis-" + output_name;
                                     auto result_a = a.experiment_regression(train, test, output_file_a);
                                 }
 
