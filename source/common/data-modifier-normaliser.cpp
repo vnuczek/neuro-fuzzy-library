@@ -64,7 +64,7 @@ void ksi::data_modifier_normaliser::modify(ksi::dataset & ds)
       if (nDataItems < 2)
          return; // finito :-)
     
-      for (size_t w = 1; w < nDataItems; w++)
+      for (size_t w = 0; w < nDataItems; w++)
       {
          for (size_t k = 0; k < nAttributes; k++)
          {

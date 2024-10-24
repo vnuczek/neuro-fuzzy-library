@@ -92,6 +92,7 @@ void ksi::data_modifier_standardiser::modify(ksi::dataset & ds)
          averages[k] = sums[k] / number_of_items;
          stddevs[k]  = std::sqrt (sqsums[k] / number_of_items - pow(averages[k], 2));
       }
+      
       // no i standaryzacja wlasciwa:
       for (size_t k = 0; k < nAttributes; k++)
       {
@@ -131,6 +132,4 @@ std::string ksi::data_modifier_standardiser::getDescription() const
 {
    return std::string("standardiser");
 }
-
-
 
