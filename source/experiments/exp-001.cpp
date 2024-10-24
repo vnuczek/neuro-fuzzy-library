@@ -368,7 +368,7 @@ void ksi::exp_001::execute()
                      if (entry.is_regular_file()) 
                      {
                         std::filesystem::path file_path = entry.path();
-                        if (file_path.string() == "../data/exp-001/incomplete_data/CO2/CO2-m0.10.data")
+                        if (file_path.string() == "../data/exp-001/incomplete_data/CO2/CO2-m0.50.data")
                         {
 
                            std::cout << std::endl;
@@ -376,13 +376,17 @@ void ksi::exp_001::execute()
                            std::cout << std::endl;
 
                            auto data = DataReader.read(file_path.string());
-
-                           auto NUMBER_OF_CLUSTERS = data.getNumberOfData() / 10;
-                           // auto NUMBER_OF_CLUSTERS = 10;
+                           // ksi::data_modifier_normaliser norm;
+                           // norm.modify(data);
+                    
+                           // auto NUMBER_OF_CLUSTERS = data.getNumberOfData() / 10;
+                           auto NUMBER_OF_CLUSTERS = 10;
                            ksi::fcm test_partitioner(NUMBER_OF_CLUSTERS, NUMBER_OF_ITERATIONS);
                            ksi::data_modifier_imputer_granular dm(test_partitioner, tnorm);
                            dm.modify(data);
-
+                           
+                           debug(dm.get_number_of_complete_items_in_dataset()); debug(dm.get_number_of_incomplete_items_in_dataset());
+                       
                            const std::filesystem::path result_file_path = result_folder_path / (file_path.stem().string() + "_result" + file_path.extension().string());
                            std::cout << "Saving result of modifying into: " << result_file_path << std::endl;
 

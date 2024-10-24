@@ -59,6 +59,7 @@ void ksi::data_modifier_standardiser::modify(ksi::dataset & ds)
       size_t nDataItems = ds.getNumberOfData();
       std::vector<double> sums   (nAttributes, 0);
       std::vector<double> sqsums (nAttributes, 0);
+      std::vector<std::size_t> number_of_items_in_each_attribute (nAttributes, 0);
       
       if (nDataItems < 2)
          return; // finito :-)
@@ -70,10 +71,14 @@ void ksi::data_modifier_standardiser::modify(ksi::dataset & ds)
       {
          for (size_t k = 0; k < nAttributes; k++)
          {
-            double value = ds.get(w, k);
+            if (ds.exists(w, k))
+            {
+               double value = ds.get(w, k);
 
-            sums[k] += value;
-            sqsums[k] += (value * value);
+               sums[k] += value;
+               sqsums[k] += (value * value);
+               number_of_items_in_each_attribute[k]++;
+            }
          }
       }
       // no i teraz standardyzacja:
@@ -83,8 +88,9 @@ void ksi::data_modifier_standardiser::modify(ksi::dataset & ds)
       
       for (size_t k = 0; k < nAttributes; k++)
       {
-         averages[k] = sums[k] / nDataItems;
-         stddevs[k]  = std::sqrt (sqsums[k] / nDataItems - pow(averages[k], 2));
+         auto number_of_items = number_of_items_in_each_attribute[k];
+         averages[k] = sums[k] / number_of_items;
+         stddevs[k]  = std::sqrt (sqsums[k] / number_of_items - pow(averages[k], 2));
       }
       // no i standaryzacja wlasciwa:
       for (size_t k = 0; k < nAttributes; k++)
@@ -92,7 +98,10 @@ void ksi::data_modifier_standardiser::modify(ksi::dataset & ds)
          if (stddevs[k] == 0.0)   
          {
             for (size_t w = 0; w < nDataItems; w++)
-               ds.set (w, k, 0);
+            {
+               if (ds.exists(w, k))
+                  ds.set (w, k, 0);
+            }
          }
          else
          {
@@ -100,8 +109,11 @@ void ksi::data_modifier_standardiser::modify(ksi::dataset & ds)
             double dev = stddevs[k];
             for (size_t w = 0; w < nDataItems; w++)
             {
-               double value = ds.get (w, k);
-               ds.set (w, k, (value - avg) / dev);
+               if (ds.exists(w, k))
+               {
+                  double value = ds.get (w, k);
+                  ds.set (w, k, (value - avg) / dev);
+               }
             }
          }
       }

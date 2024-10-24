@@ -20,11 +20,16 @@ ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const data
     {
         auto result(ds);
         extract_complete_dataset_and_incomplete_indices(ds);
-        debug(_pPartitioner->getAbbreviation());
+        
+        if (complete_dataset.empty())
+        {
+           throw ksi::exception ("The are no complete data items in the dataset.");
+        }
+        
+        // debug(_pPartitioner->getAbbreviation());
         auto partitioned_data = _pPartitioner->doPartition(this->complete_dataset);
-        debug(partitioned_data.getClusterFuzzifications());
-
-        exit(0);
+        // debug(partitioned_data.getClusterFuzzifications());
+      
         set_granules_attributes(partitioned_data);
 
         this->number_of_tuple_attributes = ds.getNumberOfAttributes();
@@ -69,8 +74,7 @@ void ksi::data_modifier_imputer_granular::set_granules_attributes(const ksi::par
    {
       if (granules_fuzzifications.empty())
       {
-         throw ksi::exception("The partitioner has not set the fuzzification of granules (the S variable) that I need here. "
-                              "It is empty. Please use another partitioner.");
+         throw ksi::exception("The partitioner has not set the fuzzification of granules (the S variable) that I need here. It is empty. Please use another partitioner.");
       }
    }
    CATCH; 
@@ -87,7 +91,7 @@ std::pair<std::vector<double>, std::vector<std::size_t>> ksi::data_modifier_impu
    auto [imputed_attributes, granule_membership] = calculate_granule_imputations_and_memberships(incomplete_tuple_attributes, incomplete_attributes_indices);
 
    auto imputed_average_attributes = weighted_average(imputed_attributes, granule_membership);
-
+ 
    return std::make_pair(imputed_average_attributes, incomplete_attributes_indices);
 }
 
@@ -177,24 +181,26 @@ double ksi::data_modifier_imputer_granular::calculate_granule_membership(const s
          auto attribute_membership = 
              std::exp( - (std::pow((estimated_tuple_attributes[attr] - granule_centers[attr]), 2) / (2 * std::pow(granule_fuzzifications[attr], 2))));
 
+             /*
       	if (attribute_membership == 0.0)
 		 {
 			debug("-----------------");
 			debug(estimated_tuple_attributes[attr]);
             debug(granule_centers[attr]);
             debug(granule_fuzzifications[attr]);
-            debug((std::pow((estimated_tuple_attributes[attr] - granule_centers[attr]), 2) / (2 * std::pow(granule_fuzzifications[attr], 2))));
+            debug(std::exp( - (std::pow((estimated_tuple_attributes[attr] - granule_centers[attr]), 2) / (2 * std::pow(granule_fuzzifications[attr], 2)))));
 		 }
+		 */
       	
          total_membership = _pTnorm->tnorm(total_membership, attribute_membership);
       }
 
-	  /*if (total_membership == 0.0)
-	  {
-		  debug(estimated_tuple_attributes);
-		  debug(granule_centers);
-		  debug(granule_fuzzifications);
-	  }*/
+	  // if (total_membership == 0.0)
+	  // {
+		 //  debug(estimated_tuple_attributes);
+		 //  debug(granule_centers);
+		 //  debug(granule_fuzzifications);
+	  // }
 
       return total_membership;
    }
@@ -212,12 +218,10 @@ std::vector<double> ksi::data_modifier_imputer_granular::weighted_average(const 
          numerator += estimated_values[i] * weights[i];
          denominator += weights[i];
       }
-
+    
       if (denominator == 0.0)
       {
-          /*debug(estimated_values);
-		  debug(weights);*/
-
+          // debug(estimated_values); debug(weights);
           throw ksi::exception("Sum of weights is zero!");
       }
 
@@ -290,8 +294,7 @@ ksi::data_modifier* ksi::data_modifier_imputer_granular::clone() const
 
 void ksi::data_modifier_imputer_granular::modify(dataset& ds)
 {
-	ds = this->granular_imputation(ds);
-    
+   ds = this->granular_imputation(ds);
     // and call pNext modifier
     if (pNext)
        pNext->modify(ds);                                    
@@ -301,5 +304,16 @@ std::string ksi::data_modifier_imputer_granular::getDescription() const
 {
    return "granular imputation";
 }
+
+std::size_t ksi::data_modifier_imputer_granular::get_number_of_complete_items_in_dataset() const
+{
+   return complete_dataset.size();
+}
+
+std::size_t ksi::data_modifier_imputer_granular::get_number_of_incomplete_items_in_dataset() const
+{
+   return incomplete_indices.size();
+}
+
 
 // end of file :-)

@@ -2,8 +2,9 @@
 
 
  
-
+#include <limits>
 #include <vector>
+
 #include "data-modifier.h"
 #include "data-modifier-normaliser.h"
 #include "../service/debug.h"
@@ -57,24 +58,24 @@ void ksi::data_modifier_normaliser::modify(ksi::dataset & ds)
       // no i tu sie zaczyna zabawa :-) 
       size_t nAttributes = ds.getNumberOfAttributes();
       size_t nDataItems = ds.getNumberOfData();
-      std::vector<double> mins (nAttributes, 0);
-      std::vector<double> maxs (nAttributes, 0);
+      std::vector<double> mins (nAttributes, std::numeric_limits<double>::max());
+      std::vector<double> maxs (nAttributes, std::numeric_limits<double>::min());
       
       if (nDataItems < 2)
          return; // finito :-)
-         
-      for (size_t k = 0; k < nAttributes; k++)
-         mins[k] = maxs[k] = ds.get(0, k);
-
+    
       for (size_t w = 1; w < nDataItems; w++)
       {
          for (size_t k = 0; k < nAttributes; k++)
          {
-            double value = ds.get(w, k);
-            if (mins[k] > value)
-               mins[k] = value;
-            if (maxs[k] < value)
-               maxs[k] = value;
+            if (ds.exists(w, k))
+            {
+               double value = ds.get(w, k);
+               if (mins[k] > value)
+                  mins[k] = value;
+               if (maxs[k] < value)
+                  maxs[k] = value;
+            }
          }
       }
       // no i teraz normalizacja:
@@ -83,7 +84,10 @@ void ksi::data_modifier_normaliser::modify(ksi::dataset & ds)
          if (mins[k] == maxs[k])   
          {
             for (size_t w = 0; w < nDataItems; w++)
-               ds.set (w, k, 0.5);
+            {
+               if (ds.exists(w, k))
+                  ds.set (w, k, 0.5);
+            }
          }
          else
          {
@@ -91,8 +95,11 @@ void ksi::data_modifier_normaliser::modify(ksi::dataset & ds)
             double minimum = mins[k];
             for (size_t w = 0; w < nDataItems; w++)
             {
-               double value = ds.get (w, k);
-               ds.set (w, k, (value - minimum) / roznica);
+               if (ds.exists(w, k))
+               {
+                  double value = ds.get (w, k);
+                  ds.set (w, k, (value - minimum) / roznica);
+               }
             }
          }
       }
