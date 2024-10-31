@@ -34,7 +34,8 @@ namespace ksi
       virtual void modify (dataset & ds);   
       
       virtual std::string getDescription() const override;
-      
+
+      virtual std::string getName() const override;
    };
 }
 

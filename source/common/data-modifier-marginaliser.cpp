@@ -104,4 +104,9 @@ std::string ksi::data_modifier_marginaliser::getDescription() const
    return "marginaliser";
 }
 
+std::string ksi::data_modifier_marginaliser::getName() const
+{
+    return "marginaliser";
+}
+
 

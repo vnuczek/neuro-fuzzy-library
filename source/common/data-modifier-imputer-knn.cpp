@@ -98,5 +98,10 @@ std::vector<const ksi::datum *> ksi::data_modifier_imputer_knn::getNeighbours(
 std::string ksi::data_modifier_imputer_knn::getDescription() const
 {
    return std::string("(k == ") + std::to_string(_k) + std::string (")");
-} 
+}
+
+std::string ksi::data_modifier_imputer_knn::getName() const
+{
+    return "imputer_knn";
+}
 

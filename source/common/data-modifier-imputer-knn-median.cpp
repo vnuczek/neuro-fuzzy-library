@@ -172,3 +172,8 @@ std::string ksi::data_modifier_imputer_knn_median::getDescription() const
 {
    return "k nearest neighbours median imputer " + ksi::data_modifier_imputer_knn::getDescription();
 }
+
+std::string ksi::data_modifier_imputer_knn_median::getName() const
+{
+    return "imputer_knn_median";
+}

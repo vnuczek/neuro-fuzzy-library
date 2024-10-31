@@ -172,4 +172,8 @@ std::string ksi::data_modifier_imputer_knn_average::getDescription() const
 {
    return "k nearest neighbours average imputer " + ksi::data_modifier_imputer_knn::getDescription();
 }
- 
+
+std::string ksi::data_modifier_imputer_knn_average::getName() const
+{
+	return "imputer_knn_average";
+}

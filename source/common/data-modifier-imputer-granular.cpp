@@ -298,4 +298,9 @@ std::string ksi::data_modifier_imputer_granular::getDescription() const
    return "granular imputation";
 }
 
+std::string ksi::data_modifier_imputer_granular::getName() const
+{
+    return "imputer_granular";
+}
+
 // end of file :-)

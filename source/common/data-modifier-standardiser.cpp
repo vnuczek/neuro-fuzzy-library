@@ -120,5 +120,10 @@ std::string ksi::data_modifier_standardiser::getDescription() const
    return std::string("standardiser");
 }
 
+std::string ksi::data_modifier_standardiser::getName() const
+{
+    return std::string("standardiser");
+}
+
 
 

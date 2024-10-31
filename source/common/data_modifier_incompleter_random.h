@@ -27,6 +27,8 @@ namespace ksi
       virtual data_modifier * clone () const override;  // prototype design pattern
       
       virtual std::string getDescription() const override;
+
+	  virtual std::string getName() const override;
       
       virtual void modify (dataset & ds) override;   
       

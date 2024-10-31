@@ -179,6 +179,8 @@ namespace ksi
 		 */
 		virtual std::string getDescription() const override;
 
+		virtual std::string getName() const override;
+
 	protected:
         /**
 		 * @brief Performs granular imputation on the given dataset.

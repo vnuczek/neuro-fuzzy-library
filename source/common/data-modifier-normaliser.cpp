@@ -111,4 +111,9 @@ std::string ksi::data_modifier_normaliser::getDescription() const
    return "normaliser";
 }
 
+std::string ksi::data_modifier_normaliser::getName() const
+{
+	return "normaliser";
+}
+
 

@@ -59,7 +59,9 @@ namespace ksi
       
       /** @return description of the modifier */
       virtual std::string getDescription() const = 0;
-      
+
+	  /** @return name of the modifier */
+      virtual std::string getName() const = 0;
    };
 }
 

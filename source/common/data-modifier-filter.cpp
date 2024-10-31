@@ -56,6 +56,11 @@ std::string ksi::data_modifier_filter::getDescription() const
     
 }
 
+std::string ksi::data_modifier_filter::getName() const
+{
+    return "filter";
+}
+
 
 
 

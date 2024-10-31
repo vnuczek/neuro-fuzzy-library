@@ -144,4 +144,9 @@ std::string ksi::data_modifier_imputer_median::getDescription() const
    return "median imputer";
 }
 
+std::string ksi::data_modifier_imputer_median::getName() const
+{
+    return "imputer_median";
+}
+
 

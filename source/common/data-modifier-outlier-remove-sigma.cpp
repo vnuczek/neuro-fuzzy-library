@@ -130,6 +130,11 @@ std::string ksi::data_modifier_outlier_remove_sigma::getDescription() const
    return std::string ("outlier remove with sigma approach");
 }
 
+std::string ksi::data_modifier_outlier_remove_sigma::getName() const
+{
+    return "outlier_remove_sigma";
+}
+
 
 
 

@@ -28,4 +28,9 @@ std::string ksi::data_modifier_incompleter_random_without_last::getDescription()
    return sos.str();
 }
 
+std::string ksi::data_modifier_incompleter_random_without_last::getName() const
+{
+    return "random_without_last";
+}
+
 
