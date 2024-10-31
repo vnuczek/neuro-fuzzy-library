@@ -76,7 +76,7 @@ namespace ksi
          * Stores the number of attributes in each tuple of the dataset.
          */
 		std::size_t number_of_tuple_attributes;
-
+    
 	public:	
 		
 		/**
@@ -178,6 +178,8 @@ namespace ksi
 		 * @author Krzysztof Simiński
 		 */
 		virtual std::string getDescription() const override;
+
+		virtual std::string getName() const override;
 
 	protected:
         /**
@@ -312,6 +314,20 @@ namespace ksi
          * @author Konrad Wnuk
          */
         std::vector<double> weighted_average(const std::vector < std::vector<double>>& estimated_values, const std::vector<double>& weights);
+        
+    public:
+        
+        /** @return number of complete items in the dataset to impute. The value is valid after calling the extract_complete_dataset_and_incomplete_indices method.
+         *  @author Krzysztof Siminski
+         *  @date   2024-10-24
+         */
+        std::size_t get_number_of_complete_items_in_dataset() const;
+        
+        /** @return number of incomplete items in the dataset to impute. The value is valid after calling the extract_complete_dataset_and_incomplete_indices method.
+         *  @author Krzysztof Siminski
+         *  @date   2024-10-24
+         */
+        std::size_t get_number_of_incomplete_items_in_dataset() const;
 		
 	};
 }

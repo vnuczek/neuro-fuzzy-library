@@ -40,8 +40,8 @@ namespace ksi
  
       /** @return name of modifiers in chain */
       virtual std::string getDescription () const override;
- 
-      
+
+      virtual std::string getName() const override;
    };
 }
 

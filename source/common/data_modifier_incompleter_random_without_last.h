@@ -26,6 +26,8 @@ namespace ksi
       virtual void make_tuple_incomplete(datum * p) override;
       
       virtual std::string getDescription() const override;
+
+      virtual std::string getName() const override;
    };
 }
 

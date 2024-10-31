@@ -54,6 +54,11 @@ std::string ksi::data_modifier_incompleter_random::getDescription() const
    return sos.str();
 }
 
+std::string ksi::data_modifier_incompleter_random::getName() const
+{
+    return "imputer_random";
+}
+
 double ksi::data_modifier_incompleter_random::getMissingRatio() const
 {
    return _missing_ratio;

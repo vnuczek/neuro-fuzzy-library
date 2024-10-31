@@ -198,3 +198,8 @@ std::string ksi::data_modifier_imputer_values_from_knn::getDescription() const
 {
    return "imputer with values from k nearest neighbours " + ksi::data_modifier_imputer_knn::getDescription();
 }
+
+std::string ksi::data_modifier_imputer_values_from_knn::getName() const
+{
+    return "imputer_values_from_knn";
+}

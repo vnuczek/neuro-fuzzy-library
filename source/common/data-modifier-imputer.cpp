@@ -135,4 +135,9 @@ std::string ksi::data_modifier_imputer::getDescription() const
    return "imputer with constant value"; 
 }
 
+std::string ksi::data_modifier_imputer::getName() const
+{
+    return "imputer_modifier";
+}
+
 

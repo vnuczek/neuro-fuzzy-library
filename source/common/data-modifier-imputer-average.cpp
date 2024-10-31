@@ -146,4 +146,9 @@ std::string ksi::data_modifier_imputer_average::getDescription() const
    return "average imputer";
 }
 
+std::string ksi::data_modifier_imputer_average::getName() const
+{
+    return "imputer_average";
+}
+
 

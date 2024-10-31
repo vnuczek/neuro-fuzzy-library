@@ -175,5 +175,9 @@ std::string ksi::data_modifier_imputer_knn_average::getDescription() const
 
 std::string ksi::data_modifier_imputer_knn_average::getName() const
 {
+<<<<<<< HEAD
 	return "data_modifier_imputer_knn_average";
+=======
+	return "imputer_knn_average";
+>>>>>>> fcm
 }
