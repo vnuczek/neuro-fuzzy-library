@@ -89,7 +89,7 @@ void ksi::exp_001::execute()
             std::cout << data << std::endl;
             std::cout << std::endl;
          }
-         
+
          {
             auto data = dane;
             const double probability {0.2};
@@ -99,7 +99,7 @@ void ksi::exp_001::execute()
             std::cout << data << std::endl;
             std::cout << std::endl;
          }
-         
+
          {
             auto data = dane;
             const double probability {0.2};
@@ -337,70 +337,79 @@ void ksi::exp_001::execute()
       } 
 
       {
-          std::cout << std::endl;
-          std::cout << "=====================================" << std::endl;
-          std::cout << "data granulation using the FCM method" << std::endl;
-          std::cout << "=====================================" << std::endl;
+         try 
+         {
+            std::cout << std::endl;
+            std::cout << "===================" << std::endl;
+            std::cout << "granular imputation" << std::endl;
+            std::cout << "===================" << std::endl;
 
-          ksi::reader_incomplete DataReader;
+            ksi::reader_incomplete DataReader;
 
-          const double EPSILON = 1e-8;
-          const int NUMBER_OF_ITERATIONS = 100;
+            const double EPSILON = 1e-8;
+            const int NUMBER_OF_ITERATIONS = 100;
 
-		  std::filesystem::path incompleteDir = std::filesystem::path(dataDir) / "incomplete_data";
-          std::filesystem::path resultDir = "../results/exp-001";
+            std::filesystem::path incompleteDir = std::filesystem::path(dataDir) / "incomplete_data";
+            std::filesystem::path resultDir = "../results/exp-001";
 
-          ksi::t_norm_min tnorm;
+            ksi::t_norm_min tnorm;
 
-          for (const auto& incomplete_path : std::filesystem::directory_iterator(incompleteDir)) {
-              if (std::filesystem::is_directory(incomplete_path.path())) {
+            for (const auto& incomplete_path : std::filesystem::directory_iterator(incompleteDir)) 
+            {
+               if (std::filesystem::is_directory(incomplete_path.path())) 
+               {
                   std::filesystem::path sub_folder = incomplete_path.path().filename();
 
                   std::filesystem::path result_folder_path = resultDir / "fcm_modify_results" / sub_folder;
                   std::filesystem::create_directories(result_folder_path);
 
-                  for (const auto& entry : std::filesystem::directory_iterator(incomplete_path)) {
-                      if (entry.is_regular_file()) {
-                          std::filesystem::path file_path = entry.path();
-                          if (file_path.string() == "../data/exp-001\\incomplete_data\\CO2\\CO2-m0.10.data")
-                          {
+                  for (const auto& entry : std::filesystem::directory_iterator(incomplete_path)) 
+                  {
+                     if (entry.is_regular_file()) 
+                     {
+                        std::filesystem::path file_path = entry.path();
+                        if (file_path.string() == "../data/exp-001/incomplete_data/CO2/CO2-m0.50.data")
+                        {
 
-                              std::cout << std::endl;
-                          std::cout << "test of the " << file_path << " incomplete data set" << std::endl;
-                          std::cout << std::endl;
+                           std::cout << std::endl;
+                           std::cout << "test of the " << file_path << " incomplete data set" << std::endl;
+                           std::cout << std::endl;
 
-                          auto data = DataReader.read(file_path.string());
+                           auto data = DataReader.read(file_path.string());
+                           // ksi::data_modifier_normaliser norm;
+                           // norm.modify(data);
+                    
+                           // auto NUMBER_OF_CLUSTERS = data.getNumberOfData() / 10;
+                           auto NUMBER_OF_CLUSTERS = 10;
+                           ksi::fcm test_partitioner(NUMBER_OF_CLUSTERS, NUMBER_OF_ITERATIONS);
+                           ksi::data_modifier_imputer_granular dm(test_partitioner, tnorm);
+                           dm.modify(data);
+                           
+                           debug(dm.get_number_of_complete_items_in_dataset()); debug(dm.get_number_of_incomplete_items_in_dataset());
+                       
+                           const std::filesystem::path result_file_path = result_folder_path / (file_path.stem().string() + "_result" + file_path.extension().string());
+                           std::cout << "Saving result of modifying into: " << result_file_path << std::endl;
 
-                          //auto NUMBER_OF_CLUSTERS = data.getNumberOfData() / 10;
-                          auto NUMBER_OF_CLUSTERS = 10;
-                          ksi::fcm test_partitioner(NUMBER_OF_CLUSTERS, NUMBER_OF_ITERATIONS);
-                          data_modifier_imputer_granular dm(test_partitioner, tnorm);
-
-                          dm.modify(data);
-
-                          const std::filesystem::path result_file_path = result_folder_path / (file_path.stem().string() + "_result" + file_path.extension().string());
-                          std::cout << "Saving result of modifying into: " << result_file_path << std::endl;
-
-                          std::ofstream result_file(result_file_path);
-                          if (!result_file.is_open()) {
+                           std::ofstream result_file(result_file_path);
+                           if (!result_file.is_open()) 
+                           {
                               std::cerr << "Unable to open file: " << result_file_path << std::endl;
-                          }
-                          else
-                          {
+                           }
+                           else
+                           {
                               result_file << data;
                               result_file.close();
-                          }
-                      }
-                      }
+                           }
+                        }
+                     }
                   }
-              }
-          }
+               }
+            }
+         }
+         CATCH;
       }
    }
-   catch (...)
-   {
-      throw;
-   }
-   
+   CATCH;
+
    return;
 }

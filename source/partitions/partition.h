@@ -28,6 +28,9 @@ namespace ksi
       /** cluster fuzzifications */
       std::vector<std::vector<double>> S;
       
+   protected:
+      void copy_fields (const partition & p);
+      void swap_fields (partition & p);
    public:
       ~partition();
       partition ();
