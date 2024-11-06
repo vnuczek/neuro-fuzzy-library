@@ -72,7 +72,7 @@ void ksi::exp_027::execute()
        for (const auto& entry : std::filesystem::directory_iterator(dataDir)) {
           if (entry.is_regular_file())
           {
-             thdebug(entry);
+             thdebugid(entry, entry);
              threads.emplace_back([=](const std::filesystem::directory_entry threadEntry) {
                    RESULTS results;
                    RESULTS_GR results_gr;
@@ -94,7 +94,7 @@ void ksi::exp_027::execute()
 
                    // for (int iteration = 0; iteration < 13; iteration++) {
                    for (int iteration = 0; iteration < 3; iteration++) {
-                      thdebug(iteration); 
+                      thdebugid(entry, iteration); 
                       reader_complete DataReader;
                       ksi::train_test_model tt(DataReader);
                       auto data = tt.read_file(file_path);
@@ -117,39 +117,39 @@ void ksi::exp_027::execute()
                       imputers.push_back(std::make_unique<ksi::data_modifier_marginaliser>());
 
                       for (const auto missing_ratio : { 0.01, 0.02, 0.05, 0.10, 0.20, 0.50, 0.75 }) {
-                         thdebug(missing_ratio); 
+                         // thdebugid(entry, missing_ratio); 
                          data_modifier_incompleter_random_without_last incomplete(missing_ratio);
 
                          for (auto [train, test] : tt) {
-                            thdebug(__LINE__);
+                            // thdebugid(entry, __LINE__);
                             incomplete.modify(test);
 
                             for (auto& imputer : imputers) {
-                               thdebug(imputer->getName());
+                               // thdebugid(entry, imputer->getName());
                                imputer->modify(train);
 
                                std::string output_name = imputer->getName() + '-' + std::to_string(missing_ratio) + "-r-" + std::to_string(iteration) + ".txt";
 
                                for (const auto& nfs : nfss) {
-                                  thdebug(nfs->get_brief_nfs_name());
+                                  // thdebugid(entry, nfs->get_brief_nfs_name());
                                   std::string output_file = datasetResultDir.string() + "/" + nfs->get_brief_nfs_name() + "-" + output_name;
-                                  thdebug(output_file);
+                                  // thdebugid(entry, output_file);
                                   auto result = nfs->experiment_regression(train, test, output_file);
-                                  thdebug(result.rmse_train);
+                                  // thdebugid(entry, result.rmse_train);
                                   results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()].train.push_back(result.rmse_train);
                                   results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()].test.push_back(result.rmse_test);
                                }
                             }
 
                             for (const auto granules : num_granules) {
-                               thdebug(granules);
+                               // thdebugid(entry, granules);
                                ksi::fcm test_partitioner(granules, NUMBER_OF_CLUSTERING_ITERATIONS);
                                std::unique_ptr<ksi::data_modifier> imputer = std::make_unique < data_modifier_imputer_granular>(test_partitioner, tnorm);
                                imputer->modify(train);
 
                                std::string output_name = std::format("{}-{}-g-{}-r-{}.txt", imputer->getName(), missing_ratio, granules, iteration);
                                for (const auto& nfs : nfss) {
-                                  thdebug(nfs->get_brief_nfs_name());
+                                  // thdebugid(entry, nfs->get_brief_nfs_name());
 
                                   std::string output_file = datasetResultDir.string() + "/" + nfs->get_brief_nfs_name() + "-" + output_name;
                                   auto result = nfs->experiment_regression(train, test, output_file);
@@ -258,6 +258,7 @@ void ksi::exp_027::execute()
                 thread.join();
              }
           }
+          thdebug("dze end");
        }
        CATCH;
 
