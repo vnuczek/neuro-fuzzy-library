@@ -4,10 +4,10 @@
 #include <string>
 #include <fstream>
 #include <filesystem>
+#include <map>
+#include <thread>
 
 #include "../experiments/exp-027.h"
-
-#include <map>
 
 #include "../readers/reader-complete.h"
 #include "../readers/reader-incomplete.h"
@@ -66,14 +66,12 @@ void ksi::exp_027::execute()
         
         std::vector<std::thread> threads;
 
-        std::vector<RESULTS>;
-		std::vector<RESULTS_GR>;
+        std::vector<RESULTS> resultsVec;
+		std::vector<RESULTS_GR> resultsGrVec;
         
         for (const auto& entry : std::filesystem::directory_iterator(dataDir)) {
                 if (entry.is_regular_file())
                 {
-                    debug(entry);
-
                     threads.emplace_back([=](const std::filesystem::directory_entry threadEntry) {
                         RESULTS results;
                         RESULTS_GR results_gr;
@@ -94,7 +92,6 @@ void ksi::exp_027::execute()
 
                        // for (int iteration = 0; iteration < 13; iteration++) {
                         for (int iteration = 0; iteration < 3; iteration++) {
-                            debug(iteration);
 
                             reader_complete DataReader;
                             ksi::train_test_model tt(DataReader);
@@ -118,16 +115,12 @@ void ksi::exp_027::execute()
                             imputers.push_back(std::make_unique<ksi::data_modifier_marginaliser>());
 
                             for (const auto missing_ratio : { 0.01, 0.02, 0.05, 0.10, 0.20, 0.50, 0.75 }) {
-                                debug(missing_ratio);
-
                                 data_modifier_incompleter_random_without_last incomplete(missing_ratio);
 
                                 for (auto [train, test] : tt) {
                                     incomplete.modify(test);
 
                                     for (auto& imputer : imputers) {
-										debug(imputer->getName());
-
                                         imputer->modify(train);
 
                                         std::string output_name = imputer->getName() + '-' + std::to_string(missing_ratio) + "-r-" + std::to_string(iteration) + ".txt";
@@ -142,8 +135,6 @@ void ksi::exp_027::execute()
                                     }
 
                                     for (const auto granules : num_granules) {
-										debug(granules);
-
                                         ksi::fcm test_partitioner(granules, NUMBER_OF_CLUSTERING_ITERATIONS);
                                         std::unique_ptr<ksi::data_modifier> imputer = std::make_unique < data_modifier_imputer_granular>(test_partitioner, tnorm);
                                         imputer->modify(train);
