@@ -440,7 +440,7 @@ ksi::DatasetStatistics ksi::dataset::calculateDatasetStatistics()
     DatasetStatistics statistics;
     for(const auto& element: datasetTransposed)
     {
-        auto stat = utility.getMedianAndStandardDeviation(element.cbegin(), element.cend());
+        auto stat = utility.getMeanAndStandardDeviation(element.cbegin(), element.cend());
         statistics.addDescriptor(DescriptorStatistics(stat.first, stat.second));
     }
 

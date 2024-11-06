@@ -12,8 +12,9 @@
 #include "./experiments/exp-004.h"
 #include "./experiments/exp-005.h"
 #include "./experiments/exp-lab.h"
+#include "experiments/exp-027.h"
 
- 
+
 int main (int argc, char ** params)
 {
     if (argc == 1)
@@ -57,6 +58,11 @@ int main (int argc, char ** params)
                 }
                 case 0: { 
                     ksi::exp_lab experiment;
+                    experiment.execute();
+                    break;
+                }
+                case 27: {
+                    ksi::exp_027 experiment;
                     experiment.execute();
                     break;
                 }

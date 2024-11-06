@@ -7,6 +7,8 @@
 
 #include "../experiments/exp-027.h"
 
+#include <map>
+
 #include "../readers/reader-complete.h"
 #include "../readers/reader-incomplete.h"
 #include "../readers/train_test_model.h"
@@ -34,6 +36,7 @@
 #include "../neuro-fuzzy/annbfis.h"
 #include "../neuro-fuzzy/tsk.h"
 
+#include "../auxiliary/utility-math.h"
 
 void ksi::exp_027::execute()
 {
@@ -53,87 +56,198 @@ void ksi::exp_027::execute()
 
         const bool NORMALISATION = false;
 
+        struct errors
+        {
+			std::vector<double> train;
+			std::vector<double> test;
+        };
+        typedef std::map < std::string, std::map<std::string, std::map<double, std::map<std::string, errors>>>> RESULTS;
+        typedef std::map < std::string, std::map<std::string, std::map<double, std::map<std::string, std::map<int, errors>>>>> RESULTS_GR;
+        
         std::vector<std::thread> threads;
-        // for (int iteration = 0; iteration < 13; iteration++) {
-        for (int iteration = 0; iteration < 3; iteration++) {
-            for (const auto& entry : std::filesystem::directory_iterator(dataDir))
-            {
+
+        std::vector<RESULTS>;
+		std::vector<RESULTS_GR>;
+        
+        for (const auto& entry : std::filesystem::directory_iterator(dataDir)) {
                 if (entry.is_regular_file())
                 {
-                    threads.emplace_back([=]() {
-                        std::filesystem::path file_path = entry.path();
+                    debug(entry);
+
+                    threads.emplace_back([=](const std::filesystem::directory_entry threadEntry)
+                    {
+                        RESULTS results;
+                        RESULTS_GR results_gr;
+
+                        std::filesystem::path file_path = threadEntry.path();
+                        std::string datasetName = file_path.stem().string();
+                        std::filesystem::path datasetResultDir = resultDir / datasetName;
+                        std::filesystem::create_directories(datasetResultDir);
+
                         std::vector<int> num_granules;
 
-                        if (file_path.filename().string().find("BoxJ290") != std::string::npos) {
-                            num_granules = { 10, 20, 50, 100 };
+                        if (datasetName == "BoxJ290") {
+                            num_granules = { 2, 3, 5, 10 };
                         }
                         else {
-                            num_granules = { 10, 20, 50, 100, 200, 500, 750, 1000 };
+                            num_granules = { 2, 3, 5, 10, 15, 20, 25 };
                         }
 
-                        reader_complete DataReader;
-                        ksi::train_test_model tt(DataReader);
-                        auto data = tt.read_file(file_path);
+                       // for (int iteration = 0; iteration < 13; iteration++) {
+                        for (int iteration = 0; iteration < 3; iteration++) {
+                            debug(iteration);
 
-                        data_modifier_normaliser normaliser;
-                        normaliser.modify(data);
-                        tt.split(data, NUMBER_OF_DATAPARTS);
+                            reader_complete DataReader;
+                            ksi::train_test_model tt(DataReader);
+                            auto data = tt.read_file(file_path);
 
-                        ksi::t_norm_product tnorm;
-                        ksi::imp_reichenbach implication;
-                        ksi::tsk t(NUMBER_OF_RULES, NUMBER_OF_CLUSTERING_ITERATIONS, NUMBER_OF_TUNING_ITERATIONS, ETA, NORMALISATION, tnorm);
-                        ksi::annbfis a(NUMBER_OF_RULES, NUMBER_OF_CLUSTERING_ITERATIONS, NUMBER_OF_TUNING_ITERATIONS, ETA, NORMALISATION, tnorm, implication);
+                            data_modifier_normaliser normaliser;
+                            normaliser.modify(data);
+                            tt.split(data, NUMBER_OF_DATAPARTS);
 
-                        std::vector<std::unique_ptr<ksi::data_modifier>> imputers;
-                        imputers.push_back(std::make_unique<ksi::data_modifier_imputer_average>());
-                        imputers.push_back(std::make_unique<ksi::data_modifier_imputer_knn_median>(k));
-                        imputers.push_back(std::make_unique<ksi::data_modifier_imputer_knn_average>(k));
-                        imputers.push_back(std::make_unique<ksi::data_modifier_imputer_values_from_knn>(k));
-                        imputers.push_back(std::make_unique<ksi::data_modifier_marginaliser>());
+                            std::vector<std::unique_ptr<ksi::neuro_fuzzy_system>> nfss;
+                            ksi::t_norm_product tnorm;
+                            ksi::imp_reichenbach implication;
+                            nfss.push_back(std::make_unique<ksi::tsk>(NUMBER_OF_RULES, NUMBER_OF_CLUSTERING_ITERATIONS, NUMBER_OF_TUNING_ITERATIONS, ETA, NORMALISATION, tnorm));
+                            nfss.push_back(std::make_unique<ksi::annbfis>(NUMBER_OF_RULES, NUMBER_OF_CLUSTERING_ITERATIONS, NUMBER_OF_TUNING_ITERATIONS, ETA, NORMALISATION, tnorm, implication));
 
-                        for (const auto missing_ratio : { 0.01, 0.02, 0.05, 0.10, 0.20, 0.50, 0.75 }) {
-                            data_modifier_incompleter_random_without_last incomplete(missing_ratio);
+                            std::vector<std::unique_ptr<ksi::data_modifier>> imputers;
+                            imputers.push_back(std::make_unique<ksi::data_modifier_imputer_average>());
+                            imputers.push_back(std::make_unique<ksi::data_modifier_imputer_knn_median>(k));
+                            imputers.push_back(std::make_unique<ksi::data_modifier_imputer_knn_average>(k));
+                            imputers.push_back(std::make_unique<ksi::data_modifier_imputer_values_from_knn>(k));
+                            imputers.push_back(std::make_unique<ksi::data_modifier_marginaliser>());
 
-                            for (auto [train, test] : tt) {
-                                incomplete.modify(test);
+                            for (const auto missing_ratio : { 0.01, 0.02, 0.05, 0.10, 0.20, 0.50, 0.75 }) {
+                                debug(missing_ratio);
 
-                                for (auto& imputer : imputers) {
-                                    imputer->modify(train);
+                                data_modifier_incompleter_random_without_last incomplete(missing_ratio);
 
-                                    //**@todo Zaimplementowac imputer.getName() */
+                                for (auto [train, test] : tt) {
+                                    incomplete.modify(test);
 
-                                    std::string output_name = imputer->getName() + '-' + std::to_string(missing_ratio) + "-r-" + std::to_string(iteration) + ".txt";
+                                    for (auto& imputer : imputers) {
+										debug(imputer->getName());
 
-                                	std::string output_file_t = resultDir.string() + "/tsk-" + output_name;
-                                    auto result_t = t.experiment_regression(train, test, output_file_t);
-                                    results[datasetName]["tsk"][missing_ratio][imputer->getName()].train.push_back(result_t.rmse_train);
-                                    results[datasetName]["tsk"][missing_ratio][imputer->getName()].test.push_back(result_t.rmse_test);
+                                        imputer->modify(train);
 
-                                	std::string output_file_a = resultDir.string() + "/annbfis-" + output_name;
-                                    auto result_a = a.experiment_regression(train, test, output_file_a);
-                                }
+                                        std::string output_name = imputer->getName() + '-' + std::to_string(missing_ratio) + "-r-" + std::to_string(iteration) + ".txt";
 
-                                for (const auto granules : num_granules) {
-                                    ksi::fcm test_partitioner(granules, NUMBER_OF_CLUSTERING_ITERATIONS);
-                                    std::unique_ptr<ksi::data_modifier> imputer = std::make_unique < data_modifier_imputer_granular>(test_partitioner, tnorm);
-                                    imputer->modify(train);
+                                        for (const auto& nfs : nfss)
+                                        {
+                                            std::string output_file = datasetResultDir.string() + "/" + nfs->get_brief_nfs_name() + "-" + output_name;
+                                            auto result = nfs->experiment_regression(train, test, output_file);
+                                            results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()].train.push_back(result.rmse_train);
+                                            results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()].test.push_back(result.rmse_test);
+                                        }
+                                    }
 
-                                    std::string output_name = std::format("{}-{}-g-{}-r-{}.txt", imputer->getName(), missing_ratio, granules, iteration);
-                                    std::string output_file_t = resultDir.string() + "/tsk-" + output_name;
-                                    std::string output_file_a = resultDir.string() + "/annbfis-" + output_name;
+                                    for (const auto granules : num_granules) {
+										debug(granules);
 
-                                    auto result_t = t.experiment_regression(train, test, output_file_t);
-                                    auto result_a = a.experiment_regression(train, test, output_file_a);
+                                        ksi::fcm test_partitioner(granules, NUMBER_OF_CLUSTERING_ITERATIONS);
+                                        std::unique_ptr<ksi::data_modifier> imputer = std::make_unique < data_modifier_imputer_granular>(test_partitioner, tnorm);
+                                        imputer->modify(train);
+
+                                        std::string output_name = std::format("{}-{}-g-{}-r-{}.txt", imputer->getName(), missing_ratio, granules, iteration);
+                                        for (const auto& nfs : nfss)
+                                        {
+                                            std::string output_file = datasetResultDir.string() + "/" + nfs->get_brief_nfs_name() + "-" + output_name;
+                                            auto result = nfs->experiment_regression(train, test, output_file);
+                                            results_gr[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()][granules].train.push_back(result.rmse_train);
+                                            results_gr[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()][granules].test.push_back(result.rmse_test);
+                                        }
+                                    }
                                 }
                             }
+
+                            std::filesystem::path results_file_path = datasetResultDir / (datasetName + "_" + std::to_string(iteration) + "_results.txt");
+                            std::ofstream results_file(results_file_path);
+                            if (results_file.is_open()) {
+                                results_file << "Iteration: " << iteration << std::endl;
+                                for (const auto& [datasetName, datasetResult] : results)
+                                {
+                                    results_file << "\t" << "Dataset: " << datasetName << std::endl;
+                                    for (const auto& [nfsName, nfsResult] : datasetResult)
+                                    {
+                                        results_file << "\t\t" << "NFS: " << nfsName << std::endl;
+                                        for (const auto& [missing_ratio, missingRatioResult] : nfsResult)
+                                        {
+                                            results_file << "\t\t\t" << "Missing Ratio: " << missing_ratio << std::endl;
+                                            for (const auto& [imputerName, imputerResult] : missingRatioResult)
+                                            {
+                                                results_file << "\t\t\t\t" << "Imputer: " << imputerName << std::endl;
+                                                results_file << "\t\t\t\t\t" << "Train Values: " << std::endl;
+                                                for (const auto& train_val : imputerResult.train)
+                                                {
+                                                    results_file << "\t\t\t\t\t" << train_val << " ";
+                                                }
+                                                results_file << "\t\t\t\t\t" << "Test Values: " << std::endl;
+                                                for (const auto& test_val : imputerResult.test)
+                                                {
+                                                    results_file << "\t\t\t\t\t" << test_val << " ";
+                                                }
+                                                results_file << std::endl;
+                                            }
+                                        }
+                                    }
+                                }
+                                results_file.close();
+                            }
+                            else {
+                                std::cerr << "Error: Unable to open file " << results_file_path << " for writing results!" << std::endl;
+                            }
+
+                            std::filesystem::path results_gr_file_path = datasetResultDir / (datasetName + "_" + std::to_string(iteration) + "_results.txt");
+                            std::ofstream results_gr_file(results_file_path);
+                            if (results_file.is_open()) {
+                                results_file << "Iteration: " << iteration << std::endl;
+                                for (const auto& [datasetName, datasetResult] : results_gr_file)
+                                {
+                                    results_file << "\t" << "Dataset: " << datasetName << std::endl;
+                                    for (const auto& [nfsName, nfsResult] : datasetResult)
+                                    {
+                                        results_file << "\t\t" << "NFS: " << nfsName << std::endl;
+                                        for (const auto& [missing_ratio, missingRatioResult] : nfsResult)
+                                        {
+                                            results_file << "\t\t\t" << "Missing Ratio: " << missing_ratio << std::endl;
+                                            for (const auto& [imputerName, imputerResult] : missingRatioResult)
+                                            {
+                                                results_file << "\t\t\t\t" << "Imputer: " << imputerName << std::endl;
+                                                for (const auto& [granulesNumber, granulesResults]: imputerResult) {
+                                                    results_file << "\t\t\t\t\t" << "Granules: " << granulesNumber << std::endl;
+                                                    results_file << "\t\t\t\t\t\t" << "Train Errors: " << std::endl;
+                                                    for (const auto& train_val : granulesResults.train)
+                                                    {
+                                                        results_file << "\t\t\t\t\t\t" << train_val << " ";
+                                                    }
+                                                    results_file << "\t\t\t\t\t\t" << "Test Errors: " << std::endl;
+                                                    for (const auto& test_val : granulesResults.test)
+                                                    {
+                                                        results_file << "\t\t\t\t\t\t" << test_val << " ";
+                                                    }
+                                                    results_file << std::endl;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                results_file.close();
+                            }
+                            else {
+                                std::cerr << "Error: Unable to open " << results_gr_file_path << " file for writing results." << std::endl;
+                            }
                         }
-                        });
-                }
+                    }, entry);
+                
                 for (auto& thread : threads) {
                     if (thread.joinable()) {
                         thread.join();
                     }
                 }
+
+
+				
             }
         }
     }

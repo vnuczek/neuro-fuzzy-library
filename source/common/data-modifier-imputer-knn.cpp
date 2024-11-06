@@ -104,8 +104,3 @@ std::string ksi::data_modifier_imputer_knn::getName() const
 {
     return "imputer_knn";
 }
-
-std::string std::getName() const
-{
-	return "data_modifier_imputer_knn";
-}
