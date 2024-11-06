@@ -64,6 +64,9 @@ __ : $(release_folder) $(release_folder)/main
 5 :  $(release_folder) $(release_folder)/main
 	./$(release_folder)/main  5
 
+27 :  $(release_folder) $(release_folder)/main
+	./$(release_folder)/main  27
+
 lab : $(release_folder) $(release_folder)/main
 	./$(release_folder)/main  0
 

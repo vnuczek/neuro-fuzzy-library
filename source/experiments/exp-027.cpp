@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include <filesystem>
+#include <thread>
 
 #include "../experiments/exp-027.h"
 
@@ -74,11 +75,12 @@ void ksi::exp_027::execute()
                 {
                     debug(entry);
 
-                    threads.emplace_back([=](const std::filesystem::directory_entry threadEntry) {
+                    //threads.emplace_back([=](const std::filesystem::directory_entry threadEntry) {
                         RESULTS results;
                         RESULTS_GR results_gr;
 
-                        std::filesystem::path file_path = threadEntry.path();
+                        //std::filesystem::path file_path = threadEntry.path();
+                        std::filesystem::path file_path = entry.path();
                         std::string datasetName = file_path.stem().string();
                         std::filesystem::path datasetResultDir = resultDir / datasetName;
                         std::filesystem::create_directories(datasetResultDir);
@@ -237,7 +239,7 @@ void ksi::exp_027::execute()
                                 std::cerr << "Error: Unable to open " << results_gr_file_path << " file for writing results." << std::endl;
                             }
                         }
-                    }, entry);
+                    //}, entry);
                 
                 for (auto& thread : threads) {
                     if (thread.joinable()) {
