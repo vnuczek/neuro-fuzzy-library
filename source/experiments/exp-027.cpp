@@ -74,8 +74,7 @@ void ksi::exp_027::execute()
                 {
                     debug(entry);
 
-                    threads.emplace_back([=](const std::filesystem::directory_entry threadEntry)
-                    {
+                    threads.emplace_back([=](const std::filesystem::directory_entry threadEntry) {
                         RESULTS results;
                         RESULTS_GR results_gr;
 
@@ -202,7 +201,7 @@ void ksi::exp_027::execute()
                             std::ofstream results_gr_file(results_file_path);
                             if (results_file.is_open()) {
                                 results_file << "Iteration: " << iteration << std::endl;
-                                for (const auto& [datasetName, datasetResult] : results_gr_file)
+                                for (const auto& [datasetName, datasetResult] : results_gr)
                                 {
                                     results_file << "\t" << "Dataset: " << datasetName << std::endl;
                                     for (const auto& [nfsName, nfsResult] : datasetResult)
@@ -214,8 +213,8 @@ void ksi::exp_027::execute()
                                             for (const auto& [imputerName, imputerResult] : missingRatioResult)
                                             {
                                                 results_file << "\t\t\t\t" << "Imputer: " << imputerName << std::endl;
-                                                for (const auto& [granulesNumber, granulesResults]: imputerResult) {
-                                                    results_file << "\t\t\t\t\t" << "Granules: " << granulesNumber << std::endl;
+                                                for (const auto& [granulesNumber, granulesResults] : imputerResult) {
+                                                    results_file << "\t\t\t\t\t" << "Granules Number: " << granulesNumber << std::endl;
                                                     results_file << "\t\t\t\t\t\t" << "Train Errors: " << std::endl;
                                                     for (const auto& train_val : granulesResults.train)
                                                     {
