@@ -171,14 +171,20 @@ void ksi::exp_027::execute()
                                                 results_file << "\t\t\t\t\t" << "Train Values: " << std::endl;
                                                 for (const auto& train_val : imputerResult.train)
                                                 {
-                                                    results_file << "\t\t\t\t\t" << train_val << " ";
+                                                    results_file << "\t\t\t\t\t" << train_val << std::endl;
                                                 }
-                                                results_file << "\t\t\t\t\t" << "Test Values: " << std::endl;
+                                                results_file << "\t\t\t\t\t" << "Train Average +- std_dev: ";
+                                                auto [train_mean, train_dev] = ksi::utility_math::getMeanAndStandardDeviation(imputerResult.train.begin(), imputerResult.train.end());
+                                                results_file << train_mean << ' ' << train_dev << std::endl;
+                                                results_file << "\t\t\t\t\t" << "Train Values: " << std::endl;
                                                 for (const auto& test_val : imputerResult.test)
                                                 {
-                                                    results_file << "\t\t\t\t\t" << test_val << " ";
+                                                    results_file << "\t\t\t\t\t" << test_val << std::endl;
                                                 }
                                                 results_file << std::endl;
+                                                results_file << "\t\t\t\t\t" << "Test Average +- std_dev: ";
+                                                auto [test_mean, test_dev] = ksi::utility_math::getMeanAndStandardDeviation(imputerResult.test.begin(), imputerResult.test.end());
+                                            	results_file << test_mean << ' '<< test_dev << std::endl;
                                             }
                                         }
                                     }
@@ -207,17 +213,23 @@ void ksi::exp_027::execute()
                                                 results_file << "\t\t\t\t" << "Imputer: " << imputerName << std::endl;
                                                 for (const auto& [granulesNumber, granulesResults] : imputerResult) {
                                                     results_file << "\t\t\t\t\t" << "Granules Number: " << granulesNumber << std::endl;
-                                                    results_file << "\t\t\t\t\t\t" << "Train Errors: " << std::endl;
+                                                    results_file << "\t\t\t\t\t\t" << "Train Values: " << std::endl;
                                                     for (const auto& train_val : granulesResults.train)
                                                     {
-                                                        results_file << "\t\t\t\t\t\t" << train_val << " ";
+                                                        results_file << "\t\t\t\t\t\t" << train_val << std::endl;
                                                     }
-                                                    results_file << "\t\t\t\t\t\t" << "Test Errors: " << std::endl;
+                                                    results_file << "\t\t\t\t\t\t" << "Train Average +- std_dev: ";
+                                                    auto [train_mean, train_dev] = ksi::utility_math::getMeanAndStandardDeviation(granulesResults.train.begin(), granulesResults.train.end());
+                                                    results_file << train_mean << ' ' << train_dev << std::endl;
+                                                    results_file << "\t\t\t\t\t\t" << "Train Values: " << std::endl;
                                                     for (const auto& test_val : granulesResults.test)
                                                     {
-                                                        results_file << "\t\t\t\t\t\t" << test_val << " ";
+                                                        results_file << "\t\t\t\t\t\t" << test_val << std::endl;
                                                     }
                                                     results_file << std::endl;
+                                                    results_file << "\t\t\t\t\t\t" << "Test Average +- std_dev: ";
+                                                    auto [test_mean, test_dev] = ksi::utility_math::getMeanAndStandardDeviation(granulesResults.test.begin(), granulesResults.test.end());
+                                                    results_file << test_mean << ' ' << test_dev << std::endl;
                                                 }
                                             }
                                         }
