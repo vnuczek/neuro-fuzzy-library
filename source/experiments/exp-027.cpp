@@ -73,7 +73,6 @@ void ksi::exp_027::execute()
                 if (entry.is_regular_file())
                 {
                     //threads.emplace_back([=](const std::filesystem::directory_entry threadEntry) {
-                    threads.emplace_back([=](const std::filesystem::directory_entry entry) {
                         RESULTS results;
                         RESULTS_GR results_gr;
 
@@ -232,11 +231,11 @@ void ksi::exp_027::execute()
                         }
                     //}, entry);
                 
-                for (auto& thread : threads) {
-                    if (thread.joinable()) {
-                        thread.join();
-                    }
-                }
+                //for (auto& thread : threads) {
+                  //  if (thread.joinable()) {
+                    //    thread.join();
+                    //}
+                //}
 
 
 				
