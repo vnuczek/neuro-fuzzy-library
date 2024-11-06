@@ -63,22 +63,21 @@ void ksi::exp_027::execute()
         };
         typedef std::map < std::string, std::map<std::string, std::map<double, std::map<std::string, errors>>>> RESULTS;
         typedef std::map < std::string, std::map<std::string, std::map<double, std::map<std::string, std::map<int, errors>>>>> RESULTS_GR;
-        
-        std::vector<std::thread> threads;
 
         std::vector<RESULTS> resultsVec;
-		std::vector<RESULTS_GR> resultsGrVec;
-        
+        std::vector<RESULTS_GR> resultsGrVec;
+
+        std::vector<std::thread> threads;
         for (const auto& entry : std::filesystem::directory_iterator(dataDir)) {
                 if (entry.is_regular_file())
                 {
                    debug(entry);
-                    //threads.emplace_back([=](const std::filesystem::directory_entry threadEntry) {
+                    threads.emplace_back([=](const std::filesystem::directory_entry threadEntry) {
                         RESULTS results;
                         RESULTS_GR results_gr;
 
-                        //std::filesystem::path file_path = threadEntry.path();
-                        std::filesystem::path file_path = entry.path();
+                        //std::filesystem::path file_path = entry.path();
+                        std::filesystem::path file_path = threadEntry.path();
                         std::string datasetName = file_path.stem().string();
                         std::filesystem::path datasetResultDir = resultDir / datasetName;
                         std::filesystem::create_directories(datasetResultDir);
@@ -159,106 +158,102 @@ void ksi::exp_027::execute()
                                     }
                                 }
                             }
+                        }
 
-                            std::filesystem::path results_file_path = datasetResultDir / (datasetName + "_" + std::to_string(iteration) + "_results.txt");
-                            std::ofstream results_file(results_file_path);
-                            if (results_file.is_open()) {
-                                results_file << "Iteration: " << iteration << std::endl;
-                                for (const auto& [datasetName, datasetResult] : results)
+                        std::filesystem::path results_file_path = datasetResultDir / (datasetName + "_results.txt");
+                        std::ofstream results_file(results_file_path);
+                        if (results_file.is_open()) {
+                            for (const auto& [datasetName, datasetResult] : results)
+                            {
+                                results_file << "\t" << "Dataset: " << datasetName << std::endl;
+                                for (const auto& [nfsName, nfsResult] : datasetResult)
                                 {
-                                    results_file << "\t" << "Dataset: " << datasetName << std::endl;
-                                    for (const auto& [nfsName, nfsResult] : datasetResult)
+                                    results_file << "\t\t" << "NFS: " << nfsName << std::endl;
+                                    for (const auto& [missing_ratio, missingRatioResult] : nfsResult)
                                     {
-                                        results_file << "\t\t" << "NFS: " << nfsName << std::endl;
-                                        for (const auto& [missing_ratio, missingRatioResult] : nfsResult)
+                                        results_file << "\t\t\t" << "Missing Ratio: " << missing_ratio << std::endl;
+                                        for (const auto& [imputerName, imputerResult] : missingRatioResult)
                                         {
-                                            results_file << "\t\t\t" << "Missing Ratio: " << missing_ratio << std::endl;
-                                            for (const auto& [imputerName, imputerResult] : missingRatioResult)
+                                            results_file << "\t\t\t\t" << "Imputer: " << imputerName << std::endl;
+                                            results_file << "\t\t\t\t\t" << "Train Values: " << std::endl;
+                                            for (const auto& train_val : imputerResult.train)
                                             {
-                                                results_file << "\t\t\t\t" << "Imputer: " << imputerName << std::endl;
-                                                results_file << "\t\t\t\t\t" << "Train Values: " << std::endl;
-                                                for (const auto& train_val : imputerResult.train)
+                                                results_file << "\t\t\t\t\t" << train_val << std::endl;
+                                            }
+                                            results_file << "\t\t\t\t\t" << "Train Average +- std_dev: ";
+                                            auto [train_mean, train_dev] = ksi::utility_math::getMeanAndStandardDeviation(imputerResult.train.begin(), imputerResult.train.end());
+                                            results_file << train_mean << ' ' << train_dev << std::endl;
+                                            results_file << "\t\t\t\t\t" << "Train Values: " << std::endl;
+                                            for (const auto& test_val : imputerResult.test)
+                                            {
+                                                results_file << "\t\t\t\t\t" << test_val << std::endl;
+                                            }
+                                            results_file << std::endl;
+                                            results_file << "\t\t\t\t\t" << "Test Average +- std_dev: ";
+                                            auto [test_mean, test_dev] = ksi::utility_math::getMeanAndStandardDeviation(imputerResult.test.begin(), imputerResult.test.end());
+                                            results_file << test_mean << ' ' << test_dev << std::endl;
+                                        }
+                                    }
+                                }
+                            }
+                            results_file.close();
+                        }
+                        else {
+                            std::cerr << "Error: Unable to open file " << results_file_path << " for writing results!" << std::endl;
+                        }
+
+                        std::filesystem::path results_gr_file_path = datasetResultDir / (datasetName + "_results.txt");
+                        std::ofstream results_gr_file(results_file_path);
+                        if (results_file.is_open()) {
+                            for (const auto& [datasetName, datasetResult] : results_gr)
+                            {
+                                results_file << "\t" << "Dataset: " << datasetName << std::endl;
+                                for (const auto& [nfsName, nfsResult] : datasetResult)
+                                {
+                                    results_file << "\t\t" << "NFS: " << nfsName << std::endl;
+                                    for (const auto& [missing_ratio, missingRatioResult] : nfsResult)
+                                    {
+                                        results_file << "\t\t\t" << "Missing Ratio: " << missing_ratio << std::endl;
+                                        for (const auto& [imputerName, imputerResult] : missingRatioResult)
+                                        {
+                                            results_file << "\t\t\t\t" << "Imputer: " << imputerName << std::endl;
+                                            for (const auto& [granulesNumber, granulesResults] : imputerResult) {
+                                                results_file << "\t\t\t\t\t" << "Granules Number: " << granulesNumber << std::endl;
+                                                results_file << "\t\t\t\t\t\t" << "Train Values: " << std::endl;
+                                                for (const auto& train_val : granulesResults.train)
                                                 {
-                                                    results_file << "\t\t\t\t\t" << train_val << std::endl;
+                                                    results_file << "\t\t\t\t\t\t" << train_val << std::endl;
                                                 }
-                                                results_file << "\t\t\t\t\t" << "Train Average +- std_dev: ";
-                                                auto [train_mean, train_dev] = ksi::utility_math::getMeanAndStandardDeviation(imputerResult.train.begin(), imputerResult.train.end());
+                                                results_file << "\t\t\t\t\t\t" << "Train Average +- std_dev: ";
+                                                auto [train_mean, train_dev] = ksi::utility_math::getMeanAndStandardDeviation(granulesResults.train.begin(), granulesResults.train.end());
                                                 results_file << train_mean << ' ' << train_dev << std::endl;
-                                                results_file << "\t\t\t\t\t" << "Train Values: " << std::endl;
-                                                for (const auto& test_val : imputerResult.test)
+                                                results_file << "\t\t\t\t\t\t" << "Train Values: " << std::endl;
+                                                for (const auto& test_val : granulesResults.test)
                                                 {
-                                                    results_file << "\t\t\t\t\t" << test_val << std::endl;
+                                                    results_file << "\t\t\t\t\t\t" << test_val << std::endl;
                                                 }
                                                 results_file << std::endl;
-                                                results_file << "\t\t\t\t\t" << "Test Average +- std_dev: ";
-                                                auto [test_mean, test_dev] = ksi::utility_math::getMeanAndStandardDeviation(imputerResult.test.begin(), imputerResult.test.end());
-                                            	results_file << test_mean << ' '<< test_dev << std::endl;
+                                                results_file << "\t\t\t\t\t\t" << "Test Average +- std_dev: ";
+                                                auto [test_mean, test_dev] = ksi::utility_math::getMeanAndStandardDeviation(granulesResults.test.begin(), granulesResults.test.end());
+                                                results_file << test_mean << ' ' << test_dev << std::endl;
                                             }
                                         }
                                     }
                                 }
-                                results_file.close();
                             }
-                            else {
-                                std::cerr << "Error: Unable to open file " << results_file_path << " for writing results!" << std::endl;
-                            }
-
-                            std::filesystem::path results_gr_file_path = datasetResultDir / (datasetName + "_" + std::to_string(iteration) + "_results.txt");
-                            std::ofstream results_gr_file(results_file_path);
-                            if (results_file.is_open()) {
-                                results_file << "Iteration: " << iteration << std::endl;
-                                for (const auto& [datasetName, datasetResult] : results_gr)
-                                {
-                                    results_file << "\t" << "Dataset: " << datasetName << std::endl;
-                                    for (const auto& [nfsName, nfsResult] : datasetResult)
-                                    {
-                                        results_file << "\t\t" << "NFS: " << nfsName << std::endl;
-                                        for (const auto& [missing_ratio, missingRatioResult] : nfsResult)
-                                        {
-                                            results_file << "\t\t\t" << "Missing Ratio: " << missing_ratio << std::endl;
-                                            for (const auto& [imputerName, imputerResult] : missingRatioResult)
-                                            {
-                                                results_file << "\t\t\t\t" << "Imputer: " << imputerName << std::endl;
-                                                for (const auto& [granulesNumber, granulesResults] : imputerResult) {
-                                                    results_file << "\t\t\t\t\t" << "Granules Number: " << granulesNumber << std::endl;
-                                                    results_file << "\t\t\t\t\t\t" << "Train Values: " << std::endl;
-                                                    for (const auto& train_val : granulesResults.train)
-                                                    {
-                                                        results_file << "\t\t\t\t\t\t" << train_val << std::endl;
-                                                    }
-                                                    results_file << "\t\t\t\t\t\t" << "Train Average +- std_dev: ";
-                                                    auto [train_mean, train_dev] = ksi::utility_math::getMeanAndStandardDeviation(granulesResults.train.begin(), granulesResults.train.end());
-                                                    results_file << train_mean << ' ' << train_dev << std::endl;
-                                                    results_file << "\t\t\t\t\t\t" << "Train Values: " << std::endl;
-                                                    for (const auto& test_val : granulesResults.test)
-                                                    {
-                                                        results_file << "\t\t\t\t\t\t" << test_val << std::endl;
-                                                    }
-                                                    results_file << std::endl;
-                                                    results_file << "\t\t\t\t\t\t" << "Test Average +- std_dev: ";
-                                                    auto [test_mean, test_dev] = ksi::utility_math::getMeanAndStandardDeviation(granulesResults.test.begin(), granulesResults.test.end());
-                                                    results_file << test_mean << ' ' << test_dev << std::endl;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                results_file.close();
-                            }
-                            else {
-                                std::cerr << "Error: Unable to open " << results_gr_file_path << " file for writing results." << std::endl;
-                            }
+                            results_file.close();
                         }
-                    //}, entry);
-                
-                //for (auto& thread : threads) {
-                  //  if (thread.joinable()) {
-                    //    thread.join();
-                    //}
-                //}
+                        else {
+                            std::cerr << "Error: Unable to open " << results_gr_file_path << " file for writing results." << std::endl;
+                        }
+                    }, entry);
 
+                for (auto& thread : threads) {
 
-				
+                    if (thread.joinable()) {
+                        thread.join();
+                    }
+                }				
             }
         }
     }
