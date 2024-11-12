@@ -42,19 +42,19 @@ void ksi::exp_027::execute()
 {
     try
     {
-        std::string exp_number = "exp-027";
+       std::string exp_number = "exp-027";
 
-        std::filesystem::path dataDir = "../data/" + exp_number;
-        std::filesystem::path resultDir = "../results/" + exp_number;
+       std::filesystem::path dataDir = "../data/" + exp_number;
+       std::filesystem::path resultDir = "../results/" + exp_number;
 
-        const int NUMBER_OF_RULES = 5;
-        const int NUMBER_OF_CLUSTERING_ITERATIONS = 100;
-        const int NUMBER_OF_TUNING_ITERATIONS = 100;
-		const int NUMBER_OF_DATAPARTS = 10;
-        const int k = 5;
-        const double ETA = 0.001;
+       const int NUMBER_OF_RULES = 5;
+       const int NUMBER_OF_CLUSTERING_ITERATIONS = 100;
+       const int NUMBER_OF_TUNING_ITERATIONS = 100;
+       const int NUMBER_OF_DATAPARTS = 10;
+       const int k = 5;
+       const double ETA = 0.001;
 
-        const bool NORMALISATION = false;
+       const bool NORMALISATION = false;
 
         struct errors {
 			std::vector<double> train;
@@ -69,6 +69,8 @@ void ksi::exp_027::execute()
         // std::vector<RESULTS_GR> resultsGrVector;
 
         for (const auto& entry : std::filesystem::directory_iterator(dataDir)) {
+            thdebugid(entry, entry);
+
             if (entry.is_regular_file()) {
                     threads.emplace_back([=](const std::filesystem::directory_entry threadEntry) {
                     RESULTS results;
@@ -91,7 +93,7 @@ void ksi::exp_027::execute()
 
                    // for (int iteration = 0; iteration < 13; iteration++) {
                     for (int iteration = 0; iteration < 3; iteration++) {
-                        thdebug(iteration);
+                        thdebugid(entry, iteration);
 
 						reader_complete DataReader;
                         ksi::train_test_model tt(DataReader);
@@ -115,20 +117,20 @@ void ksi::exp_027::execute()
                         imputers.push_back(std::make_unique<ksi::data_modifier_marginaliser>());
 
                         for (const auto missing_ratio : { 0.01, 0.02, 0.05, 0.10, 0.20, 0.50, 0.75 }) {
-							thdebug(missing_ratio);
+                            // thdebugid(entry, missing_ratio); 
 
 							data_modifier_incompleter_random_without_last incomplete(missing_ratio);
                             for (auto [train, test] : tt) {
-                                incomplete.modify(test);
+                                // thdebugid(entry, __LINE__);
 
+                                incomplete.modify(test);
                                 for (const auto& imputer : imputers) {
-									thdebug(imputer->getName());
+                                    // thdebugid(entry, imputer->getName());
 
                                     imputer->modify(train);
-
 									std::string output_name = std::format("{}-{}-r-{}.txt", imputer->getName(), missing_ratio, iteration);
                                     for (const auto& nfs : nfss) {
-										thdebug(nfs->get_brief_nfs_name());
+                                        // thdebugid(entry, nfs->get_brief_nfs_name());
 
                                         std::string output_file = datasetResultDir.string() + "/" + nfs->get_brief_nfs_name() + "-" + output_name;
                                         auto result = nfs->experiment_regression(train, test, output_file);
@@ -138,7 +140,7 @@ void ksi::exp_027::execute()
                                 }
 
                                 for (const auto granules : num_granules) {
-									thdebug(granules);
+                                    // thdebugid(entry, granules);
 
                                     ksi::fcm test_partitioner(granules, NUMBER_OF_CLUSTERING_ITERATIONS);
                                     std::unique_ptr<ksi::data_modifier> imputer = std::make_unique < data_modifier_imputer_granular>(test_partitioner, tnorm);
@@ -146,7 +148,7 @@ void ksi::exp_027::execute()
 
                                     std::string output_name = std::format("{}-{}-g-{}-r-{}.txt", imputer->getName(), missing_ratio, granules, iteration);
                                     for (const auto& nfs : nfss) {
-                                        thdebug(nfs->get_brief_nfs_name());
+                                        // thdebugid(entry, nfs->get_brief_nfs_name());
 
                                         std::string output_file = datasetResultDir.string() + "/" + nfs->get_brief_nfs_name() + "-" + output_name;
                                         auto result = nfs->experiment_regression(train, test, output_file);
@@ -244,14 +246,15 @@ void ksi::exp_027::execute()
             }
         }
 
-        for (auto& thread : threads) {
+    	thdebug(threads.size());
+	    for (auto& thread : threads) {
+			if (thread.joinable()) {
+				thread.join();
+			}
+	    }
+	    thdebug("dze end");
+       }
+       CATCH;
 
-            if (thread.joinable()) {
-                thread.join();
-            }
-        }				
+       return;
     }
-	CATCH;
-
-    return;
-}
