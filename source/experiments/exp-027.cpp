@@ -59,15 +59,18 @@ void ksi::exp_027::processDataset(const std::filesystem::directory_entry& entry)
 	    std::filesystem::path datasetResultDir = resultDir / datasetName;
 	    std::filesystem::create_directories(datasetResultDir);
 
-	    std::vector<int> num_granules = (datasetName == "BoxJ290") ? std::vector<int>{2, 3, 5, 10} : std::vector<int>{ 2, 3, 5, 10, 15, 20, 25 };
+	    // std::vector<int> num_granules = (datasetName == "BoxJ290") ? std::vector<int>{2, 3, 5, 10} : std::vector<int>{ 2, 3, 5, 10, 15, 20, 25 };
+	    std::vector<int> num_granules = (datasetName == "BoxJ290") ? std::vector<int>{2, 5} : std::vector<int>{ 2, 3, 5, 10, 15, 20, 25 };
 
 		std::vector<std::future<std::pair<RESULTS, RESULTS_GR>>> futures;
-
-	    for (int iteration = 0; iteration < 2; iteration++) {
-	    // for (int iteration = 0; iteration < 13; iteration++) {
-			thdebugid(entry, iteration);
-			futures.push_back(std::async(&ksi::exp_027::runIteration, this, file_path, datasetName, datasetResultDir, num_granules, iteration));
-	    }
+		if (datasetName == "BoxJ290")
+		{
+			for (int iteration = 0; iteration < 2; iteration++) {
+			// for (int iteration = 0; iteration < 13; iteration++) {
+				thdebugid(entry, iteration);
+				futures.push_back(std::async(&ksi::exp_027::runIteration, this, file_path, datasetName, datasetResultDir, num_granules, iteration));
+			}
+		}
 
 		std::vector<RESULTS> resultsVector;
 		std::vector<RESULTS_GR> resultsGrVector;
@@ -155,11 +158,11 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runIteration(std::filesys
 
 		data_modifier_incompleter_random_without_last incomplete(missing_ratio);
 		for (auto [train, test] : tt) {
-			// thdebugid(entry, __LINE__);
+			thdebugid(iteration, __LINE__);
 
 			incomplete.modify(test);
 			for (const auto& imputer : imputers) {
-				// thdebugid(entry, imputer->getName());
+				thdebugid(iteration, imputer->getName());
 
 				imputer->modify(train);
 				std::string output_name = std::format("{}-{}-r-{}.txt", imputer->getName(), missing_ratio, iteration);
@@ -174,7 +177,7 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runIteration(std::filesys
 			}
 
 			for (const auto granules : num_granules) {
-				// thdebugid(entry, granules);
+				thdebugid(iteration, granules);
 
 				ksi::fcm test_partitioner(granules, NUMBER_OF_CLUSTERING_ITERATIONS);
 				std::unique_ptr<ksi::data_modifier> imputer = std::make_unique< data_modifier_imputer_granular>(test_partitioner, tnorm);
