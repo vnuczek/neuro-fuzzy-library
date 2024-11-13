@@ -80,11 +80,12 @@ void ksi::exp_027::processDataset(const std::filesystem::directory_entry& entry)
 	        std::vector<std::unique_ptr<ksi::data_modifier>> imputers;
 	        imputers.push_back(std::make_unique<ksi::data_modifier_imputer_average>());
 	        imputers.push_back(std::make_unique<ksi::data_modifier_imputer_knn_median>(k));
-	        imputers.push_back(std::make_unique<ksi::data_modifier_imputer_knn_average>(k));
+	        /*imputers.push_back(std::make_unique<ksi::data_modifier_imputer_knn_average>(k));
 	        imputers.push_back(std::make_unique<ksi::data_modifier_imputer_values_from_knn>(k));
-	        imputers.push_back(std::make_unique<ksi::data_modifier_marginaliser>());
+	        imputers.push_back(std::make_unique<ksi::data_modifier_marginaliser>());*/
 
-	        for (const auto missing_ratio : { 0.01, 0.02, 0.05, 0.10, 0.20, 0.50, 0.75 }) {
+	        // for (const auto missing_ratio : { 0.01, 0.02, 0.05, 0.10, 0.20, 0.50, 0.75 }) {
+	        for (const auto missing_ratio : { 0.05 }) {
 	            // thdebugid(entry, missing_ratio); 
 
 	            data_modifier_incompleter_random_without_last incomplete(missing_ratio);
@@ -175,7 +176,7 @@ void ksi::exp_027::writeResultsToFile(const std::filesystem::path& datasetResult
 			std::cerr << "Error: Unable to open file " << results_file_path << " for writing results!" << std::endl;
 		}
 
-		std::filesystem::path results_gr_file_path = datasetResultDir / (datasetName + "_results.txt");
+		std::filesystem::path results_gr_file_path = datasetResultDir / (datasetName + "_resultsGr.txt");
 		std::ofstream resultsGrStream(results_file_path);
 		if (resultsStream.is_open()) {
 			for (const auto& [datasetName, datasetResult] : results_gr)
