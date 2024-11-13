@@ -62,7 +62,7 @@ void ksi::exp_027::processDataset(const std::filesystem::directory_entry& entry)
 	    const std::vector<int> num_granules = (datasetName == "BoxJ290") ? std::vector<int>{2, 3, 5, 10} : std::vector<int>{ 2, 3, 5, 10, 15, 20, 25 };
 
 		std::vector<std::future<std::pair<RESULTS, RESULTS_GR>>> futures;
-		for (int iteration = 0; iteration < 10; iteration++) {
+		for (int iteration = 0; iteration < 13; iteration++) {
 			futures.push_back(std::async(&ksi::exp_027::runIteration, this, file_path, datasetName, datasetResultDir, num_granules, iteration));
 		}
 
@@ -74,7 +74,7 @@ void ksi::exp_027::processDataset(const std::filesystem::directory_entry& entry)
 			resultsVector.push_back(iterResult);
 			resultsGrVector.push_back(iterResultGr);
 		}
-
+		 
 		results = mergeResults(resultsVector);
 		results_gr = mergeResultsGr(resultsGrVector);
 
