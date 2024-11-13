@@ -4,6 +4,7 @@
 #define EXP_027_H
 
 #include "../experiments/experiment.h"
+
 #include <filesystem>
 #include <map>
 #include <thread>
@@ -12,6 +13,14 @@
 
 namespace ksi
 {
+    struct errors {
+        std::vector<double> train;
+        std::vector<double> test;
+    };
+
+    typedef std::map < std::string, std::map<std::string, std::map<double, std::map<std::string, errors>>>> RESULTS;
+    typedef std::map < std::string, std::map<std::string, std::map<double, std::map<std::string, std::map<int, errors>>>>> RESULTS_GR;
+
     /** EXPERIMENT 027  <br/>
 
     granular imputation of missing values
@@ -35,14 +44,6 @@ namespace ksi
         const double ETA;
         const bool NORMALISATION;
 
-        struct errors {
-            std::vector<double> train;
-            std::vector<double> test;
-        };
-
-        typedef std::map < std::string, std::map<std::string, std::map<double, std::map<std::string, errors>>>> RESULTS;
-        typedef std::map < std::string, std::map<std::string, std::map<double, std::map<std::string, std::map<int, errors>>>>> RESULTS_GR;
-
         std::vector<std::thread> threads;
 
         // std::vector<RESULTS> resultsVector;
@@ -60,7 +61,7 @@ namespace ksi
            bool normalisation = false
        );
 
-      /** The method executes an experiment. */
+        /** The method executes an experiment. */
 		virtual void execute();
 
     private:
@@ -76,6 +77,11 @@ namespace ksi
 		 * @date 2024-11-23
 		 */
         void processDataset(const std::filesystem::directory_entry& entry);
+
+        std::pair<ksi::RESULTS, ksi::RESULTS_GR> runIteration(
+            std::filesystem::path file_path, std::string datasetName,
+            std::filesystem::path datasetResultDir,
+            std::vector<int> num_granules, int iteration);
 
         /**
          * @brief Writes experiment results to a file.
@@ -93,6 +99,9 @@ namespace ksi
          */
         void writeResultsToFile(const std::filesystem::path& datasetResultDir, const std::string& datasetName, RESULTS results, RESULTS_GR results_gr);
 
+		ksi::RESULTS mergeResults(std::vector<RESULTS> resultsVector);
+
+		ksi::RESULTS_GR mergeResultsGr(std::vector<RESULTS_GR> resultsGrVector);
     };
 }
 
