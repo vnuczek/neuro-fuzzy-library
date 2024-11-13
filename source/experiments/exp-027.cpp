@@ -39,7 +39,7 @@
 
 #include "../auxiliary/utility-math.h"
 
-ksi::exp_027::exp_027(int num_rules, int num_clustering_iters, int num_tuning_iters, int num_dataparts, int k_val, double eta_val, bool normalisation) :
+ksi::exp_027::exp_027(const int num_rules, const int num_clustering_iters, const int num_tuning_iters, const int num_dataparts, const int k_val, const double eta_val, const bool normalisation) :
 	NUMBER_OF_RULES(num_rules),
 	NUMBER_OF_CLUSTERING_ITERATIONS(num_clustering_iters),
 	NUMBER_OF_TUNING_ITERATIONS(num_tuning_iters),
@@ -54,27 +54,20 @@ void ksi::exp_027::processDataset(const std::filesystem::directory_entry& entry)
 		RESULTS results;
 		RESULTS_GR results_gr;
 
-		std::filesystem::path file_path = entry.path();
-	    std::string datasetName = file_path.stem().string();
-	    std::filesystem::path datasetResultDir = resultDir / datasetName;
+		const std::filesystem::path file_path = entry.path();
+	    const std::string datasetName = file_path.stem().string();
+	    const std::filesystem::path datasetResultDir = resultDir / datasetName;
 	    std::filesystem::create_directories(datasetResultDir);
 
-	    // std::vector<int> num_granules = (datasetName == "BoxJ290") ? std::vector<int>{2, 3, 5, 10} : std::vector<int>{ 2, 3, 5, 10, 15, 20, 25 };
-	    std::vector<int> num_granules = (datasetName == "BoxJ290") ? std::vector<int>{2, 5} : std::vector<int>{ 2, 3, 5, 10, 15, 20, 25 };
+	    const std::vector<int> num_granules = (datasetName == "BoxJ290") ? std::vector<int>{2, 3, 5, 10} : std::vector<int>{ 2, 3, 5, 10, 15, 20, 25 };
 
 		std::vector<std::future<std::pair<RESULTS, RESULTS_GR>>> futures;
-		if (datasetName == "BoxJ290")
-		{
-			for (int iteration = 0; iteration < 2; iteration++) {
-			// for (int iteration = 0; iteration < 13; iteration++) {
-				thdebugid(entry, iteration);
-				futures.push_back(std::async(&ksi::exp_027::runIteration, this, file_path, datasetName, datasetResultDir, num_granules, iteration));
-			}
+		for (int iteration = 0; iteration < 10; iteration++) {
+			futures.push_back(std::async(&ksi::exp_027::runIteration, this, file_path, datasetName, datasetResultDir, num_granules, iteration));
 		}
 
 		std::vector<RESULTS> resultsVector;
 		std::vector<RESULTS_GR> resultsGrVector;
-
 		for (auto& fut : futures) {
 			auto [iterResult, iterResultGr] = fut.get();
 
@@ -90,7 +83,7 @@ void ksi::exp_027::processDataset(const std::filesystem::directory_entry& entry)
 	CATCH;
 }
 
-ksi::RESULTS ksi::exp_027::mergeResults(std::vector<RESULTS> resultsVector) {
+ksi::RESULTS ksi::exp_027::mergeResults(const std::vector<RESULTS>& resultsVector) {
 	RESULTS results;
 	for (const auto& result : resultsVector) {
 		for (const auto& [datasetName, datasetResult] : result) {
@@ -107,7 +100,7 @@ ksi::RESULTS ksi::exp_027::mergeResults(std::vector<RESULTS> resultsVector) {
 	return results;
 }
 
-ksi::RESULTS_GR ksi::exp_027::mergeResultsGr(std::vector<RESULTS_GR> resultsGrVector) {
+ksi::RESULTS_GR ksi::exp_027::mergeResultsGr(const std::vector<RESULTS_GR>& resultsGrVector) {
 	RESULTS_GR results_gr;
 	for (const auto& result : resultsGrVector) {
 		for (const auto& [datasetName, datasetResult] : result) {
@@ -126,7 +119,7 @@ ksi::RESULTS_GR ksi::exp_027::mergeResultsGr(std::vector<RESULTS_GR> resultsGrVe
 	return results_gr;
 }
 
-std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runIteration(std::filesystem::path file_path, std::string datasetName, std::filesystem::path datasetResultDir, std::vector<int> num_granules, int iteration)
+std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runIteration(const std::filesystem::path& file_path, const std::string& datasetName, const std::filesystem::path& datasetResultDir, const std::vector<int>& num_granules, const int iteration)
 {
 	ksi::RESULTS results;
 	ksi::RESULTS_GR results_gr;
@@ -147,27 +140,26 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runIteration(std::filesys
 
 	std::vector<std::unique_ptr<ksi::data_modifier>> imputers;
 	imputers.push_back(std::make_unique<ksi::data_modifier_imputer_average>());
-	/*imputers.push_back(std::make_unique<ksi::data_modifier_imputer_knn_median>(k));
+	imputers.push_back(std::make_unique<ksi::data_modifier_imputer_knn_median>(k));
 	imputers.push_back(std::make_unique<ksi::data_modifier_imputer_knn_average>(k));
 	imputers.push_back(std::make_unique<ksi::data_modifier_imputer_values_from_knn>(k));
-	imputers.push_back(std::make_unique<ksi::data_modifier_marginaliser>());*/
+	imputers.push_back(std::make_unique<ksi::data_modifier_marginaliser>());
 
-	for (const auto missing_ratio : { 0.05 }) {
-	// for (const auto missing_ratio : { 0.01, 0.02, 0.05, 0.10, 0.20, 0.50, 0.75 }) {
-		// thdebugid(entry, missing_ratio); 
+	for (const auto missing_ratio : { 0.01, 0.02, 0.05, 0.10, 0.20, 0.50, 0.75 }) {
+		thdebugid((datasetName + std::to_string(iteration)), missing_ratio);
 
 		data_modifier_incompleter_random_without_last incomplete(missing_ratio);
 		for (auto [train, test] : tt) {
-			thdebugid(iteration, __LINE__);
+			// thdebugid(datasetName + std::to_string(iteration), __LINE__);
 
 			incomplete.modify(test);
 			for (const auto& imputer : imputers) {
-				thdebugid(iteration, imputer->getName());
+				// thdebugid(datasetName + std::to_string(iteration), imputer->getName());
 
 				imputer->modify(train);
 				std::string output_name = std::format("{}-{}-r-{}.txt", imputer->getName(), missing_ratio, iteration);
 				for (const auto& nfs : nfss) {
-					// thdebugid(entry, nfs->get_brief_nfs_name());
+					// thdebugid(datasetName + std::to_string(iteration), nfs->get_brief_nfs_name());
 
 					std::string output_file = datasetResultDir.string() + "/" + nfs->get_brief_nfs_name() + "-" + output_name;
 					auto result = nfs->experiment_regression(train, test, output_file);
@@ -177,7 +169,7 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runIteration(std::filesys
 			}
 
 			for (const auto granules : num_granules) {
-				thdebugid(iteration, granules);
+				// thdebugid(datasetName + std::to_string(iteration), granules);
 
 				ksi::fcm test_partitioner(granules, NUMBER_OF_CLUSTERING_ITERATIONS);
 				std::unique_ptr<ksi::data_modifier> imputer = std::make_unique< data_modifier_imputer_granular>(test_partitioner, tnorm);
@@ -185,7 +177,7 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runIteration(std::filesys
 
 				std::string output_name = std::format("{}-{}-g-{}-r-{}.txt", imputer->getName(), missing_ratio, granules, iteration);
 				for (const auto& nfs : nfss) {
-					// thdebugid(entry, nfs->get_brief_nfs_name());
+					// thdebugid(datasetName + std::to_string(iteration), nfs->get_brief_nfs_name());
 
 					std::string output_file = datasetResultDir.string() + "/" + nfs->get_brief_nfs_name() + "-" + output_name;
 					auto result = nfs->experiment_regression(train, test, output_file);
@@ -199,7 +191,7 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runIteration(std::filesys
 	return { results, results_gr };
 }
 
-void ksi::exp_027::writeResultsToFile(const std::filesystem::path& datasetResultDir, const std::string& datasetName, RESULTS results, RESULTS_GR results_gr) {
+void ksi::exp_027::writeResultsToFile(const std::filesystem::path& datasetResultDir, const std::string& datasetName, const RESULTS& results, const RESULTS_GR& results_gr) {
 	try {
 		std::filesystem::path results_file_path = datasetResultDir / (datasetName + "_results.txt");
 		std::ofstream resultsStream(results_file_path);

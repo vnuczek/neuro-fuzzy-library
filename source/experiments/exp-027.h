@@ -52,13 +52,13 @@ namespace ksi
 
    public:
     	exp_027(
-           int num_rules = 5,
-           int num_clustering_iters = 100,
-           int num_tuning_iters = 100,
-           int num_dataparts = 10,
-           int k_val = 5,
-           double eta_val = 0.001,
-           bool normalisation = false
+           const int num_rules = 5,
+           const int num_clustering_iters = 100,
+           const int num_tuning_iters = 100,
+           const int num_dataparts = 10,
+           const int k_val = 5,
+           const double eta_val = 0.001,
+           const bool normalisation = false
        );
 
         /** The method executes an experiment. */
@@ -78,10 +78,7 @@ namespace ksi
 		 */
         void processDataset(const std::filesystem::directory_entry& entry);
 
-        std::pair<ksi::RESULTS, ksi::RESULTS_GR> runIteration(
-            std::filesystem::path file_path, std::string datasetName,
-            std::filesystem::path datasetResultDir,
-            std::vector<int> num_granules, int iteration);
+        std::pair<ksi::RESULTS, ksi::RESULTS_GR> runIteration(const        std::filesystem::path& file_path, const std::string& datasetName, const std::filesystem::path& datasetResultDir, const std::vector<int>& num_granules, const int iteration);
 
         /**
          * @brief Writes experiment results to a file.
@@ -97,11 +94,11 @@ namespace ksi
          * @author Konrad Wnuk
 		 * @date 2024-11-23
          */
-        void writeResultsToFile(const std::filesystem::path& datasetResultDir, const std::string& datasetName, RESULTS results, RESULTS_GR results_gr);
+        void writeResultsToFile(const std::filesystem::path& datasetResultDir, const std::string& datasetName, const RESULTS& results, const RESULTS_GR& results_gr);
 
-		ksi::RESULTS mergeResults(std::vector<RESULTS> resultsVector);
+		ksi::RESULTS mergeResults(const std::vector<RESULTS>& resultsVector);
 
-		ksi::RESULTS_GR mergeResultsGr(std::vector<RESULTS_GR> resultsGrVector);
+		ksi::RESULTS_GR mergeResultsGr(const std::vector<RESULTS_GR>& resultsGrVector);
     };
 }
 
