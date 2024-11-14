@@ -36,9 +36,18 @@ source/results/
 *.app
 /neuro-fu.993AC922/x64
 /results/exp-005
+/results/exp-027
 /doxygen/html
 
 # Temporary VS/VSC file
 /.vs
+/source/.vs
 /.vscode
 *.pdb
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+
+# Local "neuro" project files
+/source/neuro
