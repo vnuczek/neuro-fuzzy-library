@@ -128,11 +128,9 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runIteration(const std::f
 		std::vector < std::future<std::pair<RESULTS, RESULTS_GR>>> futures;
 		futures.reserve(missing_ratios.size());
 		for (const auto missing_ratio : missing_ratios) {
-			//thdebugid((datasetName + ' ' + std::to_string(iteration)), missing_ratio);
+			thdebugid((datasetName + ' ' + std::to_string(iteration)), missing_ratio);
 
 			futures.push_back(std::async(&ksi::exp_027::runMissingRatio, this, file_path, datasetName, datasetResultDir, num_granules, iteration, missing_ratio));
-
-			runMissingRatio(file_path, datasetName, datasetResultDir, num_granules, iteration, missing_ratio);
 		}
 
 		std::vector<RESULTS> resultsVector;
@@ -177,8 +175,11 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runMissingRatio(const std
 		imputers.push_back(std::make_unique<ksi::data_modifier_marginaliser>());
 
 		data_modifier_incompleter_random_without_last incomplete(missing_ratio);
+
+      std::size_t cross_val_iter = 0;
 		for (auto [train, test] : tt) {
-			// thdebugid(datasetName + ' ' + std::to_string(iteration), __LINE__);
+			thdebugid(datasetName + ' ' + std::to_string(iteration) + ' ' + std::to_string(missing_ratio), cross_val_iter);
+         ++cross_val_iter;
 
 			incomplete.modify(test);
 			for (const auto& imputer : imputers) {
