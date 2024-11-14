@@ -80,16 +80,13 @@ namespace ksi
 		 */
         void processDataset(const std::filesystem::directory_entry& entry);
 
-        std::pair<ksi::RESULTS, ksi::RESULTS_GR> runIteration(const        std::filesystem::path& file_path, const std::string& datasetName, const std::filesystem::path& datasetResultDir, const std::vector<int>& num_granules, const int iteration);
+        std::pair<ksi::RESULTS, ksi::RESULTS_GR> runIteration(const std::filesystem::path& file_path, const std::string& datasetName, const std::filesystem::path& datasetResultDir, const std::vector<int>& num_granules, const int iteration);
 
         ksi::RESULTS mergeResults(const std::vector<RESULTS>& resultsVector);
 
         ksi::RESULTS_GR mergeResultsGr(const std::vector<RESULTS_GR>& resultsGrVector);
 
-        std::pair<ksi::RESULTS, ksi::RESULTS_GR> runMissingRatio(const std::filesystem::path& file_path, const std::string& datasetName,
-            const std::filesystem::path& datasetResultDir, const std::vector<int>& num_granules,
-            const int iteration,
-            const double missing_ratio);
+        std::pair<ksi::RESULTS, ksi::RESULTS_GR> runMissingRatio(const std::filesystem::path& file_path, const std::string& datasetName, const std::filesystem::path& datasetResultDir, const std::vector<int>& num_granules, const int iteration, const double missing_ratio);
 
         /**
          * @brief Writes experiment results to a file.

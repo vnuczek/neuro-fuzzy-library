@@ -179,7 +179,7 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runMissingRatio(const std
       std::size_t cross_val_iter = 0;
 		for (auto [train, test] : tt) {
 			thdebugid(datasetName + ' ' + std::to_string(iteration) + ' ' + std::to_string(missing_ratio), cross_val_iter);
-         ++cross_val_iter;
+			++cross_val_iter;
 
 			incomplete.modify(test);
 			for (const auto& imputer : imputers) {
