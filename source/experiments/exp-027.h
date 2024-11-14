@@ -47,10 +47,6 @@ namespace ksi
 
         std::vector<std::thread> threads;
 
-        // std::vector<RESULTS> resultsVector;
-   		// std::vector<RESULTS_GR> resultsGrVector;
-
-
    public:
     	exp_027(
            const int num_rules = 10,
@@ -60,7 +56,7 @@ namespace ksi
            const int k_val = 5,
            const double eta_val = 0.001,
            const bool normalisation = false,
-           const int iterations = 1
+           const int iterations = 13
        );
 
         /** The method executes an experiment. */
