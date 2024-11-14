@@ -39,21 +39,19 @@
 
 #include "../auxiliary/utility-math.h"
 
-ksi::exp_027::exp_027(const int num_rules, const int num_clustering_iters, const int num_tuning_iters, const int num_dataparts, const int k_val, const double eta_val, const bool normalisation) :
+ksi::exp_027::exp_027(const int num_rules, const int num_clustering_iters, const int num_tuning_iters, const int num_dataparts, const int k_val, const double eta_val, const bool normalisation, const int iteration) :
 	NUMBER_OF_RULES(num_rules),
 	NUMBER_OF_CLUSTERING_ITERATIONS(num_clustering_iters),
 	NUMBER_OF_TUNING_ITERATIONS(num_tuning_iters),
 	NUMBER_OF_DATAPARTS(num_dataparts),
 	k(k_val),
 	ETA(eta_val),
-	NORMALISATION(normalisation)
+	NORMALISATION(normalisation),
+	ITERATIONS(iteration)
 {}
 
 void ksi::exp_027::processDataset(const std::filesystem::directory_entry& entry) {
 	try {
-		RESULTS results;
-		RESULTS_GR results_gr;
-
 		const std::filesystem::path file_path = entry.path();
 	    const std::string datasetName = file_path.stem().string();
 	    const std::filesystem::path datasetResultDir = resultDir / datasetName;
@@ -62,7 +60,10 @@ void ksi::exp_027::processDataset(const std::filesystem::directory_entry& entry)
 	    const std::vector<int> num_granules = (datasetName == "BoxJ290") ? std::vector<int> { 2, 3, 5, 10 } : std::vector<int>{ 2, 3, 5, 10, 15, 20, 25 };
 
 		std::vector<std::future<std::pair<RESULTS, RESULTS_GR>>> futures;
-		for (int iteration = 0; iteration < 13; iteration++) {
+		futures.reserve(ITERATIONS);
+		for (int iteration = 0; iteration < ITERATIONS; iteration++) {
+			// thdebugid((datasetName), iteration);
+
 			futures.push_back(std::async(&ksi::exp_027::runIteration, this, file_path, datasetName, datasetResultDir, num_granules, iteration));
 		}
 
@@ -74,30 +75,30 @@ void ksi::exp_027::processDataset(const std::filesystem::directory_entry& entry)
 			resultsVector.push_back(iterResult);
 			resultsGrVector.push_back(iterResultGr);
 		}
-		 
-		results = mergeResults(resultsVector);
-		results_gr = mergeResultsGr(resultsGrVector);
 
-	    writeResultsToFile(datasetResultDir, datasetName, results, results_gr);
+	    writeResultsToFile(datasetResultDir, datasetName, mergeResults(resultsVector), mergeResultsGr(resultsGrVector));
 	}
-	CATCH;
+	CATCH;	
 }
 
 ksi::RESULTS ksi::exp_027::mergeResults(const std::vector<RESULTS>& resultsVector) {
-	RESULTS results;
-	for (const auto& result : resultsVector) {
-		for (const auto& [datasetName, datasetResult] : result) {
-			for (const auto& [nfsName, nfsResult] : datasetResult) {
-				for (const auto& [missing_ratio, missingRatioResult] : nfsResult) {
-					for (const auto& [imputerName, imputerResult] : missingRatioResult) {
-						results[datasetName][nfsName][missing_ratio][imputerName].train.insert(results[datasetName][nfsName][missing_ratio][imputerName].train.end(), imputerResult.train.begin(), imputerResult.train.end());
-						results[datasetName][nfsName][missing_ratio][imputerName].test.insert(results[datasetName][nfsName][missing_ratio][imputerName].test.end(), imputerResult.test.begin(), imputerResult.test.end());
+	try {
+		RESULTS results;
+		for (const auto& result : resultsVector) {
+			for (const auto& [datasetName, datasetResult] : result) {
+				for (const auto& [nfsName, nfsResult] : datasetResult) {
+					for (const auto& [missing_ratio, missingRatioResult] : nfsResult) {
+						for (const auto& [imputerName, imputerResult] : missingRatioResult) {
+							results[datasetName][nfsName][missing_ratio][imputerName].train.insert(results[datasetName][nfsName][missing_ratio][imputerName].train.end(), imputerResult.train.begin(), imputerResult.train.end());
+							results[datasetName][nfsName][missing_ratio][imputerName].test.insert(results[datasetName][nfsName][missing_ratio][imputerName].test.end(), imputerResult.test.begin(), imputerResult.test.end());
+						}
 					}
 				}
 			}
 		}
+		return results;
 	}
-	return results;
+	CATCH;
 }
 
 ksi::RESULTS_GR ksi::exp_027::mergeResultsGr(const std::vector<RESULTS_GR>& resultsGrVector) {
@@ -121,32 +122,59 @@ ksi::RESULTS_GR ksi::exp_027::mergeResultsGr(const std::vector<RESULTS_GR>& resu
 
 std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runIteration(const std::filesystem::path& file_path, const std::string& datasetName, const std::filesystem::path& datasetResultDir, const std::vector<int>& num_granules, const int iteration)
 {
-	ksi::RESULTS results;
-	ksi::RESULTS_GR results_gr;
+	try {
+		const auto missing_ratios = { 0.01, 0.02, 0.05, 0.10, 0.20, 0.50, 0.75 };
 
-	reader_complete DataReader;
-	ksi::train_test_model tt(DataReader);
-	auto data = tt.read_file(file_path);
+		std::vector < std::future<std::pair<RESULTS, RESULTS_GR>>> futures;
+		futures.reserve(missing_ratios.size());
+		for (const auto missing_ratio : missing_ratios) {
+			//thdebugid((datasetName + ' ' + std::to_string(iteration)), missing_ratio);
 
-	data_modifier_normaliser normaliser;
-	normaliser.modify(data);
-	tt.split(data, NUMBER_OF_DATAPARTS);
+			futures.push_back(std::async(&ksi::exp_027::runMissingRatio, this, file_path, datasetName, datasetResultDir, num_granules, iteration, missing_ratio));
 
-	std::vector<std::unique_ptr<ksi::neuro_fuzzy_system>> nfss;
-	ksi::t_norm_product tnorm;
-	ksi::imp_reichenbach implication;
-	nfss.push_back(std::make_unique<ksi::tsk>(NUMBER_OF_RULES, NUMBER_OF_CLUSTERING_ITERATIONS, NUMBER_OF_TUNING_ITERATIONS, ETA, NORMALISATION, tnorm));
-	nfss.push_back(std::make_unique<ksi::annbfis>(NUMBER_OF_RULES, NUMBER_OF_CLUSTERING_ITERATIONS, NUMBER_OF_TUNING_ITERATIONS, ETA, NORMALISATION, tnorm, implication));
+			runMissingRatio(file_path, datasetName, datasetResultDir, num_granules, iteration, missing_ratio);
+		}
 
-	std::vector<std::unique_ptr<ksi::data_modifier>> imputers;
-	imputers.push_back(std::make_unique<ksi::data_modifier_imputer_average>());
-	imputers.push_back(std::make_unique<ksi::data_modifier_imputer_knn_median>(k));
-	imputers.push_back(std::make_unique<ksi::data_modifier_imputer_knn_average>(k));
-	imputers.push_back(std::make_unique<ksi::data_modifier_imputer_values_from_knn>(k));
-	imputers.push_back(std::make_unique<ksi::data_modifier_marginaliser>());
+		std::vector<RESULTS> resultsVector;
+		std::vector<RESULTS_GR> resultsGrVector;
+		for (auto& fut : futures) {
+			auto [iterResult, iterResultGr] = fut.get();
 
-	for (const auto missing_ratio : { 0.01, 0.02, 0.05, 0.10, 0.20, 0.50, 0.75 }) {
-		thdebugid((datasetName + ' ' + std::to_string(iteration)), missing_ratio);
+			resultsVector.push_back(iterResult);
+			resultsGrVector.push_back(iterResultGr);
+		}
+
+		return { mergeResults(resultsVector), mergeResultsGr(resultsGrVector) };
+	}
+	CATCH;
+}
+
+std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runMissingRatio(const std::filesystem::path& file_path, const std::string& datasetName, const std::filesystem::path& datasetResultDir, const std::vector<int>& num_granules, const int iteration, const double missing_ratio)
+{
+	try {
+		ksi::RESULTS results;
+		ksi::RESULTS_GR results_gr;
+
+		reader_complete DataReader;
+		ksi::train_test_model tt(DataReader);
+		auto data = tt.read_file(file_path);
+
+		data_modifier_normaliser normaliser;
+		normaliser.modify(data);
+		tt.split(data, NUMBER_OF_DATAPARTS);
+
+		std::vector<std::unique_ptr<ksi::neuro_fuzzy_system>> nfss;
+		ksi::t_norm_product tnorm;
+		ksi::imp_reichenbach implication;
+		nfss.push_back(std::make_unique<ksi::tsk>(NUMBER_OF_RULES, NUMBER_OF_CLUSTERING_ITERATIONS, NUMBER_OF_TUNING_ITERATIONS, ETA, NORMALISATION, tnorm));
+		nfss.push_back(std::make_unique<ksi::annbfis>(NUMBER_OF_RULES, NUMBER_OF_CLUSTERING_ITERATIONS, NUMBER_OF_TUNING_ITERATIONS, ETA, NORMALISATION, tnorm, implication));
+
+		std::vector<std::unique_ptr<ksi::data_modifier>> imputers;
+		imputers.push_back(std::make_unique<ksi::data_modifier_imputer_average>());
+		imputers.push_back(std::make_unique<ksi::data_modifier_imputer_knn_median>(k));
+		imputers.push_back(std::make_unique<ksi::data_modifier_imputer_knn_average>(k));
+		imputers.push_back(std::make_unique<ksi::data_modifier_imputer_values_from_knn>(k));
+		imputers.push_back(std::make_unique<ksi::data_modifier_marginaliser>());
 
 		data_modifier_incompleter_random_without_last incomplete(missing_ratio);
 		for (auto [train, test] : tt) {
@@ -186,9 +214,10 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runIteration(const std::f
 				}
 			}
 		}
-	}
 
-	return { results, results_gr };
+		return { results, results_gr };
+	}
+	CATCH;
 }
 
 void ksi::exp_027::writeResultsToFile(const std::filesystem::path& datasetResultDir, const std::string& datasetName, const RESULTS& results, const RESULTS_GR& results_gr) {

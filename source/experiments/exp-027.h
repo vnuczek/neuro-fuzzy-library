@@ -43,6 +43,7 @@ namespace ksi
         const int k;
         const double ETA;
         const bool NORMALISATION;
+        const int ITERATIONS;
 
         std::vector<std::thread> threads;
 
@@ -58,7 +59,8 @@ namespace ksi
            const int num_dataparts = 10,
            const int k_val = 5,
            const double eta_val = 0.001,
-           const bool normalisation = false
+           const bool normalisation = false,
+           const int iterations = 1
        );
 
         /** The method executes an experiment. */
@@ -80,6 +82,15 @@ namespace ksi
 
         std::pair<ksi::RESULTS, ksi::RESULTS_GR> runIteration(const        std::filesystem::path& file_path, const std::string& datasetName, const std::filesystem::path& datasetResultDir, const std::vector<int>& num_granules, const int iteration);
 
+        ksi::RESULTS mergeResults(const std::vector<RESULTS>& resultsVector);
+
+        ksi::RESULTS_GR mergeResultsGr(const std::vector<RESULTS_GR>& resultsGrVector);
+
+        std::pair<ksi::RESULTS, ksi::RESULTS_GR> runMissingRatio(const std::filesystem::path& file_path, const std::string& datasetName,
+            const std::filesystem::path& datasetResultDir, const std::vector<int>& num_granules,
+            const int iteration,
+            const double missing_ratio);
+
         /**
          * @brief Writes experiment results to a file.
          *
@@ -95,10 +106,6 @@ namespace ksi
 		 * @date 2024-11-23
          */
         void writeResultsToFile(const std::filesystem::path& datasetResultDir, const std::string& datasetName, const RESULTS& results, const RESULTS_GR& results_gr);
-
-		ksi::RESULTS mergeResults(const std::vector<RESULTS>& resultsVector);
-
-		ksi::RESULTS_GR mergeResultsGr(const std::vector<RESULTS_GR>& resultsGrVector);
     };
 }
 
