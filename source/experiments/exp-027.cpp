@@ -246,7 +246,7 @@ void ksi::exp_027::writeResultsToFile(const std::filesystem::path& datasetResult
 							auto [train_mean, train_dev] = ksi::utility_math::getMeanAndStandardDeviation(imputerResult.train.begin(), imputerResult.train.end());
 							resultsStream << "\t\t\t\t\t" << "Train Average +- std_dev: " << train_mean << ' ' << train_dev << std::endl;
 
-							resultsStream << "\t\t\t\t\t" << "Train Values: " << std::endl;
+							resultsStream << "\t\t\t\t\t" << "Test Values: " << std::endl;
 							for (const auto& test_val : imputerResult.test)
 							{
 								resultsStream << "\t\t\t\t\t" << test_val << std::endl;
