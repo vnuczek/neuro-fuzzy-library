@@ -181,17 +181,18 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runMissingRatio(const std
 			thdebugid(datasetName + ' ' + std::to_string(iteration) + ' ' + std::to_string(missing_ratio), cross_val_iter);
 			++cross_val_iter;
 
-			incomplete.modify(test);
+			incomplete.modify(train);
 			for (const auto& imputer : imputers) {
 				// thdebugid(datasetName + ' ' + std::to_string(iteration), imputer->getName());
 
-				imputer->modify(train);
+				auto trainSet = train;
+				imputer->modify(trainSet);
 				std::string output_name = std::format("{}-{}-r-{}.txt", imputer->getName(), missing_ratio, iteration);
 				for (const auto& nfs : nfss) {
 					// thdebugid(datasetName + ' ' + std::to_string(iteration), nfs->get_brief_nfs_name());
 
 					std::string output_file = datasetResultDir.string() + "/" + nfs->get_brief_nfs_name() + "-" + output_name;
-					auto result = nfs->experiment_regression(train, test, output_file);
+					auto result = nfs->experiment_regression(trainSet, test, output_file);
 					results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()].train.push_back(result.rmse_train);
 					results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()].test.push_back(result.rmse_test);
 				}
@@ -202,14 +203,16 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runMissingRatio(const std
 
 				ksi::fcm test_partitioner(granules, NUMBER_OF_CLUSTERING_ITERATIONS);
 				std::unique_ptr<ksi::data_modifier> imputer = std::make_unique< data_modifier_imputer_granular>(test_partitioner, tnorm);
-				imputer->modify(train);
+
+				auto trainSet = train;
+				imputer->modify(trainSet);
 
 				std::string output_name = std::format("{}-{}-g-{}-r-{}.txt", imputer->getName(), missing_ratio, granules, iteration);
 				for (const auto& nfs : nfss) {
 					// thdebugid(datasetName + ' ' + std::to_string(iteration), nfs->get_brief_nfs_name());
 
 					std::string output_file = datasetResultDir.string() + "/" + nfs->get_brief_nfs_name() + "-" + output_name;
-					auto result = nfs->experiment_regression(train, test, output_file);
+					auto result = nfs->experiment_regression(trainSet, test, output_file);
 					results_gr[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()][granules].train.push_back(result.rmse_train);
 					results_gr[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()][granules].test.push_back(result.rmse_test);
 				}
@@ -288,7 +291,7 @@ void ksi::exp_027::writeResultsToFile(const std::filesystem::path& datasetResult
 								auto [train_mean, train_dev] = ksi::utility_math::getMeanAndStandardDeviation(granulesResults.train.begin(), granulesResults.train.end());
 								resultsGrStream << "\t\t\t\t\t\t" << "Train Average +- std_dev: " << train_mean << ' ' << train_dev << std::endl;
 
-								resultsGrStream << "\t\t\t\t\t\t" << "Train Values: " << std::endl;
+								resultsGrStream << "\t\t\t\t\t\t" << "Test Values: " << std::endl;
 								for (const auto& test_val : granulesResults.test)
 								{
 									resultsGrStream << "\t\t\t\t\t\t" << test_val << std::endl;
