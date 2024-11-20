@@ -176,7 +176,7 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runMissingRatio(const std
 
 		data_modifier_incompleter_random_without_last incomplete(missing_ratio);
 
-      std::size_t cross_val_iter = 0;
+		std::size_t cross_val_iter = 0;
 		for (auto [train, test] : tt) {
 			thdebugid(datasetName + ' ' + std::to_string(iteration) + ' ' + std::to_string(missing_ratio), cross_val_iter);
 			++cross_val_iter;
@@ -246,7 +246,7 @@ void ksi::exp_027::writeResultsToFile(const std::filesystem::path& datasetResult
 							auto [train_mean, train_dev] = ksi::utility_math::getMeanAndStandardDeviation(imputerResult.train.begin(), imputerResult.train.end());
 							resultsStream << "\t\t\t\t\t" << "Train Average +- std_dev: " << train_mean << ' ' << train_dev << std::endl;
 
-							resultsStream << "\t\t\t\t\t" << "Train Values: " << std::endl;
+							resultsStream << "\t\t\t\t\t" << "Test Values: " << std::endl;
 							for (const auto& test_val : imputerResult.test)
 							{
 								resultsStream << "\t\t\t\t\t" << test_val << std::endl;
