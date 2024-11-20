@@ -62,7 +62,7 @@ int main (int argc, char ** params)
                     break;
                 }
                 case 27: {
-                    ksi::exp_027 experiment;
+                    ksi::exp_027 experiment(10, 1000, 1000, 10, 5, 0.001, false, 1);
                     experiment.execute();
                     break;
                 }
