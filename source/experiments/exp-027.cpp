@@ -183,10 +183,13 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runMissingRatio(const std
 
 			incomplete.modify(train);
 			for (const auto& imputer : imputers) {
-				// thdebugid(datasetName + ' ' + std::to_string(iteration), imputer->getName());
+				 thdebugid(datasetName + ' ' + std::to_string(iteration), imputer->getName());
 
-				auto trainSet = train;
+				ksi::dataset trainSet = train;
+
+				thdebug(__LINE__);
 				imputer->modify(trainSet);
+				thdebug(__LINE__);
 				std::string output_name = std::format("{}-{}-r-{}.txt", imputer->getName(), missing_ratio, iteration);
 				for (const auto& nfs : nfss) {
 					// thdebugid(datasetName + ' ' + std::to_string(iteration), nfs->get_brief_nfs_name());
@@ -204,7 +207,7 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runMissingRatio(const std
 				ksi::fcm test_partitioner(granules, NUMBER_OF_CLUSTERING_ITERATIONS);
 				std::unique_ptr<ksi::data_modifier> imputer = std::make_unique< data_modifier_imputer_granular>(test_partitioner, tnorm);
 
-				auto trainSet = train;
+				ksi::dataset trainSet = train;
 				imputer->modify(trainSet);
 
 				std::string output_name = std::format("{}-{}-g-{}-r-{}.txt", imputer->getName(), missing_ratio, granules, iteration);
