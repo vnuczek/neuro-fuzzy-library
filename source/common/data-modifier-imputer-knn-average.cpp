@@ -75,7 +75,7 @@ void ksi::data_modifier_imputer_knn_average::modify(ksi::dataset & ds)
       
       std::size_t nRows = ds.getNumberOfData();
       std::size_t nCols = ds.getNumberOfAttributes();
-      
+
       std::vector<double> sums (nCols, 0.0);
       std::vector<std::size_t> count (nCols, 0.0);
       

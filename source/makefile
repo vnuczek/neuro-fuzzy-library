@@ -67,6 +67,9 @@ __ : $(release_folder) $(release_folder)/main
 27 :  $(release_folder) $(release_folder)/main
 	./$(release_folder)/main  27
 
+d27 :  $(debug_folder) $(debug_folder)/main
+	valgrind --leak-check=yes ./$(debug_folder)/main 27
+
 lab : $(release_folder) $(release_folder)/main
 	./$(release_folder)/main  0
 

@@ -1016,7 +1016,7 @@ ksi::result ksi::neuro_fuzzy_system::experiment_regression_core(
       std::size_t nXtrain = _TrainDataset.getNumberOfData();
       
       ///////////////////////////
-	  std::vector<double> wYtestExpected (nXtest),  wYtestElaborated (nXtest);
+	   std::vector<double> wYtestExpected (nXtest),  wYtestElaborated (nXtest);
       std::vector<double> wYtrainExpected(nXtrain), wYtrainElaborated(nXtrain);
      
 	   #pragma omg parallel for

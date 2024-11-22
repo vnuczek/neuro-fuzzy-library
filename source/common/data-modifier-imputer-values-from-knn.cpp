@@ -95,7 +95,7 @@ void ksi::data_modifier_imputer_values_from_knn::modify(ksi::dataset & ds)
                   indices_of_missing_attr.push_back(c);
             }
          }
-         
+        
          if (indices_of_missing_attr.size() == 0) // complete data item
          {
             datum d;
@@ -140,7 +140,7 @@ void ksi::data_modifier_imputer_values_from_knn::modify(ksi::dataset & ds)
             }
          }
       }
-      
+     
       // no i teraz trzeba nadpisac zbiory:
       ds = imputed;
       

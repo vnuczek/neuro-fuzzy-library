@@ -58,10 +58,12 @@ void ksi::exp_027::processDataset(const std::filesystem::directory_entry& entry)
 	    std::filesystem::create_directories(datasetResultDir);
 
 	    const std::vector<int> num_granules = (datasetName == "BoxJ290") ? std::vector<int> { 2, 3, 5, 10 } : std::vector<int>{ 2, 3, 5, 10, 15, 20, 25 };
+	    // const std::vector<int> num_granules = { 5 }; ///<---debug
 
 		std::vector<std::future<std::pair<RESULTS, RESULTS_GR>>> futures;
 		futures.reserve(ITERATIONS);
-		for (int iteration = 0; iteration < ITERATIONS; iteration++) {
+		for (int iteration = 0; iteration < ITERATIONS; iteration++) 
+      {
 			// thdebugid((datasetName), iteration);
 
 			futures.push_back(std::async(&ksi::exp_027::runIteration, this, file_path, datasetName, datasetResultDir, num_granules, iteration));
@@ -124,6 +126,7 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runIteration(const std::f
 {
 	try {
 		const auto missing_ratios = { 0.01, 0.02, 0.05, 0.10, 0.20, 0.50, 0.75 };
+		// const auto missing_ratios = { 0.50 }; ///<--debug
 
 		std::vector < std::future<std::pair<RESULTS, RESULTS_GR>>> futures;
 		futures.reserve(missing_ratios.size());
@@ -171,35 +174,37 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runMissingRatio(const std
 		imputers.push_back(std::make_unique<ksi::data_modifier_imputer_average>());
 		imputers.push_back(std::make_unique<ksi::data_modifier_imputer_knn_median>(k));
 		imputers.push_back(std::make_unique<ksi::data_modifier_imputer_knn_average>(k));
-		imputers.push_back(std::make_unique<ksi::data_modifier_imputer_values_from_knn>(k));
+		// imputers.push_back(std::make_unique<ksi::data_modifier_imputer_values_from_knn>(k)); // <--- tego nie bedziemy robic
 		imputers.push_back(std::make_unique<ksi::data_modifier_marginaliser>());
 
 		data_modifier_incompleter_random_without_last incomplete(missing_ratio);
 
 		std::size_t cross_val_iter = 0;
-		for (auto [train, test] : tt) {
+		for (auto [train, test] : tt) 
+      {
 			thdebugid(datasetName + ' ' + std::to_string(iteration) + ' ' + std::to_string(missing_ratio), cross_val_iter);
 			++cross_val_iter;
 
 			incomplete.modify(train);
-			for (const auto& imputer : imputers) {
-				 thdebugid(datasetName + ' ' + std::to_string(iteration), imputer->getName());
+			for (const auto& imputer : imputers) 
+         {
+            thdebugid(datasetName + ' ' + std::to_string(iteration), imputer->getName());
 
-				ksi::dataset trainSet = train;
+            ksi::dataset trainSet = train;
 
-				thdebug(__LINE__);
-				imputer->modify(trainSet);
-				thdebug(__LINE__);
-				std::string output_name = std::format("{}-{}-r-{}.txt", imputer->getName(), missing_ratio, iteration);
-				for (const auto& nfs : nfss) {
-					// thdebugid(datasetName + ' ' + std::to_string(iteration), nfs->get_brief_nfs_name());
+            imputer->modify(trainSet);
 
-					std::string output_file = datasetResultDir.string() + "/" + nfs->get_brief_nfs_name() + "-" + output_name;
-					auto result = nfs->experiment_regression(trainSet, test, output_file);
-					results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()].train.push_back(result.rmse_train);
-					results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()].test.push_back(result.rmse_test);
-				}
-			}
+            std::string output_name = std::format("{}-{}-r-{}.txt", imputer->getName(), missing_ratio, iteration);
+            for (const auto& nfs : nfss) 
+            {
+               // thdebugid(datasetName + ' ' + std::to_string(iteration), nfs->get_brief_nfs_name());
+
+               std::string output_file = datasetResultDir.string() + "/" + nfs->get_brief_nfs_name() + "-" + output_name;
+               auto result = nfs->experiment_regression(trainSet, test, output_file);
+               results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()].train.push_back(result.rmse_train);
+               results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()].test.push_back(result.rmse_test);
+            }
+         }
 
 			for (const auto granules : num_granules) {
 				// thdebugid(datasetName + ' ' + std::to_string(iteration), granules);
@@ -210,9 +215,7 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runMissingRatio(const std
 				std::unique_ptr<ksi::data_modifier> imputer = std::make_unique< data_modifier_imputer_granular>(test_partitioner, tnorm);
 
 				ksi::dataset trainSet = train;
-				thdebug(__LINE__);
 				imputer->modify(trainSet);
-				thdebug(__LINE__);
 
 				std::string output_name = std::format("{}-{}-g-{}-r-{}.txt", imputer->getName(), missing_ratio, granules, iteration);
 				for (const auto& nfs : nfss) {
@@ -335,25 +338,27 @@ void ksi::exp_027::writeResultsToFile(const std::filesystem::path& datasetResult
 
 void ksi::exp_027::execute()
 {
-    try
-    {
-        for (const auto& entry : std::filesystem::directory_iterator(dataDir)) {
-            thdebugid(entry, entry);
+   try
+   {
+      for (const auto& entry : std::filesystem::directory_iterator(dataDir)) {
+         thdebugid(entry, entry);
 
-            if (entry.is_regular_file()) {
-                threads.emplace_back(&ksi::exp_027::processDataset, this, entry);
-            }
-        }
+         if (entry.is_regular_file()) 
+         {
+            threads.emplace_back(&ksi::exp_027::processDataset, this, entry);
+         }
+      }
 
-    	thdebug(threads.size());
-	    for (auto& thread : threads) {
-			if (thread.joinable()) {
-				thread.join();
-			}
-	    }
-	    thdebug("dze end");
-       }
-       CATCH;
+      for (auto& thread : threads) 
+      {
+         if (thread.joinable()) 
+         {
+            thread.join();
+         }
+      }
+      thdebug("dze end");
+   }
+   CATCH;
 
-       return;
-    }
+   return;
+}

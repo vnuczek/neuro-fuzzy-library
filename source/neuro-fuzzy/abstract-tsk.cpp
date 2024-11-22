@@ -8,32 +8,30 @@
 #include <numeric>
 #include <deque>
 
-#include "../neuro-fuzzy/neuro-fuzzy-system.h"
-#include "../neuro-fuzzy/abstract-tsk.h"
-#include "../neuro-fuzzy/rule.h"
-#include "../neuro-fuzzy/premise.h"
-#include "../neuro-fuzzy/consequence-TSK.h"
-#include "../tnorms/t-norm-product.h"
-#include "../partitions/cluster.h"
-#include "../partitions/fcm.h"
-#include "../tnorms/t-norm-product.h"
-#include "../implications/imp-reichenbach.h"
-#include "../descriptors/descriptor-gaussian.h"
-#include "../auxiliary/least-error-squares-regression.h"
-#include "../auxiliary/tempus.h"
 #include "../auxiliary/clock.h"
 #include "../auxiliary/confusion-matrix.h"
-#include "../auxiliary/roc.h"
-#include "../service/debug.h"
-#include "../auxiliary/error-RMSE.h"
 #include "../auxiliary/error-MAE.h"
-#include "../common/number.h"
-#include "../readers/reader-complete.h"
+#include "../auxiliary/error-RMSE.h"
+#include "../auxiliary/least-error-squares-regression.h"
+#include "../auxiliary/roc.h"
+#include "../auxiliary/tempus.h"
 #include "../common/data-modifier-normaliser.h"
-#include "../partitions/partition.h"
-#include "../service/debug.h"
+#include "../common/number.h"
+#include "../descriptors/descriptor-gaussian.h"
 #include "../gan/discriminative_model.h"
 #include "../gan/generative_model.h"
+#include "../implications/imp-reichenbach.h"
+#include "../neuro-fuzzy/abstract-tsk.h"
+#include "../neuro-fuzzy/consequence-TSK.h"
+#include "../neuro-fuzzy/neuro-fuzzy-system.h"
+#include "../neuro-fuzzy/premise.h"
+#include "../neuro-fuzzy/rule.h"
+#include "../partitions/cluster.h"
+#include "../partitions/fcm.h"
+#include "../partitions/partition.h"
+#include "../readers/reader-complete.h"
+#include "../service/debug.h"
+#include "../tnorms/t-norm-product.h"
 
 ksi::abstract_tsk::abstract_tsk(const ksi::partitioner& Partitioner) : ksi::abstract_tsk::abstract_tsk()
 {
@@ -240,7 +238,7 @@ ksi::abstract_tsk::abstract_tsk()
 {
     //_pPartitioner = nullptr;
     
-    debug(_pPartitioner);
+    // debug(_pPartitioner);
 }
 
 ksi::abstract_tsk::abstract_tsk(
@@ -267,8 +265,8 @@ ksi::abstract_tsk::abstract_tsk(
 //     _pPartitioner = Partitioner.clone();
     _minimal_typicality = dbMinimalTypicality;
     
-    debug(trainDataFile);
-    debug(_train_data_file);
+    // debug(trainDataFile);
+    // debug(_train_data_file);
 }
 
  

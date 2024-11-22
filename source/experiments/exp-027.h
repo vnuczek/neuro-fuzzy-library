@@ -13,7 +13,8 @@
 
 namespace ksi
 {
-    struct errors {
+    struct errors 
+    {
         std::vector<double> train;
         std::vector<double> test;
     };
@@ -50,13 +51,14 @@ namespace ksi
    public:
     	exp_027(
            const int num_rules = 10,
-           const int num_clustering_iters = 1000,
-           const int num_tuning_iters = 1000,
+           const int num_clustering_iters = 100,
+           const int num_tuning_iters = 100,
            const int num_dataparts = 10,
            const int k_val = 5,
            const double eta_val = 0.001,
            const bool normalisation = false,
-           const int iterations = 13
+           // const int iterations = 13
+           const int iterations = 1 ///<-- debug
        );
 
         /** The method executes an experiment. */
