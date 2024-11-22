@@ -273,7 +273,7 @@ ksi::data_modifier_imputer_granular& ksi::data_modifier_imputer_granular::operat
 		data_modifier_imputer::operator=(std::move(other));
 		_pPartitioner = std::move(other._pPartitioner);
 		_pTnorm = std::move(other._pTnorm);
-        complete_dataset = std::move(other.complete_dataset);
+      complete_dataset = std::move(other.complete_dataset);
 		incomplete_indices = std::move(other.incomplete_indices);
 		granules_fuzzifications = std::move(other.granules_fuzzifications);
 		cluster_numbers = other.cluster_numbers;
@@ -320,3 +320,4 @@ std::size_t ksi::data_modifier_imputer_granular::get_number_of_incomplete_items_
 {
    return incomplete_indices.size();
 }
+

@@ -204,11 +204,15 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runMissingRatio(const std
 			for (const auto granules : num_granules) {
 				// thdebugid(datasetName + ' ' + std::to_string(iteration), granules);
 
+            try 
+            {
 				ksi::fcm test_partitioner(granules, NUMBER_OF_CLUSTERING_ITERATIONS);
 				std::unique_ptr<ksi::data_modifier> imputer = std::make_unique< data_modifier_imputer_granular>(test_partitioner, tnorm);
 
 				ksi::dataset trainSet = train;
+				thdebug(__LINE__);
 				imputer->modify(trainSet);
+				thdebug(__LINE__);
 
 				std::string output_name = std::format("{}-{}-g-{}-r-{}.txt", imputer->getName(), missing_ratio, granules, iteration);
 				for (const auto& nfs : nfss) {
@@ -219,6 +223,20 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runMissingRatio(const std
 					results_gr[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()][granules].train.push_back(result.rmse_train);
 					results_gr[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()][granules].test.push_back(result.rmse_test);
 				}
+            }
+            catch (const ksi::exception& e)
+            {
+                thdebug(e.what());
+            }
+            catch (const std::exception& e)
+            {
+                thdebug(e.what());
+            }
+            catch (...)
+            {
+                thdebug("Unknown exception");
+            }
+
 			}
 		}
 
