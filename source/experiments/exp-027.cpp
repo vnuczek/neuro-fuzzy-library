@@ -196,10 +196,21 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runMissingRatio(const std
             {
                // thdebugid(datasetName + ' ' + std::to_string(iteration), nfs->get_brief_nfs_name());
 
-               std::string output_file = datasetResultDir.string() + "/" + nfs->get_brief_nfs_name() + "-" + output_name;
-               auto result = nfs->experiment_regression(trainSet, test, output_file);
-               results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()].train.push_back(result.rmse_train);
-               results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()].test.push_back(result.rmse_test);
+               try 
+               {
+                  std::string output_file = datasetResultDir.string() + "/" + nfs->get_brief_nfs_name() + "-" + output_name;
+                  auto result = nfs->experiment_regression(trainSet, test, output_file);
+                  results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()].train.push_back(result.rmse_train);
+                  results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()].test.push_back(result.rmse_test);
+               }
+               catch (const ksi::exception & ex)
+               {
+                  std::stringstream sos;
+                  sos << ex.what() << std::endl;
+                  sos << datasetName << ", " << nfs->get_brief_nfs_name() << ", miss: " << missing_ratio << ", " << imputer->getName() << std::endl;
+                  std::string problem = sos.str();
+                  thdebug(problem);
+               }
             }
          }
 
@@ -215,13 +226,25 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runMissingRatio(const std
                imputer->modify(trainSet);
 
                std::string output_name = std::format("{}-{}-g-{}-r-{}.txt", imputer->getName(), missing_ratio, granules, iteration);
-               for (const auto& nfs : nfss) {
+               for (const auto& nfs : nfss) 
+               {
                   // thdebugid(datasetName + ' ' + std::to_string(iteration), nfs->get_brief_nfs_name());
 
-                  std::string output_file = datasetResultDir.string() + "/" + nfs->get_brief_nfs_name() + "-" + output_name;
-                  auto result = nfs->experiment_regression(trainSet, test, output_file);
-                  results_gr[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()][granules].train.push_back(result.rmse_train);
-                  results_gr[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()][granules].test.push_back(result.rmse_test);
+                  try 
+                  {
+                     std::string output_file = datasetResultDir.string() + "/" + nfs->get_brief_nfs_name() + "-" + output_name;
+                     auto result = nfs->experiment_regression(trainSet, test, output_file);
+                     results_gr[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()][granules].train.push_back(result.rmse_train);
+                     results_gr[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()][granules].test.push_back(result.rmse_test);
+                  }
+                  catch (const ksi::exception & ex)
+                  {
+                     std::stringstream sos;
+                     sos << ex.what() << std::endl;
+                     sos << datasetName << ", " << nfs->get_brief_nfs_name() << ", miss: " << missing_ratio << ", gr: " << granule << ", " << imputer->getName() << std::endl;
+                     std::string problem = sos.str();
+                     thdebug(problem);
+                  }
                }
             }
             catch (const ksi::exception& e)
