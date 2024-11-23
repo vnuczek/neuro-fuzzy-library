@@ -16,20 +16,21 @@
 #include "../readers/train_validation_test_model.h"
 #include "../common/data-modifier-marginaliser.h"
 #include "../common/data-modifier-normaliser.h"
-#include "../common/data-modifier-imputer.h"
+// #include "../common/data-modifier-imputer.h"
 #include "../common/data-modifier-imputer-average.h"
 #include "../common/data-modifier-imputer-median.h"
 #include "../common/data-modifier-imputer-knn-average.h"
 #include "../common/data-modifier-imputer-knn-median.h"
-#include "../common/data-modifier-imputer-values-from-knn.h"
+// #include "../common/data-modifier-imputer-values-from-knn.h"
 #include "../common/data_modifier_incompleter_random_without_last.h"
 #include "../common/data-modifier-imputer-granular.h"
 #include "../partitions/fcm.h"
+#include "../auxiliary/tempus.h"
 
 #include "../tnorms/t-norm-product.h"
-#include "../tnorms/t-norm-min.h"
-#include "../tnorms/t-norm-lukasiewicz.h"
-#include "../tnorms/t-norm-einstein.h"
+// #include "../tnorms/t-norm-min.h"
+// #include "../tnorms/t-norm-lukasiewicz.h"
+// #include "../tnorms/t-norm-einstein.h"
 
 #include "../implications/imp-reichenbach.h"
 
@@ -130,9 +131,9 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runIteration(const std::f
 
 		std::vector < std::future<std::pair<RESULTS, RESULTS_GR>>> futures;
 		futures.reserve(missing_ratios.size());
-		for (const auto missing_ratio : missing_ratios) {
-			thdebugid((datasetName + ' ' + std::to_string(iteration)), missing_ratio);
-
+		for (const auto missing_ratio : missing_ratios) 
+      {
+			// thdebugid((datasetName + ' ' + std::to_string(iteration)), missing_ratio);
 			futures.push_back(std::async(&ksi::exp_027::runMissingRatio, this, file_path, datasetName, datasetResultDir, num_granules, iteration, missing_ratio));
 		}
 
@@ -185,7 +186,7 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runMissingRatio(const std
 			incomplete.modify(train);
 			for (const auto& imputer : imputers) 
          {
-            thdebugid(datasetName + ", iter: " + std::to_string(iteration) + ", miss: " + std::to_string(missing_ratio) + ", cross: " + std::to_string(cross_val_iter), imputer->getName());
+            // thdebugid(datasetName + ", iter: " + std::to_string(iteration) + ", miss: " + std::to_string(missing_ratio) + ", cross: " + std::to_string(cross_val_iter), imputer->getName());
 
             ksi::dataset trainSet = train;
 
@@ -220,7 +221,7 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runMissingRatio(const std
             {
                ksi::fcm test_partitioner(granules, NUMBER_OF_CLUSTERING_ITERATIONS);
                std::unique_ptr<ksi::data_modifier> imputer = std::make_unique< data_modifier_imputer_granular>(test_partitioner, tnorm);
-               thdebugid(datasetName + ", iter: " + std::to_string(iteration) + ", miss: " + std::to_string(missing_ratio) + ", cross: " + std::to_string(cross_val_iter) + ", gr: " + std::to_string(granules), imputer->getName());
+               // thdebugid(datasetName + ", iter: " + std::to_string(iteration) + ", miss: " + std::to_string(missing_ratio) + ", cross: " + std::to_string(cross_val_iter) + ", gr: " + std::to_string(granules), imputer->getName());
 
                ksi::dataset trainSet = train;
                imputer->modify(trainSet);
@@ -361,8 +362,9 @@ void ksi::exp_027::execute()
 {
    try
    {
+      thdebug(ksi::tempus::getDateTimeNowSafe());
       for (const auto& entry : std::filesystem::directory_iterator(dataDir)) {
-         thdebugid(entry, entry);
+         // thdebugid(entry, entry);
 
          if (entry.is_regular_file()) 
          {
@@ -377,6 +379,7 @@ void ksi::exp_027::execute()
             thread.join();
          }
       }
+      thdebug(ksi::tempus::getDateTimeNowSafe());
       thdebug("dze end");
    }
    CATCH;
