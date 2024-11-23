@@ -241,7 +241,7 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runMissingRatio(const std
                   {
                      std::stringstream sos;
                      sos << ex.what() << std::endl;
-                     sos << datasetName << ", " << nfs->get_brief_nfs_name() << ", miss: " << missing_ratio << ", gr: " << granule << ", " << imputer->getName() << std::endl;
+                     sos << datasetName << ", " << nfs->get_brief_nfs_name() << ", miss: " << missing_ratio << ", gr: " << granules << ", " << imputer->getName() << std::endl;
                      std::string problem = sos.str();
                      thdebug(problem);
                   }
