@@ -112,6 +112,7 @@ void ksi::abstract_tsk::createFuzzyRulebase (int nClusteringIterations,
       {
          premise przeslanka;      
          auto klaster = podzial.getCluster(c);
+         if (klaster->getNumberOfDescriptors() == 0) { std::stringstream ss; ss << "Cluster " << c << " has no descriptors!" << std::endl << "partition: " << std::endl << podzial << std::endl; throw ss.str(); } ///<---debug
          for (std::size_t a = 0; a < nAttr_1; a++)
          {
             przeslanka.addDescriptor(klaster->getDescriptor(a));
