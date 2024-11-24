@@ -125,35 +125,97 @@ ksi::RESULTS_GR ksi::exp_027::mergeResultsGr(const std::vector<RESULTS_GR>& resu
 
 std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runIteration(const std::filesystem::path& file_path, const std::string& datasetName, const std::filesystem::path& datasetResultDir, const std::vector<int>& num_granules, const int iteration)
 {
-	try {
-		const auto missing_ratios = { 0.01, 0.02, 0.05, 0.10, 0.20, 0.50, 0.75 };
-		// const auto missing_ratios = { 0.50 }; ///<--debug
+	try 
+   {
+		const auto missing_ratios = { 0.01, 0.02, 0.03, 0.04, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30 };
 
-		std::vector < std::future<std::pair<RESULTS, RESULTS_GR>>> futures;
-		futures.reserve(missing_ratios.size());
-		for (const auto missing_ratio : missing_ratios) 
+      std::future<RESULTS> future_complete;
+      std::vector < std::future<std::pair<RESULTS, RESULTS_GR>>> futures_incomplete;
+      futures_incomplete.reserve(missing_ratios.size());
+      for (const auto missing_ratio : missing_ratios) 
       {
-			// thdebugid((datasetName + ' ' + std::to_string(iteration)), missing_ratio);
-			futures.push_back(std::async(&ksi::exp_027::runMissingRatio, this, file_path, datasetName, datasetResultDir, num_granules, iteration, missing_ratio));
+         // thdebugid((datasetName + ' ' + std::to_string(iteration)), missing_ratio);
+         futures_incomplete.push_back(std::async(&ksi::exp_027::runMissingRatio, this, file_path, datasetName, datasetResultDir, num_granules, iteration, missing_ratio));
+      }
+      future_complete = std::async(&ksi::exp_027::runComplete, this, file_path, datasetName, datasetResultDir, iteration);
+
+      std::vector<RESULTS> resultsVector;
+      std::vector<RESULTS_GR> resultsGrVector;
+      for (auto& fut : futures_incomplete) 
+      {
+         auto [iterResult, iterResultGr] = fut.get();
+
+         resultsVector.push_back(iterResult);
+         resultsGrVector.push_back(iterResultGr);
+      }
+      auto resultComplete = future_complete.get();
+      resultsVector.push_back(resultComplete);
+
+      return { mergeResults(resultsVector), mergeResultsGr(resultsGrVector) };
+   }
+	CATCH;
+}
+
+ksi::RESULTS ksi::exp_027::runComplete(const std::filesystem::path& file_path, const std::string& datasetName, const std::filesystem::path& datasetResultDir, const int iteration)
+{
+	try 
+   {
+		ksi::RESULTS results;
+
+		reader_complete DataReader;
+		ksi::train_test_model tt(DataReader);
+		auto data = tt.read_file(file_path);
+
+		data_modifier_normaliser normaliser;
+		normaliser.modify(data);
+		tt.split(data, NUMBER_OF_DATAPARTS);
+
+		std::vector<std::unique_ptr<ksi::neuro_fuzzy_system>> nfss;
+		ksi::t_norm_product tnorm;
+		ksi::imp_reichenbach implication;
+		nfss.push_back(std::make_unique<ksi::tsk>(NUMBER_OF_RULES, NUMBER_OF_CLUSTERING_ITERATIONS, NUMBER_OF_TUNING_ITERATIONS, ETA, NORMALISATION, tnorm));
+		nfss.push_back(std::make_unique<ksi::annbfis>(NUMBER_OF_RULES, NUMBER_OF_CLUSTERING_ITERATIONS, NUMBER_OF_TUNING_ITERATIONS, ETA, NORMALISATION, tnorm, implication));
+
+		std::size_t cross_val_iter = 0;
+		for (auto [train, test] : tt) 
+      {
+         {
+            ksi::dataset trainSet = train;
+            auto missing_ratio = 0.0;
+            auto imputer_name = "complete";
+            std::string output_name = std::format("complete-r-{}.txt", iteration);
+            for (const auto& nfs : nfss) 
+            {
+               try 
+               {
+                  std::string output_file = datasetResultDir.string() + "/" + nfs->get_brief_nfs_name() + "-" + output_name;
+                  auto result = nfs->experiment_regression(trainSet, test, output_file);
+                  results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer_name].train.push_back(result.rmse_train);
+                  results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer_name].test.push_back(result.rmse_test);
+               }
+               catch (const ksi::exception & ex)
+               {
+                  std::stringstream sos;
+                  sos << ex.what() << std::endl;
+                  sos << datasetName << ", " << nfs->get_brief_nfs_name() << ", miss: 0 (complete dataset)" << std::endl;
+                  std::string problem = sos.str();
+                  thdebug(problem);
+               }
+            }
+         }
+                 
+			++cross_val_iter;
 		}
 
-		std::vector<RESULTS> resultsVector;
-		std::vector<RESULTS_GR> resultsGrVector;
-		for (auto& fut : futures) {
-			auto [iterResult, iterResultGr] = fut.get();
-
-			resultsVector.push_back(iterResult);
-			resultsGrVector.push_back(iterResultGr);
-		}
-
-		return { mergeResults(resultsVector), mergeResultsGr(resultsGrVector) };
+		return results;
 	}
 	CATCH;
 }
 
 std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runMissingRatio(const std::filesystem::path& file_path, const std::string& datasetName, const std::filesystem::path& datasetResultDir, const std::vector<int>& num_granules, const int iteration, const double missing_ratio)
 {
-	try {
+	try 
+   {
 		ksi::RESULTS results;
 		ksi::RESULTS_GR results_gr;
 
@@ -173,9 +235,9 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runMissingRatio(const std
 
 		std::vector<std::unique_ptr<ksi::data_modifier>> imputers;
 		imputers.push_back(std::make_unique<ksi::data_modifier_imputer_average>());
-		imputers.push_back(std::make_unique<ksi::data_modifier_imputer_knn_median>(k));
+		imputers.push_back(std::make_unique<ksi::data_modifier_imputer_median>());
 		imputers.push_back(std::make_unique<ksi::data_modifier_imputer_knn_average>(k));
-		// imputers.push_back(std::make_unique<ksi::data_modifier_imputer_values_from_knn>(k)); // <--- tego nie bedziemy robic
+		imputers.push_back(std::make_unique<ksi::data_modifier_imputer_knn_median>(k));
 		imputers.push_back(std::make_unique<ksi::data_modifier_marginaliser>());
 
 		data_modifier_incompleter_random_without_last incomplete(missing_ratio);
@@ -196,7 +258,6 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runMissingRatio(const std
             for (const auto& nfs : nfss) 
             {
                // thdebugid(datasetName + ' ' + std::to_string(iteration), nfs->get_brief_nfs_name());
-
                try 
                {
                   std::string output_file = datasetResultDir.string() + "/" + nfs->get_brief_nfs_name() + "-" + output_name;
@@ -242,7 +303,7 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runMissingRatio(const std
                   {
                      std::stringstream sos;
                      sos << ex.what() << std::endl;
-                     sos << datasetName << ", " << nfs->get_brief_nfs_name() << ", miss: " << missing_ratio << ", gr: " << granule << ", " << imputer->getName() << std::endl;
+                     sos << datasetName << ", " << nfs->get_brief_nfs_name() << ", miss: " << missing_ratio << ", gr: " << granules << ", " << imputer->getName() << std::endl;
                      std::string problem = sos.str();
                      thdebug(problem);
                   }
