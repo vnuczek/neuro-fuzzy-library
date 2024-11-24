@@ -127,7 +127,7 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runIteration(const std::f
 {
 	try 
    {
-		const auto missing_ratios = { 0.01, 0.02, 0.05, 0.10, 0.20, 0.50, 0.75 };
+		const auto missing_ratios = { 0.01, 0.02, 0.03, 0.04, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30 };
 
       std::future<RESULTS> future_complete;
       std::vector < std::future<std::pair<RESULTS, RESULTS_GR>>> futures_incomplete;
