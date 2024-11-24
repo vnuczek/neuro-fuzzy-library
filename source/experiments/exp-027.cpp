@@ -127,6 +127,8 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runIteration(const std::f
 {
 	try 
    {
+		const auto missing_ratios = { 0.01, 0.02, 0.05, 0.10, 0.20, 0.50, 0.75 };
+
       std::future<RESULTS> future_complete;
       std::vector < std::future<std::pair<RESULTS, RESULTS_GR>>> futures_incomplete;
       futures_incomplete.reserve(missing_ratios.size());
@@ -135,7 +137,7 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runIteration(const std::f
          // thdebugid((datasetName + ' ' + std::to_string(iteration)), missing_ratio);
          futures_incomplete.push_back(std::async(&ksi::exp_027::runMissingRatio, this, file_path, datasetName, datasetResultDir, num_granules, iteration, missing_ratio));
       }
-      future_complete = std::async(&ksi::exp_027::runComplete, this, file_path, datasetName, iteration);
+      future_complete = std::async(&ksi::exp_027::runComplete, this, file_path, datasetName, datasetResultDir, iteration);
 
       std::vector<RESULTS> resultsVector;
       std::vector<RESULTS_GR> resultsGrVector;
@@ -177,8 +179,6 @@ ksi::RESULTS ksi::exp_027::runComplete(const std::filesystem::path& file_path, c
 		std::size_t cross_val_iter = 0;
 		for (auto [train, test] : tt) 
       {
-         thdebug("complete");
-         // COMPLETE DATASETS:
          {
             ksi::dataset trainSet = train;
             auto missing_ratio = 0.0;
