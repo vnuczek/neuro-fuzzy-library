@@ -86,6 +86,7 @@ namespace ksi
 
         std::pair<ksi::RESULTS, ksi::RESULTS_GR> runMissingRatio(const std::filesystem::path& file_path, const std::string& datasetName, const std::filesystem::path& datasetResultDir, const std::vector<int>& num_granules, const int iteration, const double missing_ratio);
 
+         ksi::RESULTS runComplete(const std::filesystem::path& file_path, const std::string& datasetName, const std::filesystem::path& datasetResultDir, const int iteration);
         /**
          * @brief Writes experiment results to a file.
          *
