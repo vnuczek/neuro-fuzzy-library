@@ -26,9 +26,7 @@ ksi::dataset ksi::data_modifier_imputer_granular::granular_imputation(const data
            throw ksi::exception ("The are no complete data items in the dataset.");
         }
         
-        // debug(_pPartitioner->getAbbreviation());
         auto partitioned_data = _pPartitioner->doPartition(this->complete_dataset);
-        // debug(partitioned_data.getClusterFuzzifications());
       
         set_granules_attributes(partitioned_data);
 
@@ -221,8 +219,9 @@ std::vector<double> ksi::data_modifier_imputer_granular::weighted_average(const 
     
       if (denominator == 0.0)
       {
-          // debug(estimated_values); debug(weights);
-          throw ksi::exception("Sum of weights is zero!");
+         std::string problem = std::format("Sum of weights is zero! (number of complete data items {}, number of granules {})", this->complete_dataset.size(), this->cluster_numbers);
+         
+          throw ksi::exception(problem);
       }
 
       return numerator / denominator;
