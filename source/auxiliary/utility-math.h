@@ -102,21 +102,24 @@ namespace ksi
       
       template<typename T = double>
       static 
-      T getMedian (const typename std::vector<T>::iterator first, 
-                   const typename std::vector<T>::iterator last)
+      T getMedian (const typename std::vector<T>::const_iterator first, const typename std::vector<T>::const_iterator last)
       {
-         auto size = last - first; 
-         if (size % 2) // odd
+         T median;
+         std::vector<T> data(first, last);
+         auto size = data.size();
+         if (size % 2 == 1) 
          {
-            return ksi::utility_math::k_th_element<T>(first, last, size / 2);
+            auto mid = data.begin() + size / 2;
+            std::nth_element(data.begin(), mid, data.end());
+            return *mid; 
          }
-         else // even
+         else 
          {
-            auto median_right = ksi::utility_math::k_th_element<T>(first, last,
-                                                               (size / 2));
-            auto median_left = ksi::utility_math::k_th_element<T>(first, last,
-                                                               (size / 2) - 1);
-            return (median_left + median_right) / 2.0;
+            auto right = data.begin() + size / 2;
+            auto left  = right - 1;
+            std::nth_element(data.begin(), right, data.end());
+            std::nth_element(data.begin(), left, data.end());
+            return (*left + *right) / 2.0;
          }
       }
 
@@ -183,22 +186,72 @@ namespace ksi
           CATCH;
       }
 
-      /** @return The function returns standard deviation and median of elements in a vector.
-		* @param first iterator to the first element
-		* @param last  iterator to the past-the-end element in the vector
-        * @date 2023-11-21
+      /**
+        * @return The function returns median and standard deviation of elements in a vector.
+        * @param first iterator to the first element
+        * @param last iterator to the past-the-end element in the vector
+        * @date 2024-11-17
         * @author Konrad Wnuk
         * @throw std::string if the array has no items
         */
-   	template<typename T = double>
-   	static
-        std::pair<T,T> getMedianAndStandardDeviation(
-        const typename std::vector<T>::const_iterator first,
-        const typename std::vector<T>::const_iterator last)
-   	{
+      template<typename T = double>
+      std::pair<T, T> getMedianAndStandardDeviation(
+          const typename std::vector<T>::const_iterator first,
+          const typename std::vector<T>::const_iterator last
+      ) {
           try {
-              T sum{};    
-              T sumSq{};  
+              T sum = 0;
+              T sumSq = 0;
+              std::size_t numberOfElements = 0;
+              for (auto iter = first; iter != last; ++iter) {
+                  sum += *iter;
+                  sumSq += (*iter) * (*iter);
+                  numberOfElements++;
+              }
+
+              if (numberOfElements == 0)
+                  throw std::string("The array has no elements!");
+
+              T median;
+              std::vector<T> data(first, last);
+
+              if (numberOfElements % 2 == 1) {
+                  auto mid = data.begin() + numberOfElements / 2;
+                  std::nth_element(data.begin(), mid, data.end());
+                  median = *mid;
+              }
+              else {
+                  auto mid1 = data.begin() + numberOfElements / 2 - 1;
+                  auto mid2 = data.begin() + numberOfElements / 2;
+                  std::nth_element(data.begin(), mid1, data.end());
+                  T val1 = *mid1;
+                  std::nth_element(data.begin(), mid2, data.end());
+                  T val2 = *mid2;
+                  median = (val1 + val2) / 2.0;
+              }
+
+              return { median, std::sqrt(sumSq / numberOfElements - std::pow(sum / numberOfElements, 2)) };
+          }
+          CATCH;
+      }
+
+      /** @return The function returns mean and standard deviation of elements in a vector.
+       * @param first iterator to the first element
+       * @param last  iterator to the past-the-end element in the vector
+       * @date 2023-11-21
+       * @author Konrad Wnuk
+       * @throw std::string if the array has no items
+       */
+      template<typename T = double>
+      static
+          std::pair<T, T> getMeanAndStandardDeviation(
+              const typename std::vector<T>::const_iterator first,
+              const typename std::vector<T>::const_iterator last
+          ) 
+          {
+          try {
+              T sum{};
+              T sumSq{};
               std::size_t counter = 0;
               for (auto iter = first; iter != last; iter++)
               {
@@ -211,44 +264,10 @@ namespace ksi
                   throw std::string("The array has no elements!");
 
               T average = sum / counter;
-              return { average, std::sqrt(sumSq / counter - average * average)};
+              return { average, std::sqrt(sumSq / counter - average * average) };
           }
           CATCH;
       }
-
-   	/** @return The function returns standard deviation and mean of elements in a vector.
-	* @param first iterator to the first element
-	* @param last  iterator to the past-the-end element in the vector
-    * @date 2024-10-31
-    * @author Konrad Wnuk
-    * @throw std::string if the array has no items
-    */
-   	template<typename T = double>
-   	static
-        std::pair<T,T> getMeanAndStandardDeviation(
-        const typename std::vector<T>::const_iterator first,
-        const typename std::vector<T>::const_iterator last)
-   	{
-          try {
-              T sum{};    
-              T sumSq{};  
-              std::size_t counter = 0;
-              for (auto iter = first; iter != last; iter++)
-              {
-                  sum += *iter;
-                  sumSq += *iter * *iter;
-                  counter++;
-              }
-
-              if (counter == 0)
-                  throw std::string("The array has no elements!");
-
-              T average = sum / counter;
-              return { average, std::sqrt(sumSq / counter - average * average)};
-          }
-          CATCH;
-      }
-
 
       /** @return The function returns a vector of values without outliers. Only values inside the interval. 
        * \f[ (m - 3\sigma, m + 3\sigma) \f]
