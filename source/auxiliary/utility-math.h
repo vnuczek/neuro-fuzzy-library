@@ -244,7 +244,8 @@ namespace ksi
           std::pair<T, T> getMeanAndStandardDeviation(
               const typename std::vector<T>::const_iterator first,
               const typename std::vector<T>::const_iterator last
-          ) {
+          ) 
+          {
           try {
               T sum{};
               T sumSq{};
