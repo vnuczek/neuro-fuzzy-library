@@ -18,6 +18,7 @@
 #define drukuj(x) std::cerr << __FILE__ << " (" << __LINE__ << ") " << #x << " == " << (x) << std::endl;
 #define debug(x)  drukuj(x)
 #define thdebug(x) std::osyncstream(std::cerr) << __FILE__ << " (" << __LINE__ << ") " << #x << " == " << (x) << std::endl;
+#define thdebugid(id,x) std::osyncstream(std::cerr) << __FILE__ << " [" << id << "] (" << __LINE__ << ") " << #x << " == " << (x) << std::endl;
 
 #define NAZWA(x)  #x 
 
