@@ -313,7 +313,7 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_027::runMissingRatio(const std
             {
                 thdebug(e.what());
             }
-            catch (const std::exception& e)
+            catch (const std::exception& e) 
             {
                 thdebug(e.what());
             }
