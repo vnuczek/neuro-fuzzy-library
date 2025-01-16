@@ -102,21 +102,24 @@ namespace ksi
       
       template<typename T = double>
       static 
-      T getMedian (const typename std::vector<T>::iterator first, 
-                   const typename std::vector<T>::iterator last)
+      T getMedian (const typename std::vector<T>::const_iterator first, const typename std::vector<T>::const_iterator last)
       {
-         auto size = last - first; 
-         if (size % 2) // odd
+         T median;
+         std::vector<T> data(first, last);
+         auto size = data.size();
+         if (size % 2 == 1) 
          {
-            return ksi::utility_math::k_th_element<T>(first, last, size / 2);
+            auto mid = data.begin() + size / 2;
+            std::nth_element(data.begin(), mid, data.end());
+            return *mid; 
          }
-         else // even
+         else 
          {
-            auto median_right = ksi::utility_math::k_th_element<T>(first, last,
-                                                               (size / 2));
-            auto median_left = ksi::utility_math::k_th_element<T>(first, last,
-                                                               (size / 2) - 1);
-            return (median_left + median_right) / 2.0;
+            auto right = data.begin() + size / 2;
+            auto left  = right - 1;
+            std::nth_element(data.begin(), right, data.end());
+            std::nth_element(data.begin(), left, data.end());
+            return (*left + *right) / 2.0;
          }
       }
 
@@ -244,7 +247,8 @@ namespace ksi
           std::pair<T, T> getMeanAndStandardDeviation(
               const typename std::vector<T>::const_iterator first,
               const typename std::vector<T>::const_iterator last
-          ) {
+          ) 
+          {
           try {
               T sum{};
               T sumSq{};
