@@ -34,7 +34,7 @@ namespace ksi
     private:
         const std::string exp_number = "exp-027";
 
-        const std::filesystem::path dataDir = "../data/" + exp_number;
+        const std::filesystem::path dataDir = "../data/" + exp_number + "/nowe/";
         const std::filesystem::path resultDir = "../results/" + exp_number;
 
         const int NUMBER_OF_RULES;
