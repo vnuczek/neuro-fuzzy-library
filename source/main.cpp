@@ -13,6 +13,7 @@
 #include "./experiments/exp-005.h"
 #include "./experiments/exp-lab.h"
 #include "experiments/exp-027.h"
+#include "experiments/exp-127.h"
 
 
 int main (int argc, char ** params)
@@ -65,6 +66,11 @@ int main (int argc, char ** params)
                     ksi::exp_027 experiment(10, 100, 100, 10, 5, 0.001, false, 1);
                     experiment.execute();
                     break;
+                }
+                case 127: {
+	                ksi::exp_127 experiment(10, 100, 100, 10, 5, 0.001, false, 1);
+	                experiment.execute();
+	                break;
                 }
                 default: {
                     std::cout << "unknown experiment" << std::endl;
