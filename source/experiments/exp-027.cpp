@@ -402,7 +402,7 @@ void ksi::exp_027::writeResultsToFile(const std::filesystem::path& datasetResult
 								auto [train_mean, train_dev] = ksi::utility_math::getMeanAndStandardDeviation(granulesResults.train.begin(), granulesResults.train.end());
 								resultsGrStream << "\t\t\t\t\t\t" << "Train Average +- std_dev: " << train_mean << ' ' << train_dev << std::endl;
                         auto train_median = ksi::utility_math::getMedian(granulesResults.train.begin(), granulesResults.train.end());
-                        resultsStream << "\t\t\t\t\t\t" << "Train Median: " << train_median << std::endl;
+						resultsGrStream << "\t\t\t\t\t\t" << "Train Median: " << train_median << std::endl;
 
 
 								resultsGrStream << "\t\t\t\t\t\t" << "Test Values: " << std::endl;
@@ -413,7 +413,7 @@ void ksi::exp_027::writeResultsToFile(const std::filesystem::path& datasetResult
 								auto [test_mean, test_dev] = ksi::utility_math::getMeanAndStandardDeviation(granulesResults.test.begin(), granulesResults.test.end());
 								resultsGrStream << "\t\t\t\t\t\t" << "Test Average +- std_dev: " << test_mean << ' ' << test_dev << std::endl;
                         auto test_median = ksi::utility_math::getMedian(granulesResults.test.begin(), granulesResults.test.end());
-                        resultsStream << "\t\t\t\t\t\t" << "Test Median: " << test_median << std::endl;
+						resultsGrStream << "\t\t\t\t\t\t" << "Test Median: " << test_median << std::endl;
 							}
 						}
 					}

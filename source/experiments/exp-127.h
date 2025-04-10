@@ -69,7 +69,19 @@ namespace ksi
     private:
         void processDatasetFolder(const std::filesystem::directory_entry& datasetFolder);
 
-    	void processMissingRatioFolder(const std::filesystem::path& missingRatioPath, const std::string& datasetName, const double missing_ratio);
+        std::pair<ksi::RESULTS, ksi::RESULTS_GR> runIteration(const std::filesystem::directory_entry& datasetFolder, const std::string& datasetName, const std::filesystem::path& datasetResultDir, const int iteration);
+
+        std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_127::runMissingRatio(const std::filesystem::directory_entry& missingRatioDir, const std::string& datasetName, const std::filesystem::path& datasetResultDir, const int iteration, const double missing_ratio);
+
+        std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_127::runCV(const std::filesystem::directory_entry& cvDir, const std::string& datasetName, const std::filesystem::path& datasetResultDir, const int iteration, const double missing_ratio, const int cvNumber);
+
+        ksi::RESULTS mergeResults(const std::vector<RESULTS>& resultsVector);
+
+        ksi::RESULTS_GR mergeResultsGr(const std::vector<RESULTS_GR>& resultsGrVector);
+
+        void writeResultsGrToFile(const std::filesystem::path& datasetResultDir, const std::string& datasetName, const RESULTS_GR& results_gr);
+
+    	void writeResultsToFile(const std::filesystem::path& datasetResultDir, const std::string& datasetName, const RESULTS& results);
     };
 }
 
