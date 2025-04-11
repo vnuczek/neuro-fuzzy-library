@@ -105,7 +105,7 @@ void ksi::exp_127::processDatasetFolder(const std::filesystem::directory_entry& 
 			futures.push_back(std::async(&ksi::exp_127::runIteration, this, datasetFolder, datasetName, datasetResultDir, iteration));
 		}
 
-		/*
+		/* KS: Zakomentowałem tutaj, bo się nie kompiluje (processMissingRatioFolder), a chciałem zobaczyć, czy dobrze wczytuje dane.
         // KS: ... a drugą tu. 
         //     Pierwsza wykonuje kolejne iteracje. 
 		//     Ta druga uruchamia processMissingRatioFolder dla każdego katalogu z danymi.
