@@ -105,7 +105,7 @@ void ksi::exp_127::processDatasetFolder(const std::filesystem::directory_entry& 
 			futures.push_back(std::async(&ksi::exp_127::runIteration, this, datasetFolder, datasetName, datasetResultDir, iteration));
 		}
 
-		
+		/*
         // KS: ... a drugą tu. 
         //     Pierwsza wykonuje kolejne iteracje. 
 		//     Ta druga uruchamia processMissingRatioFolder dla każdego katalogu z danymi.
@@ -125,7 +125,7 @@ void ksi::exp_127::processDatasetFolder(const std::filesystem::directory_entry& 
 				processMissingRatioFolder(ratioFolder.path(), datasetName, missing_ratio);
 			}
 		}
-
+        */
 
 		std::vector<RESULTS> resultsVector;
 		std::vector<RESULTS_GR> resultsGrVector;
@@ -228,8 +228,17 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_127::runCV(const std::filesyst
 		const std::string train_file_name {"train.csv"};
 		const std::string test_file_name  {"test.csv"};
 		
-        ksi::dataset train = reader_for_train.read(train_file_name);
-		ksi::dataset test  = reader_for_test.read (test_file_name);
+		std::filesystem::path train_file_path = cvDir;
+		std::filesystem::path test_file_path  = cvDir;
+		
+		train_file_path /= train_file_name;
+		test_file_path  /= test_file_name;
+		
+		
+        ksi::dataset train = reader_for_train.read(train_file_path);
+		thdebug(train.size());
+		ksi::dataset test  = reader_for_test.read (test_file_path);
+		thdebug(test.size());
 		// Data for cross-validation read in.	
 
 		std::vector<std::unique_ptr<ksi::neuro_fuzzy_system>> nfss;

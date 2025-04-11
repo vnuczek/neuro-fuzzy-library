@@ -41,6 +41,9 @@ libasan=
 # [PL] opcje uruchomienia projektu:
 # [EN] project run options:
 
+127 : $(release_folder) $(release_folder)/main
+	./$(release_folder)/main $@
+
 release : $(release_folder) $(release_folder)/main
 	./$(release_folder)/main
 
