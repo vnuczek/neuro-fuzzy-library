@@ -214,8 +214,16 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_127::runCV(const std::filesyst
 		ksi::RESULTS results;
 		ksi::RESULTS_GR results_gr;
 
-		// odczytanie danych do tt
-
+		// Reading train and test data for cross-validation.
+		ksi::reader_incomplete reader_for_train;
+		ksi::reader_complete   reader_for_test;
+		
+		const std::string train_file_name {"train.csv"};
+		const std::string test_file_name  {"test.csv"};
+		
+        ksi::dataset train = reader_for_train.read(train_file_name);
+		ksi::dataset test  = reader_for_test.read (test_file_name);
+		// Data for cross-validation read in.	
 
 		std::vector<std::unique_ptr<ksi::neuro_fuzzy_system>> nfss;
 		ksi::t_norm_product tnorm;

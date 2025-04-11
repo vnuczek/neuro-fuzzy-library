@@ -1,7 +1,5 @@
 /** @file */
 
- 
-
 #include <string>
 #include <iostream>
 #include <vector>
@@ -12,8 +10,8 @@
 #include "./experiments/exp-004.h"
 #include "./experiments/exp-005.h"
 #include "./experiments/exp-lab.h"
-#include "experiments/exp-027.h"
-#include "experiments/exp-127.h"
+#include "./experiments/exp-027.h"
+#include "./experiments/exp-127.h"
 
 
 int main (int argc, char ** params)

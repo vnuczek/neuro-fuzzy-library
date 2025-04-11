@@ -40,37 +40,6 @@ libasan=
 
 # [PL] opcje uruchomienia projektu:
 # [EN] project run options:
-#-----------------------
-# run experiments 
-
-__ : $(release_folder) $(release_folder)/main
-	./$(release_folder)/main
-	
-9 :  $(release_folder) $(release_folder)/main
-	./$(release_folder)/main  9  
-		
-1 :  $(release_folder) $(release_folder)/main
-	./$(release_folder)/main  1  
-		
-2 :  $(release_folder) $(release_folder)/main
-	./$(release_folder)/main  2
-		
-3 :  $(release_folder) $(release_folder)/main
-	./$(release_folder)/main  3
-		
-4 :  $(release_folder) $(release_folder)/main
-	./$(release_folder)/main  4
-
-5 :  $(release_folder) $(release_folder)/main
-	./$(release_folder)/main  5
-
-27 :  $(release_folder) $(release_folder)/main
-	./$(release_folder)/main  27
-
-lab : $(release_folder) $(release_folder)/main
-	./$(release_folder)/main  0
-
-#-----------------------
 
 release : $(release_folder) $(release_folder)/main
 	./$(release_folder)/main
@@ -736,6 +705,10 @@ $(release_folder)/experiments-exp-027.o : experiments/exp-027.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/experiments-exp-027.o : experiments/exp-027.cpp
 	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
+$(release_folder)/experiments-exp-127.o : experiments/exp-127.cpp
+	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
+$(debug_folder)/experiments-exp-127.o : experiments/exp-127.cpp
+	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
 $(release_folder)/partitions-fubi.o : partitions/fubi.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/partitions-fubi.o : partitions/fubi.cpp
@@ -1164,6 +1137,7 @@ $(release_folder)/owas-plowa.o \
 $(release_folder)/common-number.o \
 $(release_folder)/heuristics-ridders-gaussian-s.o \
 $(release_folder)/neuro-fuzzy-prototype_mahalanobis_classification.o \
+$(release_folder)/experiments-exp-127.o \
 $(release_folder)/auxiliary-utility-math.o \
 $(release_folder)/dissimilarities-dissimilarity.o \
 $(release_folder)/auxiliary-clock.o \
@@ -1383,6 +1357,7 @@ $(debug_folder)/owas-plowa.o \
 $(debug_folder)/common-number.o \
 $(debug_folder)/heuristics-ridders-gaussian-s.o \
 $(debug_folder)/neuro-fuzzy-prototype_mahalanobis_classification.o \
+$(debug_folder)/experiments-exp-127.o \
 $(debug_folder)/auxiliary-utility-math.o \
 $(debug_folder)/dissimilarities-dissimilarity.o \
 $(debug_folder)/auxiliary-clock.o \
