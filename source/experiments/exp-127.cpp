@@ -97,6 +97,7 @@ void ksi::exp_127::processDatasetFolder(const std::filesystem::directory_entry& 
 		std::vector<std::future<std::pair<RESULTS, RESULTS_GR>>> futures;
 		futures.reserve(ITERATIONS);
 
+		// KS: Mamy tutaj dwie pętle. Jedną tutaj ...
 		for (int iteration = 0; iteration < ITERATIONS; iteration++)
 		{
 			// thdebugid((datasetName), iteration);
@@ -105,10 +106,15 @@ void ksi::exp_127::processDatasetFolder(const std::filesystem::directory_entry& 
 		}
 
 		
-
+        // KS: ... a drugą tu. 
+        //     Pierwsza wykonuje kolejne iteracje. 
+		//     Ta druga uruchamia processMissingRatioFolder dla każdego katalogu z danymi.
+		//     Czy obie są równocześnie potrzebne? Czy obie mają być? 
+		//     Czy coś tutaj planujesz zmienić? Metoda processMissingRatioFolder jest niezadeklarowana.
 		for (auto& ratioFolder : std::filesystem::directory_iterator(datasetFolder))
 		{
-			if (!ratioFolder.is_directory()) continue;
+			if (!ratioFolder.is_directory()) 
+				continue;
 
 			std::smatch match;
 			std::string folderName = ratioFolder.path().filename().string();
@@ -214,6 +220,7 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_127::runCV(const std::filesyst
 		ksi::RESULTS results;
 		ksi::RESULTS_GR results_gr;
 
+		// KS: Uzupełniłem wczytywanie danych.
 		// Reading train and test data for cross-validation.
 		ksi::reader_incomplete reader_for_train;
 		ksi::reader_complete   reader_for_test;
