@@ -58,7 +58,7 @@ void ksi::exp_127::execute()
 {
 	try
 	{
-		thdebug("Start exp_127: " + ksi::tempus::getDateTimeNowSafe());
+		thdebug("Start " + exp_number + ": " + ksi::tempus::getDateTimeNowSafe());
 
 		std::filesystem::create_directories(resultDir);
 
@@ -97,35 +97,12 @@ void ksi::exp_127::processDatasetFolder(const std::filesystem::directory_entry& 
 		std::vector<std::future<std::pair<RESULTS, RESULTS_GR>>> futures;
 		futures.reserve(ITERATIONS);
 
-		// KS: Mamy tutaj dwie pętle. Jedną tutaj ...
 		for (int iteration = 0; iteration < ITERATIONS; iteration++)
 		{
 			// thdebugid((datasetName), iteration);
 
 			futures.push_back(std::async(&ksi::exp_127::runIteration, this, datasetFolder, datasetName, datasetResultDir, iteration));
 		}
-
-		/* KS: Zakomentowałem tutaj, bo się nie kompiluje (processMissingRatioFolder), a chciałem zobaczyć, czy dobrze wczytuje dane.
-        // KS: ... a drugą tu. 
-        //     Pierwsza wykonuje kolejne iteracje. 
-		//     Ta druga uruchamia processMissingRatioFolder dla każdego katalogu z danymi.
-		//     Czy obie są równocześnie potrzebne? Czy obie mają być? 
-		//     Czy coś tutaj planujesz zmienić? Metoda processMissingRatioFolder jest niezadeklarowana.
-		for (auto& ratioFolder : std::filesystem::directory_iterator(datasetFolder))
-		{
-			if (!ratioFolder.is_directory()) 
-				continue;
-
-			std::smatch match;
-			std::string folderName = ratioFolder.path().filename().string();
-			if (std::regex_match(folderName, match, re))
-			{
-				double missing_ratio = std::stod(match[1].str());
-
-				processMissingRatioFolder(ratioFolder.path(), datasetName, missing_ratio);
-			}
-		}
-        */
 
 		std::vector<RESULTS> resultsVector;
 		std::vector<RESULTS_GR> resultsGrVector;
@@ -197,7 +174,6 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_127::runMissingRatio(const std
 			}
 		}
 
-
 		std::vector<RESULTS> resultsVector;
 		std::vector<RESULTS_GR> resultsGrVector;
 		for (auto& fut : futures_incomplete)
@@ -220,8 +196,6 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_127::runCV(const std::filesyst
 		ksi::RESULTS results;
 		ksi::RESULTS_GR results_gr;
 
-		// KS: Uzupełniłem wczytywanie danych.
-		// Reading train and test data for cross-validation.
 		ksi::reader_incomplete reader_for_train;
 		ksi::reader_complete   reader_for_test;
 		
@@ -234,12 +208,10 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_127::runCV(const std::filesyst
 		train_file_path /= train_file_name;
 		test_file_path  /= test_file_name;
 		
-		
-        ksi::dataset train = reader_for_train.read(train_file_path);
-		thdebug(train.size());
-		ksi::dataset test  = reader_for_test.read (test_file_path);
-		thdebug(test.size());
-		// Data for cross-validation read in.	
+        ksi::dataset train = reader_for_train.read(train_file_path.string());
+		//thdebug(train.size());
+		ksi::dataset test  = reader_for_test.read(test_file_path.string());
+		//thdebug(test.size());	
 
 		std::vector<std::unique_ptr<ksi::neuro_fuzzy_system>> nfss;
 		ksi::t_norm_product tnorm;
@@ -263,10 +235,11 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_127::runCV(const std::filesyst
 			std::string output_name = std::format("{}-{}-{}-r-{}.txt", imputer->getName(), missing_ratio, cvNumber, iteration);
 			for (const auto& nfs : nfss)
 			{
-				// thdebugid(datasetName + ' ' + std::to_string(iteration), nfs->get_brief_nfs_name());
+				thprint(datasetName + ", iter: " + std::to_string(iteration) + ", miss: " + std::to_string(missing_ratio) + ", cv: " + std::to_string(cvNumber) + ", imput: " + imputer->getName());
 				try
 				{
 					std::string output_file = datasetResultDir.string() + "/" + nfs->get_brief_nfs_name() + "-" + output_name;
+					thprint(trainSet.size()); thprint(test.size()); thprint(output_file);
 					auto result = nfs->experiment_regression(trainSet, test, output_file);
 					results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()].train.push_back(result.rmse_train);
 					results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()].test.push_back(result.rmse_test);
@@ -288,7 +261,7 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_127::runCV(const std::filesyst
 			{
 				ksi::fcm test_partitioner(granules, NUMBER_OF_CLUSTERING_ITERATIONS);
 				std::unique_ptr<ksi::data_modifier> imputer = std::make_unique< data_modifier_imputer_granular>(test_partitioner, tnorm);
-				// thdebugid(datasetName + ", iter: " + std::to_string(iteration) + ", miss: " + std::to_string(missing_ratio) + ", cross: " + std::to_string(cross_val_iter) + ", gr: " + std::to_string(granules), imputer->getName());
+				thprint(datasetName + ", iter: " + std::to_string(iteration) + ", miss: " + std::to_string(missing_ratio) + ", cv: " + std::to_string(cvNumber) + ", gr: " + std::to_string(granules) + ", imput: " + imputer->getName());
 
 				ksi::dataset trainSet = train;
 				imputer->modify(trainSet);
@@ -401,7 +374,6 @@ void ksi::exp_127::writeResultsGrToFile(const std::filesystem::path& datasetResu
 								resultsGrStream << "\t\t\t\t\t\t" << "Train Average +- std_dev: " << train_mean << ' ' << train_dev << std::endl;
 								auto train_median = ksi::utility_math::getMedian(granulesResults.train.begin(), granulesResults.train.end());
 								resultsGrStream << "\t\t\t\t\t\t" << "Train Median: " << train_median << std::endl;
-
 
 								resultsGrStream << "\t\t\t\t\t\t" << "Test Values: " << std::endl;
 								for (const auto& test_val : granulesResults.test)
