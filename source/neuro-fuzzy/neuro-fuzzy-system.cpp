@@ -999,7 +999,6 @@ ksi::result ksi::neuro_fuzzy_system::experiment_regression_core(
       if (_pModyfikator)
        _pModyfikator->modify(_TrainDataset);
 
-      thprint(__LINE__);
       ksi::clock zegar;
       zegar.start();
       
@@ -1008,7 +1007,6 @@ ksi::result ksi::neuro_fuzzy_system::experiment_regression_core(
                             _TrainDataset, _ValidationDataset);
       zegar.stop();
 
-      thprint(__LINE__);
       if (not _pRulebase->validate())
           throw std::string ("rule base not valid");
       
