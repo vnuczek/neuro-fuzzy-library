@@ -237,7 +237,6 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_127::runCV(const std::filesyst
 				try
 				{
 					std::string output_file = datasetResultDir.string() + "/" + nfs->get_brief_nfs_name() + "-" + output_name;
-					thprint(trainSet.size()); thprint(test.size()); thprint(output_file);
 					auto result = nfs->experiment_regression(trainSet, test, output_file);
 					results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()].train.push_back(result.rmse_train);
 					results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()].test.push_back(result.rmse_test);
