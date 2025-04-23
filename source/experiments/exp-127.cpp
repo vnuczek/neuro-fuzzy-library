@@ -97,7 +97,6 @@ void ksi::exp_127::processDatasetFolder(const std::filesystem::directory_entry& 
 		std::vector<std::future<std::pair<RESULTS, RESULTS_GR>>> futures;
 		futures.reserve(ITERATIONS);
 
-		// KS: Mamy tutaj dwie pętle. Jedną tutaj ...
 		for (int iteration = 0; iteration < ITERATIONS; iteration++)
 		{
 			// thdebugid((datasetName), iteration);
@@ -240,6 +239,7 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_127::runCV(const std::filesyst
 				try
 				{
 					std::string output_file = datasetResultDir.string() + "/" + nfs->get_brief_nfs_name() + "-" + output_name;
+					thprint(trainSet.size()); thprint(test.size()); thprint(output_file);
 					auto result = nfs->experiment_regression(trainSet, test, output_file);
 					results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()].train.push_back(result.rmse_train);
 					results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()].test.push_back(result.rmse_test);
@@ -374,7 +374,6 @@ void ksi::exp_127::writeResultsGrToFile(const std::filesystem::path& datasetResu
 								resultsGrStream << "\t\t\t\t\t\t" << "Train Average +- std_dev: " << train_mean << ' ' << train_dev << std::endl;
 								auto train_median = ksi::utility_math::getMedian(granulesResults.train.begin(), granulesResults.train.end());
 								resultsGrStream << "\t\t\t\t\t\t" << "Train Median: " << train_median << std::endl;
-
 
 								resultsGrStream << "\t\t\t\t\t\t" << "Test Values: " << std::endl;
 								for (const auto& test_val : granulesResults.test)
