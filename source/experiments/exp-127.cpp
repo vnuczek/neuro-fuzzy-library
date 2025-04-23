@@ -209,9 +209,7 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_127::runCV(const std::filesyst
 		test_file_path  /= test_file_name;
 		
         ksi::dataset train = reader_for_train.read(train_file_path.string());
-		//thdebug(train.size());
 		ksi::dataset test  = reader_for_test.read(test_file_path.string());
-		//thdebug(test.size());	
 
 		std::vector<std::unique_ptr<ksi::neuro_fuzzy_system>> nfss;
 		ksi::t_norm_product tnorm;
