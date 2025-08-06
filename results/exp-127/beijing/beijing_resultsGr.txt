@@ -1,0 +1,627 @@
+	Dataset: beijing
+		NFS: ANNBFIS
+			Missing Ratio: 0.01
+				Imputer: imputer_granular
+					Granules Number: 2
+						Train Values: 
+						0.883301
+						0.883261
+						0.883084
+						0.880142
+						0.883127
+						Train Average +- std_dev: 0.882583 0.00122312
+						Train Median: 0.883127
+						Test Values: 
+						0.879065
+						0.879744
+						0.880797
+						0.892441
+						0.880498
+						Test Average +- std_dev: 0.882509 0.00500266
+						Test Median: 0.880498
+					Granules Number: 3
+						Train Values: 
+						0.883213
+						0.883167
+						0.86213
+						0.852751
+						0.883073
+						Train Average +- std_dev: 0.872867 0.0129401
+						Train Median: 0.883073
+						Test Values: 
+						0.87906
+						0.879742
+						0.861996
+						0.866811
+						0.880496
+						Test Average +- std_dev: 0.873621 0.00769194
+						Test Median: 0.87906
+					Granules Number: 5
+						Train Values: 
+						0.883221
+						0.883203
+						0.882915
+						0.879998
+						0.883074
+						Train Average +- std_dev: 0.882482 0.00124699
+						Train Median: 0.883074
+						Test Values: 
+						0.879059
+						0.879743
+						0.880805
+						0.892438
+						0.880496
+						Test Average +- std_dev: 0.882508 0.00500199
+						Test Median: 0.880496
+					Granules Number: 10
+						Train Values: 
+						0.8831
+						0.862562
+						0.882789
+						0.879881
+						0.851882
+						Train Average +- std_dev: 0.872043 0.0126137
+						Train Median: 0.879881
+						Test Values: 
+						0.87906
+						0.856027
+						0.880811
+						0.892435
+						0.850279
+						Test Average +- std_dev: 0.871722 0.0159474
+						Test Median: 0.87906
+					Granules Number: 20
+						Train Values: 
+						0.883088
+						0.883107
+						0.882784
+						0.87116
+						0.866555
+						Train Average +- std_dev: 0.877339 0.0070772
+						Train Median: 0.882784
+						Test Values: 
+						0.879059
+						0.879744
+						0.88081
+						0.884011
+						0.866941
+						Test Average +- std_dev: 0.878113 0.0058384
+						Test Median: 0.879744
+					Granules Number: 25
+						Train Values: 
+						0.883084
+						0.883104
+						0.867589
+						0.879863
+						0.882972
+						Train Average +- std_dev: 0.879323 0.00599569
+						Train Median: 0.882972
+						Test Values: 
+						0.879058
+						0.879745
+						0.867259
+						0.892436
+						0.880495
+						Test Average +- std_dev: 0.879798 0.00797471
+						Test Median: 0.879745
+			Missing Ratio: 0.02
+				Imputer: imputer_granular
+					Granules Number: 2
+						Train Values: 
+						0.881494
+						0.879196
+						0.884927
+						0.888597
+						0.88164
+						Train Average +- std_dev: 0.883171 0.00327057
+						Train Median: 0.88164
+						Test Values: 
+						0.885057
+						0.893455
+						0.878215
+						0.864055
+						0.891638
+						Test Average +- std_dev: 0.882484 0.0106642
+						Test Median: 0.885057
+					Granules Number: 3
+						Train Values: 
+						0.882614
+						0.88039
+						0.884483
+						0.888139
+						0.881318
+						Train Average +- std_dev: 0.883389 0.00274378
+						Train Median: 0.882614
+						Test Values: 
+						0.886507
+						0.895158
+						0.878208
+						0.864073
+						0.891631
+						Test Average +- std_dev: 0.883115 0.0110974
+						Test Median: 0.886507
+					Granules Number: 5
+						Train Values: 
+						0.882838
+						0.86995
+						0.88468
+						0.888361
+						0.881608
+						Train Average +- std_dev: 0.881487 0.00620316
+						Train Median: 0.882838
+						Test Values: 
+						0.886504
+						0.885207
+						0.878208
+						0.86407
+						0.891632
+						Test Average +- std_dev: 0.881124 0.00954334
+						Test Median: 0.885207
+					Granules Number: 10
+						Train Values: 
+						0.882354
+						0.880168
+						0.88432
+						0.887937
+						0.88113
+						Train Average +- std_dev: 0.883182 0.00275264
+						Train Median: 0.882354
+						Test Values: 
+						0.886508
+						0.895149
+						0.87821
+						0.864079
+						0.89163
+						Test Average +- std_dev: 0.883115 0.0110928
+						Test Median: 0.886508
+					Granules Number: 20
+						Train Values: 
+						0.882385
+						0.880187
+						0.884324
+						0.887946
+						0.881129
+						Train Average +- std_dev: 0.883194 0.00275019
+						Train Median: 0.882385
+						Test Values: 
+						0.886511
+						0.895148
+						0.878212
+						0.86408
+						0.89163
+						Test Average +- std_dev: 0.883116 0.0110924
+						Test Median: 0.886511
+					Granules Number: 25
+						Train Values: 
+						0.882363
+						0.879487
+						0.884393
+						0.887972
+						0.881099
+						Train Average +- std_dev: 0.883063 0.00293286
+						Train Median: 0.882363
+						Test Values: 
+						0.886511
+						0.894575
+						0.878211
+						0.864079
+						0.89163
+						Test Average +- std_dev: 0.883001 0.0109701
+						Test Median: 0.886511
+			Missing Ratio: 0.05
+				Imputer: imputer_granular
+					Granules Number: 2
+						Train Values: 
+						0.88351
+						0.882236
+						0.880716
+						0.875999
+						0.876064
+						Train Average +- std_dev: 0.879705 0.00312692
+						Train Median: 0.880716
+						Test Values: 
+						0.864432
+						0.868422
+						0.874635
+						0.893102
+						0.893257
+						Test Average +- std_dev: 0.878769 0.0122067
+						Test Median: 0.874635
+					Granules Number: 3
+						Train Values: 
+						0.882714
+						0.865564
+						0.877859
+						0.875247
+						0.875332
+						Train Average +- std_dev: 0.875343 0.00559103
+						Train Median: 0.875332
+						Test Values: 
+						0.864406
+						0.852096
+						0.872846
+						0.893122
+						0.893267
+						Test Average +- std_dev: 0.875147 0.0161458
+						Test Median: 0.872846
+					Granules Number: 5
+						Train Values: 
+						0.861188
+						0.881812
+						0.879996
+						0.875349
+						0.875407
+						Train Average +- std_dev: 0.87475 0.0072401
+						Train Median: 0.875407
+						Test Values: 
+						0.842349
+						0.868403
+						0.874619
+						0.893121
+						0.893262
+						Test Average +- std_dev: 0.874351 0.0188122
+						Test Median: 0.874619
+					Granules Number: 10
+						Train Values: 
+						0.8823
+						0.88132
+						0.879413
+						0.874828
+						0.874846
+						Train Average +- std_dev: 0.878542 0.00316387
+						Train Median: 0.879413
+						Test Values: 
+						0.864392
+						0.868389
+						0.874625
+						0.893141
+						0.893269
+						Test Average +- std_dev: 0.878763 0.0122343
+						Test Median: 0.874625
+					Granules Number: 20
+						Train Values: 
+						0.882201
+						0.881296
+						0.87928
+						0.874817
+						0.874807
+						Train Average +- std_dev: 0.87848 0.00314076
+						Train Median: 0.87928
+						Test Values: 
+						0.864398
+						0.868388
+						0.874627
+						0.893135
+						0.893269
+						Test Average +- std_dev: 0.878764 0.0122317
+						Test Median: 0.874627
+					Granules Number: 25
+						Train Values: 
+						0.882287
+						0.881215
+						0.879306
+						0.874794
+						0.874809
+						Train Average +- std_dev: 0.878482 0.00315338
+						Train Median: 0.879306
+						Test Values: 
+						0.864402
+						0.868391
+						0.874625
+						0.893133
+						0.893271
+						Test Average +- std_dev: 0.878764 0.0122303
+						Test Median: 0.874625
+		NFS: TSK
+			Missing Ratio: 0.01
+				Imputer: imputer_granular
+					Granules Number: 2
+						Train Values: 
+						0.883301
+						0.883261
+						0.883084
+						0.880142
+						0.883093
+						Train Average +- std_dev: 0.882576 0.00122016
+						Train Median: 0.883093
+						Test Values: 
+						0.879065
+						0.879744
+						0.880797
+						0.892441
+						0.880463
+						Test Average +- std_dev: 0.882502 0.00500557
+						Test Median: 0.880463
+					Granules Number: 3
+						Train Values: 
+						0.883213
+						0.883167
+						0.88295
+						0.879915
+						0.883073
+						Train Average +- std_dev: 0.882464 0.00127772
+						Train Median: 0.883073
+						Test Values: 
+						0.87906
+						0.879742
+						0.880806
+						0.892391
+						0.880496
+						Test Average +- std_dev: 0.882499 0.00498297
+						Test Median: 0.880496
+					Granules Number: 5
+						Train Values: 
+						0.861375
+						0.883203
+						0.882907
+						0.879998
+						1917.25
+						Train Average +- std_dev: 384.151 766.549
+						Train Median: 0.882907
+						Test Values: 
+						0.859266
+						0.879743
+						0.880797
+						0.892438
+						1914.66
+						Test Average +- std_dev: 383.635 765.513
+						Test Median: 0.880797
+					Granules Number: 10
+						Train Values: 
+						0.8831
+						0.883124
+						0.882789
+						0.879881
+						0.882523
+						Train Average +- std_dev: 0.882283 0.00122143
+						Train Median: 0.882789
+						Test Values: 
+						0.87906
+						0.879742
+						0.880811
+						0.892435
+						0.880021
+						Test Average +- std_dev: 0.882414 0.00504175
+						Test Median: 0.880021
+					Granules Number: 20
+						Train Values: 
+						0.883088
+						0.883107
+						0.882784
+						0.879876
+						0.86003
+						Train Average +- std_dev: 0.877777 0.00895618
+						Train Median: 0.882784
+						Test Values: 
+						0.879059
+						0.879744
+						0.88081
+						0.892436
+						0.8569
+						Test Average +- std_dev: 0.877789 0.0115365
+						Test Median: 0.879744
+					Granules Number: 25
+						Train Values: 
+						0.883084
+						0.883104
+						0.882777
+						0.879863
+						0.882972
+						Train Average +- std_dev: 0.88236 0.00125384
+						Train Median: 0.882972
+						Test Values: 
+						0.879058
+						0.879745
+						0.88081
+						0.892436
+						0.880495
+						Test Average +- std_dev: 0.882509 0.00500064
+						Test Median: 0.880495
+			Missing Ratio: 0.02
+				Imputer: imputer_granular
+					Granules Number: 2
+						Train Values: 
+						0.883009
+						0.880832
+						0.88485
+						0.888598
+						0.88164
+						Train Average +- std_dev: 0.883786 0.00276495
+						Train Median: 0.883009
+						Test Values: 
+						0.886497
+						0.895164
+						0.878133
+						0.864057
+						0.891638
+						Test Average +- std_dev: 0.883098 0.011111
+						Test Median: 0.886497
+					Granules Number: 3
+						Train Values: 
+						0.882614
+						0.88039
+						0.884483
+						0.888139
+						0.881318
+						Train Average +- std_dev: 0.883389 0.00274378
+						Train Median: 0.882614
+						Test Values: 
+						0.886507
+						0.895158
+						0.878208
+						0.864073
+						0.891631
+						Test Average +- std_dev: 0.883115 0.0110974
+						Test Median: 0.886507
+					Granules Number: 5
+						Train Values: 
+						0.882838
+						0.880582
+						0.884679
+						0.888361
+						0.881608
+						Train Average +- std_dev: 0.883614 0.00273836
+						Train Median: 0.882838
+						Test Values: 
+						0.886502
+						0.895084
+						0.878206
+						0.86407
+						0.891632
+						Test Average +- std_dev: 0.883099 0.0110822
+						Test Median: 0.886502
+					Granules Number: 10
+						Train Values: 
+						0.882354
+						0.839983
+						0.883439
+						0.887937
+						0.881024
+						Train Average +- std_dev: 0.874947 0.0176359
+						Train Median: 0.882354
+						Test Values: 
+						0.886508
+						0.855557
+						0.877345
+						0.864079
+						0.89152
+						Test Average +- std_dev: 0.875002 0.0134769
+						Test Median: 0.877345
+					Granules Number: 20
+						Train Values: 
+						0.882385
+						0.880187
+						0.884324
+						0.887946
+						0.881129
+						Train Average +- std_dev: 0.883194 0.00275018
+						Train Median: 0.882385
+						Test Values: 
+						0.886511
+						0.895148
+						0.878212
+						0.86408
+						0.891634
+						Test Average +- std_dev: 0.883117 0.011093
+						Test Median: 0.886511
+					Granules Number: 25
+						Train Values: 
+						0.882363
+						0.880173
+						0.829836
+						0.882551
+						0.88068
+						Train Average +- std_dev: 0.871121 0.0206631
+						Train Median: 0.88068
+						Test Values: 
+						0.886511
+						0.895147
+						0.828649
+						0.858855
+						0.891183
+						Test Average +- std_dev: 0.872069 0.025165
+						Test Median: 0.886511
+			Missing Ratio: 0.05
+				Imputer: imputer_granular
+					Granules Number: 2
+						Train Values: 
+						0.882283
+						0.882216
+						0.880715
+						0.876
+						0.875908
+						Train Average +- std_dev: 0.879425 0.00288889
+						Train Median: 0.880715
+						Test Values: 
+						0.863263
+						0.8684
+						0.874634
+						0.893102
+						0.893109
+						Test Average +- std_dev: 0.878502 0.0124559
+						Test Median: 0.874634
+					Granules Number: 3
+						Train Values: 
+						0.882701
+						0.854804
+						0.879999
+						0.875247
+						0.840071
+						Train Average +- std_dev: 0.866565 0.016471
+						Train Median: 0.875247
+						Test Values: 
+						0.864393
+						0.843374
+						0.874608
+						0.893122
+						0.858526
+						Test Average +- std_dev: 0.866805 0.0165943
+						Test Median: 0.864393
+					Granules Number: 5
+						Train Values: 
+						0.882806
+						0.881812
+						0.875911
+						0.875349
+						0.875407
+						Train Average +- std_dev: 0.878257 0.00332928
+						Train Median: 0.875911
+						Test Values: 
+						0.864404
+						0.868403
+						0.870353
+						0.893121
+						0.893262
+						Test Average +- std_dev: 0.877908 0.012625
+						Test Median: 0.870353
+					Granules Number: 10
+						Train Values: 
+						0.881404
+						0.88132
+						0.879413
+						0.874828
+						0.874846
+						Train Average +- std_dev: 0.878362 0.00296511
+						Train Median: 0.879413
+						Test Values: 
+						0.863451
+						0.868389
+						0.874625
+						0.893141
+						0.893269
+						Test Average +- std_dev: 0.878575 0.0124592
+						Test Median: 0.874625
+					Granules Number: 20
+						Train Values: 
+						0.882201
+						0.881296
+						0.87928
+						0.874753
+						0.874807
+						Train Average +- std_dev: 0.878468 0.00315574
+						Train Median: 0.87928
+						Test Values: 
+						0.864398
+						0.868388
+						0.874627
+						0.893071
+						0.893269
+						Test Average +- std_dev: 0.878751 0.0122166
+						Test Median: 0.874627
+					Granules Number: 25
+						Train Values: 
+						72.0933
+						0.881215
+						0.879306
+						0.874794
+						0.874809
+						Train Average +- std_dev: 15.1207 28.4863
+						Train Median: 0.879306
+						Test Values: 
+						73.7226
+						0.868391
+						0.874625
+						0.893133
+						0.893271
+						Test Average +- std_dev: 15.4504 29.1361
+						Test Median: 0.893133

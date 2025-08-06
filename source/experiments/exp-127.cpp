@@ -209,9 +209,7 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_127::runCV(const std::filesyst
 		test_file_path  /= test_file_name;
 		
         ksi::dataset train = reader_for_train.read(train_file_path.string());
-		//thdebug(train.size());
 		ksi::dataset test  = reader_for_test.read(test_file_path.string());
-		//thdebug(test.size());	
 
 		std::vector<std::unique_ptr<ksi::neuro_fuzzy_system>> nfss;
 		ksi::t_norm_product tnorm;
@@ -239,7 +237,6 @@ std::pair<ksi::RESULTS, ksi::RESULTS_GR> ksi::exp_127::runCV(const std::filesyst
 				try
 				{
 					std::string output_file = datasetResultDir.string() + "/" + nfs->get_brief_nfs_name() + "-" + output_name;
-					thprint(trainSet.size()); thprint(test.size()); thprint(output_file);
 					auto result = nfs->experiment_regression(trainSet, test, output_file);
 					results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()].train.push_back(result.rmse_train);
 					results[datasetName][nfs->get_brief_nfs_name()][missing_ratio][imputer->getName()].test.push_back(result.rmse_test);

@@ -1,0 +1,519 @@
+	Dataset: beijing
+		NFS: ANNBFIS
+			Missing Ratio: 0.01
+				Imputer: imputer_average
+					Train Values: 
+					95.7002
+					0.884567
+					0.884349
+					0.88157
+					0.884333
+					Train Average +- std_dev: 19.847 37.9266
+					Train Median: 0.884349
+					Test Values: 
+					95.769
+					0.879771
+					0.88067
+					0.892493
+					0.880532
+					Test Average +- std_dev: 19.8605 37.9543
+					Test Median: 0.88067
+				Imputer: imputer_knn_average
+					Train Values: 
+					0.883223
+					0.883114
+					0.882864
+					0.879932
+					0.882979
+					Train Average +- std_dev: 0.882422 0.00125111
+					Train Median: 0.882979
+					Test Values: 
+					0.87906
+					0.879736
+					0.880811
+					0.892438
+					0.880493
+					Test Average +- std_dev: 0.882508 0.00500233
+					Test Median: 0.880493
+				Imputer: imputer_knn_median
+					Train Values: 
+					0.883304
+					0.883158
+					0.882946
+					0.879982
+					0.876009
+					Train Average +- std_dev: 0.88108 0.00281688
+					Train Median: 0.882946
+					Test Values: 
+					0.879061
+					0.879735
+					0.880809
+					0.892438
+					1.017
+					Test Average +- std_dev: 0.909809 0.0538212
+					Test Median: 0.880809
+				Imputer: imputer_median
+					Train Values: 
+					0.875848
+					0.884288
+					0.883712
+					0.880849
+					0.884064
+					Train Average +- std_dev: 0.881752 0.00320296
+					Train Median: 0.883712
+					Test Values: 
+					0.871228
+					0.879758
+					0.880131
+					0.891988
+					0.880521
+					Test Average +- std_dev: 0.880725 0.00660864
+					Test Median: 0.880131
+				Imputer: marginaliser
+					Train Values: 
+					0.885583
+					0.837034
+					0.885125
+					0.882378
+					0.885575
+					Train Average +- std_dev: 0.875139 0.0190896
+					Train Median: 0.885125
+					Test Values: 
+					0.879184
+					0.829369
+					0.880877
+					0.892393
+					0.880497
+					Test Average +- std_dev: 0.872464 0.0220669
+					Test Median: 0.880497
+			Missing Ratio: 0.02
+				Imputer: imputer_average
+					Train Values: 
+					0.886686
+					0.884773
+					0.830861
+					0.892345
+					0.885116
+					Train Average +- std_dev: 0.875956 0.0227109
+					Train Median: 0.885116
+					Test Values: 
+					0.88664
+					0.895455
+					0.828623
+					0.86411
+					0.891844
+					Test Average +- std_dev: 0.873335 0.0248725
+					Test Median: 0.88664
+				Imputer: imputer_knn_average
+					Train Values: 
+					0.883826
+					0.879594
+					0.870655
+					0.887597
+					0.880817
+					Train Average +- std_dev: 0.880498 0.00564399
+					Train Median: 0.880817
+					Test Values: 
+					0.884414
+					0.894878
+					0.864121
+					0.864082
+					0.891627
+					Test Average +- std_dev: 0.879824 0.013277
+					Test Median: 0.884414
+				Imputer: imputer_knn_median
+					Train Values: 
+					0.873871
+					0.879956
+					0.884184
+					0.887728
+					0.87189
+					Train Average +- std_dev: 0.879526 0.00599073
+					Train Median: 0.879956
+					Test Values: 
+					0.878401
+					0.89517
+					0.878207
+					0.864077
+					0.881935
+					Test Average +- std_dev: 0.879558 0.00992184
+					Test Median: 0.878401
+				Imputer: imputer_median
+					Train Values: 
+					1.00141
+					0.884483
+					0.888328
+					102.465
+					0.884851
+					Train Average +- std_dev: 21.2248 40.6201
+					Train Median: 0.888328
+					Test Values: 
+					1.00665
+					0.895419
+					0.878432
+					102.416
+					0.891813
+					Test Average +- std_dev: 21.2177 40.5993
+					Test Median: 0.895419
+				Imputer: marginaliser
+					Train Values: 
+					0.888481
+					0.856804
+					0.89049
+					0.894255
+					0.874257
+					Train Average +- std_dev: 0.880857 0.0138026
+					Train Median: 0.888481
+					Test Values: 
+					0.886669
+					0.866637
+					0.878294
+					0.864159
+					0.878301
+					Test Average +- std_dev: 0.874812 0.00830896
+					Test Median: 0.878294
+			Missing Ratio: 0.05
+				Imputer: imputer_average
+					Train Values: 
+					0.889335
+					0.887993
+					0.876365
+					0.881805
+					0.882155
+					Train Average +- std_dev: 0.883531 0.00468649
+					Train Median: 0.882155
+					Test Values: 
+					0.865186
+					0.869027
+					0.866258
+					0.893422
+					0.893742
+					Test Average +- std_dev: 0.877527 0.013169
+					Test Median: 0.869027
+				Imputer: imputer_knn_average
+					Train Values: 
+					0.882056
+					0.881159
+					0.879398
+					0.874994
+					0.875015
+					Train Average +- std_dev: 0.878525 0.00299865
+					Train Median: 0.879398
+					Test Values: 
+					0.864394
+					0.868395
+					0.874596
+					0.89313
+					0.893276
+					Test Average +- std_dev: 0.878758 0.0122341
+					Test Median: 0.874596
+				Imputer: imputer_knn_median
+					Train Values: 
+					0.882364
+					0.881453
+					0.879711
+					0.875291
+					0.875419
+					Train Average +- std_dev: 0.878848 0.00297668
+					Train Median: 0.879711
+					Test Values: 
+					0.8644
+					0.868402
+					0.874588
+					0.893118
+					0.893276
+					Test Average +- std_dev: 0.878757 0.0122292
+					Test Median: 0.874588
+				Imputer: imputer_median
+					Train Values: 
+					0.889035
+					0.874234
+					0.886091
+					0.881542
+					0.881812
+					Train Average +- std_dev: 0.882543 0.00500622
+					Train Median: 0.881812
+					Test Values: 
+					0.865073
+					0.850604
+					0.875065
+					0.893371
+					0.893664
+					Test Average +- std_dev: 0.875556 0.0166013
+					Test Median: 0.875065
+				Imputer: marginaliser
+					Train Values: 
+					0.887342
+					0.891671
+					0.882636
+					0.885008
+					0.884741
+					Train Average +- std_dev: 0.886279 0.00308085
+					Train Median: 0.885008
+					Test Values: 
+					0.859923
+					0.869069
+					0.86421
+					0.894444
+					0.89413
+					Test Average +- std_dev: 0.876355 0.014925
+					Test Median: 0.869069
+		NFS: TSK
+			Missing Ratio: 0.01
+				Imputer: imputer_average
+					Train Values: 
+					0.884575
+					0.86468
+					0.884419
+					0.881587
+					0.884332
+					Train Average +- std_dev: 0.879919 0.00769945
+					Train Median: 0.884332
+					Test Values: 
+					0.879109
+					0.857215
+					0.880736
+					0.89251
+					0.88053
+					Test Average +- std_dev: 0.87802 0.0114688
+					Test Median: 0.88053
+				Imputer: imputer_knn_average
+					Train Values: 
+					0.883223
+					0.883094
+					0.882865
+					0.879932
+					0.882978
+					Train Average +- std_dev: 0.882418 0.00124894
+					Train Median: 0.882978
+					Test Values: 
+					0.87906
+					0.879715
+					0.880812
+					0.892438
+					0.880493
+					Test Average +- std_dev: 0.882503 0.00500463
+					Test Median: 0.880493
+				Imputer: imputer_knn_median
+					Train Values: 
+					0.883304
+					0.867215
+					0.882946
+					0.879982
+					0.883021
+					Train Average +- std_dev: 0.879294 0.00615936
+					Train Median: 0.882946
+					Test Values: 
+					0.879061
+					0.861786
+					0.880809
+					0.892438
+					0.880494
+					Test Average +- std_dev: 0.878918 0.0098221
+					Test Median: 0.880494
+				Imputer: imputer_median
+					Train Values: 
+					0.884514
+					0.884288
+					0.884341
+					0.88152
+					0.880387
+					Train Average +- std_dev: 0.88301 0.00171848
+					Train Median: 0.884288
+					Test Values: 
+					0.879103
+					0.879758
+					0.88075
+					0.892498
+					0.87667
+					Test Average +- std_dev: 0.881756 0.00553712
+					Test Median: 0.879758
+				Imputer: marginaliser
+					Train Values: 
+					0.885583
+					0.886141
+					0.837773
+					0.882378
+					0.885575
+					Train Average +- std_dev: 0.87549 0.0189051
+					Train Median: 0.885575
+					Test Values: 
+					0.879184
+					0.879827
+					0.91949
+					0.892393
+					0.880497
+					Test Average +- std_dev: 0.890278 0.0153997
+					Test Median: 0.880497
+			Missing Ratio: 0.02
+				Imputer: imputer_average
+					Train Values: 
+					0.886812
+					0.870391
+					0.888625
+					0.89156
+					0.884859
+					Train Average +- std_dev: 0.88445 0.00736733
+					Train Median: 0.886812
+					Test Values: 
+					0.886763
+					0.880041
+					0.878462
+					0.863334
+					0.891586
+					Test Average +- std_dev: 0.880037 0.00959256
+					Test Median: 0.880041
+				Imputer: imputer_knn_average
+					Train Values: 
+					0.882066
+					0.879875
+					0.85914
+					0.887597
+					0.880817
+					Train Average +- std_dev: 0.877899 0.00975444
+					Train Median: 0.880817
+					Test Values: 
+					0.886493
+					0.895164
+					0.855106
+					0.864082
+					0.891627
+					Test Average +- std_dev: 0.878494 0.0159315
+					Test Median: 0.886493
+				Imputer: imputer_knn_median
+					Train Values: 
+					0.882134
+					0.879956
+					0.882622
+					0.887728
+					0.833542
+					Train Average +- std_dev: 0.873196 0.0199903
+					Train Median: 0.882134
+					Test Values: 
+					0.88644
+					0.89517
+					0.876575
+					0.864077
+					0.84159
+					Test Average +- std_dev: 0.87277 0.0187132
+					Test Median: 0.876575
+				Imputer: imputer_median
+					Train Values: 
+					0.886431
+					0.884486
+					0.888328
+					0.891976
+					0.882397
+					Train Average +- std_dev: 0.886723 0.00328565
+					Train Median: 0.886431
+					Test Values: 
+					0.886622
+					0.895422
+					0.878432
+					0.864021
+					0.889266
+					Test Average +- std_dev: 0.882753 0.0108394
+					Test Median: 0.886622
+				Imputer: marginaliser
+					Train Values: 
+					0.888481
+					0.885977
+					0.89049
+					0.891509
+					0.883915
+					Train Average +- std_dev: 0.888074 0.00281065
+					Train Median: 0.888481
+					Test Values: 
+					0.886669
+					0.894976
+					0.878294
+					0.861745
+					0.888735
+					Test Average +- std_dev: 0.882084 0.0114849
+					Test Median: 0.886669
+			Missing Ratio: 0.05
+				Imputer: imputer_average
+					Train Values: 
+					0.889335
+					0.887993
+					0.886403
+					0.881794
+					0.882152
+					Train Average +- std_dev: 0.885535 0.00305518
+					Train Median: 0.886403
+					Test Values: 
+					0.865185
+					0.869027
+					0.875159
+					0.893408
+					0.89374
+					Test Average +- std_dev: 0.879304 0.0120784
+					Test Median: 0.875159
+				Imputer: imputer_knn_average
+					Train Values: 
+					0.882056
+					0.881159
+					0.878763
+					0.874994
+					0.875015
+					Train Average +- std_dev: 0.878398 0.0029723
+					Train Median: 0.878763
+					Test Values: 
+					0.864394
+					0.868395
+					0.874032
+					0.89313
+					0.893276
+					Test Average +- std_dev: 0.878646 0.0122745
+					Test Median: 0.874032
+				Imputer: imputer_knn_median
+					Train Values: 
+					0.882364
+					0.881453
+					8.98171
+					0.875291
+					0.875419
+					Train Average +- std_dev: 2.49925 3.24123
+					Train Median: 0.881453
+					Test Values: 
+					0.8644
+					0.868402
+					9.00339
+					0.893118
+					0.893276
+					Test Average +- std_dev: 2.50452 3.24946
+					Test Median: 0.893118
+				Imputer: imputer_median
+					Train Values: 
+					0.889035
+					0.887637
+					0.886091
+					0.876703
+					0.879239
+					Train Average +- std_dev: 0.883741 0.00486892
+					Train Median: 0.886091
+					Test Values: 
+					0.865073
+					0.868914
+					0.875065
+					0.888067
+					0.890897
+					Test Average +- std_dev: 0.877603 0.0102485
+					Test Median: 0.875065
+				Imputer: marginaliser
+					Train Values: 
+					0.889328
+					0.891671
+					0.889653
+					0.880466
+					0.884741
+					Train Average +- std_dev: 0.887172 0.00404777
+					Train Median: 0.889328
+					Test Values: 
+					0.860933
+					0.869069
+					0.876349
+					0.889642
+					0.89413
+					Test Average +- std_dev: 0.878025 0.0124056
+					Test Median: 0.876349

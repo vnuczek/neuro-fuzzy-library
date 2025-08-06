@@ -89,11 +89,9 @@ void ksi::abstract_tsk::createFuzzyRulebase (int nClusteringIterations,
 
       _original_size_of_training_dataset = trainX.getNumberOfData();
       
-      //thdebug(__LINE__);
     	auto podzial = doPartition(trainX);
       _nRules = podzial.getNumberOfClusters();
 
-      //thdebug(_nRules);
       auto typical_items = trainX.get_if_data_typical(_minimal_typicality);
       trainX.remove_untypical_data(typical_items);
       trainY.remove_untypical_data(typical_items);
@@ -112,7 +110,6 @@ void ksi::abstract_tsk::createFuzzyRulebase (int nClusteringIterations,
 #pragma omp parallel for 
       for (int c = 0; c < _nRules; c++)
       {
-         //thdebug(c);
          premise przeslanka;      
          auto klaster = podzial.getCluster(c);
 
@@ -140,7 +137,6 @@ void ksi::abstract_tsk::createFuzzyRulebase (int nClusteringIterations,
       {
          if (i % 2 == 0)
          { 
-             thdebug(i);
              F_przyklad_regula.clear(); // dla konkluzji
             
             // strojenie gradientowe
@@ -164,7 +160,6 @@ void ksi::abstract_tsk::createFuzzyRulebase (int nClusteringIterations,
          
          else
          {
-             thdebug(i);
             // wyznaczanie wspolczynnikow konkluzji.
             least_square_error_regression lser ((nAttr_1 + 1) * _nRules);
             

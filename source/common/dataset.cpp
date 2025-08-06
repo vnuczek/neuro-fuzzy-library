@@ -452,13 +452,20 @@ std::pair< ksi::dataset, ksi::dataset > ksi::dataset::splitDataSetVertically(
    std::size_t last_index) const
 {
    dataset left, right;
-   
-   for (auto & d : data)
+
+   size_t i = 0;
+   for (auto& d : data)
    {
+
+       if (d->getNumberOfAttributes() == 0){
+       	thdebug(i);
+		thdebug(*d);
+		}
       auto para = d->splitDatum(last_index);
       
       left.addDatum(para.first);
       right.addDatum(para.second);
+      i++;
    }
       
    return { left, right }; 
