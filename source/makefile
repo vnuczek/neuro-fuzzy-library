@@ -41,15 +41,16 @@ libasan=
 # [PL] opcje uruchomienia projektu:
 # [EN] project run options:
 
-127 : $(release_folder) $(release_folder)/main
-	./$(release_folder)/main $@
-
 release : $(release_folder) $(release_folder)/main
 	./$(release_folder)/main
 
 debug : $(debug_folder) $(debug_folder)/main
 	valgrind --leak-check=yes ./$(debug_folder)/main
 #	./$(debug_folder)/main
+
+127 : $(release_folder) $(release_folder)/main
+	./$(release_folder)/main $@
+
 
 # [PL] profilowanie [EN] profiling
 gprof : $(debug_folder) $(debug_folder)/main
@@ -223,6 +224,10 @@ $(debug_folder)/implications-imp-goedel.o : implications/imp-goedel.cpp
 $(release_folder)/implications-imp-fodor.o : implications/imp-fodor.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/implications-imp-fodor.o : implications/imp-fodor.cpp
+	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
+$(release_folder)/auxiliary-frobenius_norm.o : auxiliary/frobenius_norm.cpp
+	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
+$(debug_folder)/auxiliary-frobenius_norm.o : auxiliary/frobenius_norm.cpp
 	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
 $(release_folder)/auxiliary-mathematics.o : auxiliary/mathematics.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
@@ -1108,6 +1113,7 @@ $(release_folder)/descriptors-descriptor-singleton.o \
 $(release_folder)/common-datum.o \
 $(release_folder)/neuro-fuzzy-fac_prototype_minkowski_regression.o \
 $(release_folder)/readers-train_validation_test_model.o \
+$(release_folder)/auxiliary-frobenius_norm.o \
 $(release_folder)/metrics-metric-minkowski.o \
 $(release_folder)/tnorms-t-norm-sugeno-weber.o \
 $(release_folder)/common-data-modifier-normaliser.o \
@@ -1328,6 +1334,7 @@ $(debug_folder)/descriptors-descriptor-singleton.o \
 $(debug_folder)/common-datum.o \
 $(debug_folder)/neuro-fuzzy-fac_prototype_minkowski_regression.o \
 $(debug_folder)/readers-train_validation_test_model.o \
+$(debug_folder)/auxiliary-frobenius_norm.o \
 $(debug_folder)/metrics-metric-minkowski.o \
 $(debug_folder)/tnorms-t-norm-sugeno-weber.o \
 $(debug_folder)/common-data-modifier-normaliser.o \
