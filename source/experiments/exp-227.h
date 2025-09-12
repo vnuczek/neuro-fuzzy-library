@@ -72,6 +72,8 @@ namespace ksi
 
     	std::vector<std::unique_ptr<ksi::data_modifier>> makeClassicalImputers() const;
 
+        ksi::exp_227::ResultRow applyImputer(const ksi::dataset& base, ksi::data_modifier* imputer, const std::filesystem::path& outDir, std::string_view ratio_str) const;
+
         ksi::exp_227::ResultRow applyGranularImputer(const ksi::dataset& base, int granules, int iteration, const std::filesystem::path& datasetResultDir, std::string_view ratio_str) const;
 
     	void writeDatasetToFile(const ksi::dataset& ds, const std::filesystem::path& outFilePath) const;

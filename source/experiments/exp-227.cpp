@@ -138,7 +138,7 @@ void ksi::exp_227::runMissingRatio(
 
 		for (const auto& imputer : imputers)
 		{
-			results.push_back(applyImputer(data, *imputer, datasetResultDir, ratio_str));
+			results.push_back(applyImputer(data, imputer.get(), datasetResultDir, ratio_str));
 		}
 
 		for (const auto granules : num_granules)
@@ -189,6 +189,22 @@ std::vector<std::unique_ptr<ksi::data_modifier>> ksi::exp_227::makeClassicalImpu
 		return v;
 	}
 	CATCH;
+}
+
+ksi::exp_227::ResultRow ksi::exp_227::applyImputer(
+	const ksi::dataset& base,
+	ksi::data_modifier* imputer,
+	const std::filesystem::path& outDir,
+	std::string_view ratio_str) const
+{
+	auto experimentSet = base;
+	imputer->modify(experimentSet);
+
+	const std::string fname = std::format("{}-{}.txt", imputer->getName(), ratio_str);
+	const auto outPath = outDir / fname;
+	writeDatasetToFile(experimentSet, outPath);
+
+	return ResultRow{ imputer->getName(), 0, std::move(experimentSet) };
 }
 
 ksi::exp_227::ResultRow ksi::exp_227::applyGranularImputer(const ksi::dataset& base,
