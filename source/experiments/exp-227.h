@@ -22,7 +22,7 @@ namespace ksi
     granular imputation of missing values
 
     @date 2025-09-12
-	@author Konrad Wnuk
+    @author Konrad Wnuk
     */
 
     class exp_227 : virtual public experiment

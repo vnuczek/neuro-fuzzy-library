@@ -52,6 +52,10 @@ debug : $(debug_folder) $(debug_folder)/main
 	./$(release_folder)/main $@
 
 
+227 : $(release_folder) $(release_folder)/main
+	./$(release_folder)/main $@
+
+
 # [PL] profilowanie [EN] profiling
 gprof : $(debug_folder) $(debug_folder)/main
 	./$(debug_folder)/main
@@ -717,6 +721,10 @@ $(release_folder)/experiments-exp-127.o : experiments/exp-127.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/experiments-exp-127.o : experiments/exp-127.cpp
 	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
+$(release_folder)/experiments-exp-227.o : experiments/exp-227.cpp
+	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
+$(debug_folder)/experiments-exp-227.o : experiments/exp-227.cpp
+	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
 $(release_folder)/partitions-fubi.o : partitions/fubi.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/partitions-fubi.o : partitions/fubi.cpp
@@ -979,6 +987,7 @@ $(release_folder)/partitions-fcm-possibilistic.o \
 $(release_folder)/common-data-modifier-filter.o \
 $(release_folder)/auxiliary-tempus.o \
 $(release_folder)/metrics-metric-minkowski-weighted.o \
+$(release_folder)/experiments-exp-227.o \
 $(release_folder)/descriptors-descriptor-sigmoidal.o \
 $(release_folder)/snorms-s-norm-fodor.o \
 $(release_folder)/common-data_modifier_incompleter_random.o \
@@ -1200,6 +1209,7 @@ $(debug_folder)/partitions-fcm-possibilistic.o \
 $(debug_folder)/common-data-modifier-filter.o \
 $(debug_folder)/auxiliary-tempus.o \
 $(debug_folder)/metrics-metric-minkowski-weighted.o \
+$(debug_folder)/experiments-exp-227.o \
 $(debug_folder)/descriptors-descriptor-sigmoidal.o \
 $(debug_folder)/snorms-s-norm-fodor.o \
 $(debug_folder)/common-data_modifier_incompleter_random.o \

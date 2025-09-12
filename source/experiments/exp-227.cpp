@@ -62,6 +62,19 @@ void ksi::exp_227::execute()
 			std::cerr << "Unable to open file: " << csvPath << std::endl;
 		}
 
+      //=============================================
+      bool runInParallel = false;
+      if (not runInParallel) 
+      {
+         for (const auto& entry : std::filesystem::directory_iterator(dataDir)) 
+         {
+            processDataset(entry);
+         }
+         return;
+      }
+      //=============================================
+
+
 		for (const auto& entry : std::filesystem::directory_iterator(dataDir)) {
 			// thdebugid(entry, entry);
 
@@ -78,6 +91,9 @@ void ksi::exp_227::execute()
 				thread.join();
 			}
 		}
+
+
+
 		thdebug(ksi::tempus::getDateTimeNowSafe());
 		thdebug("dze end");
 	}
@@ -103,6 +119,16 @@ void ksi::exp_227::processDataset(const std::filesystem::directory_entry& entry)
 		std::vector<std::thread> mThreads;
 		mThreads.reserve(std::size(missing_ratios));
 
+      //=============================================
+      bool runInParallel = false;
+      if (not runInParallel) 
+      {
+         for (const auto missing_ratio : missing_ratios) {
+            runMissingRatio(file_path, datasetName, datasetResultDir, num_granules, missing_ratio);
+         }
+         return;
+      }
+      //=============================================
 		for (const auto missing_ratio : missing_ratios) {
 			mThreads.emplace_back(&ksi::exp_227::runMissingRatio, this,
 				file_path, datasetName, datasetResultDir, num_granules, missing_ratio);
@@ -138,6 +164,8 @@ void ksi::exp_227::runMissingRatio(
 
 		for (const auto& imputer : imputers)
 		{
+         std::string info = std::format("dataset: {}, missing ratio: {}, imputer: {}", datasetName, ratio_str, imputer->getName());
+         thdebug(info);
 			results.push_back(applyImputer(data, imputer.get(), datasetResultDir, ratio_str));
 		}
 
@@ -145,6 +173,8 @@ void ksi::exp_227::runMissingRatio(
 		{
 			for (int iteration = 0; iteration < ITERATIONS; iteration++)
 			{
+            std::string info = std::format("dataset: {}, missing ratio: {}, granular imputer: {}, iteration: {}", datasetName, ratio_str, granules, iteration);
+            thdebug(info);
 				results.push_back(applyGranularImputer(data, granules, iteration, datasetResultDir, ratio_str));
 			}
 		}
@@ -177,15 +207,14 @@ ksi::dataset ksi::exp_227::loadAndPrepareData(
 
 std::vector<std::unique_ptr<ksi::data_modifier>> ksi::exp_227::makeClassicalImputers() const
 {
-	try {
+	try 
+   {
 		std::vector<std::unique_ptr<ksi::data_modifier>> v;
-		v.reserve(5);
-		v.push_back(std::make_unique<ksi::data_modifier_imputer_average>());
+      v.reserve(4);
+      v.push_back(std::make_unique<ksi::data_modifier_imputer_average>());
 		v.push_back(std::make_unique<ksi::data_modifier_imputer_median>());
 		v.push_back(std::make_unique<ksi::data_modifier_imputer_knn_average>(k));
 		v.push_back(std::make_unique<ksi::data_modifier_imputer_knn_median>(k));
-		// v.push_back(std::make_unique<ksi::data_modifier_marginaliser>());
-
 		return v;
 	}
 	CATCH;
@@ -246,7 +275,6 @@ void ksi::exp_227::writeDatasetToFile(
 	CATCH;
 }
 
-
 void ksi::exp_227::appendPairwiseFrobenius(
 	const std::string& datasetName,
 	std::string_view ratio_str,
@@ -287,3 +315,4 @@ void ksi::exp_227::appendPairwiseFrobenius(
 	}
 	CATCH;
 }
+
