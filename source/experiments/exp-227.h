@@ -16,7 +16,8 @@
 
 namespace ksi
 {
-    /** EXPERIMENT 227  <br/>
+	class data_modifier;
+	/** EXPERIMENT 227  <br/>
 
     granular imputation of missing values
 
@@ -66,6 +67,16 @@ namespace ksi
             const std::vector<int>& num_granules,
             const double missing_ratio
         );
+
+        ksi::dataset loadAndPrepareData(const std::filesystem::path& file_path, double missing_ratio) const;
+
+    	std::vector<std::unique_ptr<ksi::data_modifier>> makeClassicalImputers() const;
+
+        ksi::exp_227::ResultRow applyGranularImputer(const ksi::dataset& base, int granules, int iteration, const std::filesystem::path& datasetResultDir, std::string_view ratio_str) const;
+
+    	void writeDatasetToFile(const ksi::dataset& ds, const std::filesystem::path& outFilePath) const;
+
+    	void appendPairwiseFrobenius(const std::string& datasetName, std::string_view ratio_str, const std::vector<ResultRow>& results, const std::filesystem::path& csvPath);
     };
 }
 

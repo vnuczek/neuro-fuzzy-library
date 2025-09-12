@@ -87,6 +87,8 @@ void ksi::exp_227::execute()
 }
 
 void ksi::exp_227::processDataset(const std::filesystem::directory_entry& entry) {
+	try
+	{
 		const std::filesystem::path file_path = entry.path();
 		const std::string datasetName = file_path.stem().string();
 		const std::filesystem::path datasetResultDir = resultDir / datasetName;
@@ -94,14 +96,27 @@ void ksi::exp_227::processDataset(const std::filesystem::directory_entry& entry)
 
 		const std::vector<int> num_granules = (datasetName == "BoxJ290")
 			? std::vector<int>{ 2, 3, 5, 10 }
-			: std::vector<int>{ 2, 3, 5, 10, 15, 20, 25 };
+		: std::vector<int>{ 2, 3, 5, 10, 15, 20, 25 };
 
 		const auto missing_ratios = { 0.01, 0.02, 0.03, 0.04, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30 };
 
-		for (const auto missing_ratio : missing_ratios)
-		{
-			runMissingRatio(file_path, datasetName, datasetResultDir, num_granules, missing_ratio);
+		std::vector<std::thread> mThreads;
+		mThreads.reserve(std::size(missing_ratios));
+
+		for (const auto missing_ratio : missing_ratios) {
+			mThreads.emplace_back(&ksi::exp_227::runMissingRatio, this,
+				file_path, datasetName, datasetResultDir, num_granules, missing_ratio);
 		}
+
+		for (auto& thread : mThreads)
+		{
+			if (thread.joinable())
+			{
+				thread.join();
+			}
+		}
+	}
+	CATCH;
 }
 
 void ksi::exp_227::runMissingRatio(
@@ -112,105 +127,147 @@ void ksi::exp_227::runMissingRatio(
 	const double missing_ratio
 )
 {
-	reader_complete DataReader;
-	auto data = DataReader.read(file_path.string());
+	try {
+		const auto data = loadAndPrepareData(file_path, missing_ratio);
 
-	data_modifier_normaliser normaliser;
-	normaliser.modify(data);
+		const std::string ratio_str = std::format("{:.2f}", missing_ratio);
+		auto imputers = makeClassicalImputers();
 
-	data_modifier_incompleter_random_without_last incomplete(missing_ratio);
-	incomplete.modify(data);
+		std::vector<ResultRow> results;
+		results.reserve(imputers.size() + static_cast<std::size_t>(num_granules.size()) * ITERATIONS);
 
-	std::vector<std::unique_ptr<ksi::data_modifier>> imputers;
-	imputers.push_back(std::make_unique<ksi::data_modifier_imputer_average>());
-	imputers.push_back(std::make_unique<ksi::data_modifier_imputer_median>());
-	imputers.push_back(std::make_unique<ksi::data_modifier_imputer_knn_average>(k));
-	imputers.push_back(std::make_unique<ksi::data_modifier_imputer_knn_median>(k));
-	imputers.push_back(std::make_unique<ksi::data_modifier_marginaliser>());
-
-	std::vector<ResultRow> results;
-	results.reserve(imputers.size() + static_cast<std::size_t>(num_granules.size()) * ITERATIONS);
-
-	const std::string ratio_str = std::format("{:.2f}", missing_ratio);
-
-	for (const auto& imputer : imputers)
-	{
-		auto experimentSet = data;
-		imputer->modify(experimentSet);
-
-		const std::string output_name = std::format("{}-{}.txt", imputer->getName(), ratio_str);
-		const auto output_path = datasetResultDir / output_name;
-		std::ofstream file(output_path);
-		if (file.is_open()) {
-			file << experimentSet.to_string();
-			file.close();
-		}
-		else {
-			std::cerr << "Unable to save to file: " << output_path << std::endl;
-		}
-
-		results.push_back(ResultRow{ imputer->getName(), 0, std::move(experimentSet) });
-	}
-
-	for (const auto granules : num_granules)
-	{
-		for (int iteration = 0; iteration < ITERATIONS; iteration++)
+		for (const auto& imputer : imputers)
 		{
-			ksi::t_norm_product tnorm;
-			ksi::fcm test_partitioner(granules, NUMBER_OF_CLUSTERING_ITERATIONS);
-			std::unique_ptr<ksi::data_modifier> imputer = std::make_unique< data_modifier_imputer_granular>(test_partitioner, tnorm);
-
-			auto experimentSet = data;
-			imputer->modify(experimentSet);
-
-			std::string output_name = std::format("{}-{}-g-{}-r-{}.txt", imputer->getName(), ratio_str, granules, iteration);
-			std::string output_file = datasetResultDir.string() + "/" + output_name;
-
-			std::ofstream file(output_file);
-			if (file.is_open()) {
-				file << experimentSet.to_string();
-				file.close();
-
-				std::cout << "Saved: " << output_file << std::endl;
-			}
-			else {
-				std::cerr << "Unable to save to file: " << output_file << std::endl;
-			}
-
-			results.push_back(ResultRow{ imputer->getName(), granules, std::move(experimentSet) });
+			results.push_back(applyImputer(data, *imputer, datasetResultDir, ratio_str));
 		}
-	}
 
-	ksi::frobenius_norm frob;
-
-	for (size_t i = 0; i < results.size(); ++i) {
-		for (size_t j = i + 1; j < results.size(); ++j) {
-			double fval;
-			try {
-				fval = frob.get_frobenius_norm(results[i].dataset, results[j].dataset);
+		for (const auto granules : num_granules)
+		{
+			for (int iteration = 0; iteration < ITERATIONS; iteration++)
+			{
+				results.push_back(applyGranularImputer(data, granules, iteration, datasetResultDir, ratio_str));
 			}
-			catch (const std::exception& e) {
-				std::cerr << "Frobenius error (" << results[i].imputerName << " vs " << results[j].imputerName
-					<< "): " << e.what() << std::endl;
-				continue;
-			}
-			
-			std::lock_guard<std::mutex> lk(csv_mutex);
-			std::ofstream csv(csvPath, std::ios::app);
-			if (csv) {
-				csv << datasetName << ';'
-					<< ratio_str << ';'
-					<< std::format("{:.10f}", fval) << ';'
-					<< results[i].imputerName << ';'
-					<< results[i].granules << ';'
-					<< results[j].imputerName << ';'
-					<< results[j].granules << '\n';
-			}
-			else {
-				std::cerr << "Unable to open CSV for append: " << csvPath << std::endl;
-			}
-			
 		}
+
+		appendPairwiseFrobenius(datasetName, ratio_str, results, csvPath);
 	}
+	CATCH;
 }
 
+ksi::dataset ksi::exp_227::loadAndPrepareData(
+	const std::filesystem::path& file_path,
+	double missing_ratio
+) const
+{
+	try
+	{
+		reader_complete DataReader;
+		auto data = DataReader.read(file_path.string());
+
+		data_modifier_normaliser normaliser;
+		normaliser.modify(data);
+
+		data_modifier_incompleter_random_without_last incomplete(missing_ratio);
+		incomplete.modify(data);
+
+		return data;
+	}
+	CATCH;
+}
+
+std::vector<std::unique_ptr<ksi::data_modifier>> ksi::exp_227::makeClassicalImputers() const
+{
+	try {
+		std::vector<std::unique_ptr<ksi::data_modifier>> v;
+		v.reserve(5);
+		v.push_back(std::make_unique<ksi::data_modifier_imputer_average>());
+		v.push_back(std::make_unique<ksi::data_modifier_imputer_median>());
+		v.push_back(std::make_unique<ksi::data_modifier_imputer_knn_average>(k));
+		v.push_back(std::make_unique<ksi::data_modifier_imputer_knn_median>(k));
+		// v.push_back(std::make_unique<ksi::data_modifier_marginaliser>());
+
+		return v;
+	}
+	CATCH;
+}
+
+ksi::exp_227::ResultRow ksi::exp_227::applyGranularImputer(const ksi::dataset& base,
+	int granules,
+	int iteration,
+	const std::filesystem::path& datasetResultDir,
+	std::string_view ratio_str) const
+{
+	ksi::t_norm_product tnorm;
+	ksi::fcm partitioner(granules, NUMBER_OF_CLUSTERING_ITERATIONS);
+	std::unique_ptr<ksi::data_modifier> imputer =
+		std::make_unique<data_modifier_imputer_granular>(partitioner, tnorm);
+
+	auto experimentSet = base;
+	imputer->modify(experimentSet);
+
+	const std::string outputName = std::format("{}-{}-g-{}-r-{}.txt", imputer->getName(), ratio_str, granules, iteration);
+	const auto outFilePath = datasetResultDir / outputName;
+	writeDatasetToFile(experimentSet, outFilePath);
+
+	return ResultRow{ imputer->getName(), granules, std::move(experimentSet) };
+}
+
+void ksi::exp_227::writeDatasetToFile(
+	const ksi::dataset& ds,
+	const std::filesystem::path& outFilePath
+) const
+{
+	try {
+		std::ofstream file(outFilePath);
+		if (file) {
+			file << ds.to_string();
+			std::cout << "Saved: " << outFilePath << std::endl;
+		}
+		else {
+			std::cerr << "Unable to save to file: " << outFilePath << std::endl;
+		}
+	}
+	CATCH;
+}
+
+
+void ksi::exp_227::appendPairwiseFrobenius(
+	const std::string& datasetName,
+	std::string_view ratio_str,
+	const std::vector<ResultRow>& results,
+	const std::filesystem::path& csvPath
+)
+{
+	try {
+		ksi::frobenius_norm frob;
+
+		for (std::size_t i = 0; i < results.size(); ++i) {
+			for (std::size_t j = i + 1; j < results.size(); ++j) {
+				double fval = 0.0;
+				try {
+					fval = frob.get_frobenius_norm(results[i].dataset, results[j].dataset);
+				}
+				catch (const std::exception& e) {
+					std::cerr << "Frobenius error (" << results[i].imputerName << " vs " << results[j].imputerName << "): " << e.what() << '\n';
+					continue;
+				}
+
+				std::lock_guard<std::mutex> lk(csv_mutex);
+				std::ofstream csv(csvPath, std::ios::app);
+				if (csv) {
+					csv << datasetName << ';'
+						<< ratio_str << ';'
+						<< std::format("{:.10f}", fval) << ';'
+						<< results[i].imputerName << ';'
+						<< results[i].granules << ';'
+						<< results[j].imputerName << ';'
+						<< results[j].granules << '\n';
+				}
+				else {
+					std::cerr << "Unable to open CSV for append: " << csvPath << std::endl;
+				}
+			}
+		}
+	}
+	CATCH;
+}
