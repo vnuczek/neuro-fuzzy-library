@@ -62,19 +62,16 @@ void ksi::exp_227::execute()
 			std::cerr << "Unable to open file: " << csvPath << std::endl;
 		}
 
-      //=============================================
-      bool runInParallel = false;
-      if (not runInParallel) 
-      {
-         for (const auto& entry : std::filesystem::directory_iterator(dataDir)) 
-         {
-            processDataset(entry);
-         }
-         return;
-      }
-      //=============================================
-
-
+		if (not runInParallel) 
+		{
+		 for (const auto& entry : std::filesystem::directory_iterator(dataDir)) 
+		 {
+		    processDataset(entry);
+		 }
+		 return;
+		}
+		else
+		{
 		for (const auto& entry : std::filesystem::directory_iterator(dataDir)) {
 			// thdebugid(entry, entry);
 
@@ -91,8 +88,7 @@ void ksi::exp_227::execute()
 				thread.join();
 			}
 		}
-
-
+		}
 
 		thdebug(ksi::tempus::getDateTimeNowSafe());
 		thdebug("dze end");
@@ -119,27 +115,26 @@ void ksi::exp_227::processDataset(const std::filesystem::directory_entry& entry)
 		std::vector<std::thread> mThreads;
 		mThreads.reserve(std::size(missing_ratios));
 
-      //=============================================
-      bool runInParallel = false;
-      if (not runInParallel) 
-      {
-         for (const auto missing_ratio : missing_ratios) {
-            runMissingRatio(file_path, datasetName, datasetResultDir, num_granules, missing_ratio);
-         }
-         return;
-      }
-      //=============================================
-		for (const auto missing_ratio : missing_ratios) {
-			mThreads.emplace_back(&ksi::exp_227::runMissingRatio, this,
-				file_path, datasetName, datasetResultDir, num_granules, missing_ratio);
-		}
-
-		for (auto& thread : mThreads)
+		if (not runInParallel) 
 		{
-			if (thread.joinable())
-			{
-				thread.join();
+			for (const auto missing_ratio : missing_ratios) {
+			runMissingRatio(file_path, datasetName, datasetResultDir, num_granules, missing_ratio);
 			}
+		}
+		else
+		{
+		  for (const auto missing_ratio : missing_ratios) {
+			  mThreads.emplace_back(&ksi::exp_227::runMissingRatio, this,
+				  file_path, datasetName, datasetResultDir, num_granules, missing_ratio);
+		  }
+
+		  for (auto& thread : mThreads)
+		  {
+			  if (thread.joinable())
+			  {
+				  thread.join();
+			  }
+		  }
 		}
 	}
 	CATCH;
@@ -210,8 +205,8 @@ std::vector<std::unique_ptr<ksi::data_modifier>> ksi::exp_227::makeClassicalImpu
 	try 
    {
 		std::vector<std::unique_ptr<ksi::data_modifier>> v;
-      v.reserve(4);
-      v.push_back(std::make_unique<ksi::data_modifier_imputer_average>());
+		v.reserve(4);
+		v.push_back(std::make_unique<ksi::data_modifier_imputer_average>());
 		v.push_back(std::make_unique<ksi::data_modifier_imputer_median>());
 		v.push_back(std::make_unique<ksi::data_modifier_imputer_knn_average>(k));
 		v.push_back(std::make_unique<ksi::data_modifier_imputer_knn_median>(k));

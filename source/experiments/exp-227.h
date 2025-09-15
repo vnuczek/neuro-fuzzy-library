@@ -38,6 +38,8 @@ namespace ksi
         const int ITERATIONS;
         const int NUMBER_OF_CLUSTERING_ITERATIONS;
 
+		const bool runInParallel = false; // if true, each dataset will be processed in a separate thread
+
         std::vector<std::thread> threads;
         std::mutex csv_mutex;
 
