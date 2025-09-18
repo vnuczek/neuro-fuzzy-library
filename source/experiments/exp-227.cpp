@@ -56,7 +56,7 @@ void ksi::exp_227::execute()
 
 		createCsvHeader(
 			csvPath,
-			"Dataset;Missing Ratio;Imputer;Granules Number;Iteration;Frobenius Value"
+			"Dataset;Missing Ratio;Imputer;Granules Number;Iteration;Frobenius Value;Frobenius Normal Value;"
 		);
 
 		if (runInParallel) 
@@ -321,8 +321,10 @@ void ksi::exp_227::appendPairwiseFrobenius(
 
 		for (std::size_t i = 0; i < results.size(); ++i) {
 			double fval = 0.0;
+			double fnorm;
 			try {
 				fval = frob.get_frobenius_norm(completeDataset, results[i].dataset);
+				fnorm = fval / (completeDataset.getNumberOfData() * completeDataset.getNumberOfAttributes());
 			}
 			catch (const std::exception& e) {
 				std::cerr << "Frobenius error (" << datasetName << ", " << ratio_str << " at " << results[i].imputerName << "): " << e.what() << std::endl;
@@ -338,6 +340,7 @@ void ksi::exp_227::appendPairwiseFrobenius(
 					<< results[i].granules << ';'
 					<< results[i].iteration << ';'
 					<< std::format("{:.10f}", fval) << ';'
+					<< std::format("{:.10f}", fnorm) << ';'
 					<< '\n';
 			}
 			else {

@@ -41,13 +41,13 @@ namespace ksi
         const int NUMBER_OF_CLUSTERING_ITERATIONS;
 
         const std::vector<int> num_granules = {
-        	2, 3, 5, 10, 20, 25
+        	2, 3, 5, 10, 20, 25, 30
         };
         const std::vector<double> missing_ratios = {
-        	0.01, 0.02, 0.03, 0.04, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30
+			0.01, 0.02, 0.03, 0.04, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50
         };
 
-		const bool runInParallel = false; // if true, each dataset will be processed in a separate thread
+		const bool runInParallel = true; // if true, each dataset will be processed in a separate thread
 
         std::mutex csv_mutex;
 
