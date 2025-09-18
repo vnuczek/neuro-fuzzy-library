@@ -38,15 +38,22 @@ namespace ksi
         const int ITERATIONS;
         const int NUMBER_OF_CLUSTERING_ITERATIONS;
 
+        const std::vector<int> num_granules = {
+        	2, 3, 5, 10, 20, 25
+        };
+        const std::vector<double> missing_ratios = {
+        	0.01, 0.02, 0.03, 0.04, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30
+        };
+
 		const bool runInParallel = false; // if true, each dataset will be processed in a separate thread
 
-        std::vector<std::thread> threads;
         std::mutex csv_mutex;
 
         struct ResultRow {
+            ksi::dataset dataset;
             std::string imputerName;
             int granules;
-            ksi::dataset dataset;
+            int iteration;
         };
 
     public:
@@ -60,27 +67,28 @@ namespace ksi
         virtual void execute();
 
     private:
+        void createCsvHeader(const std::filesystem::path& path, std::string_view header) const;
+
         void processDataset(const std::filesystem::directory_entry& entry);
 
         void runMissingRatio(
             const std::filesystem::path& file_path, 
             const std::string& datasetName, 
-            const std::filesystem::path& datasetResultDir, 
-            const std::vector<int>& num_granules,
+            const std::filesystem::path& datasetResultDir,
             const double missing_ratio
         );
 
-        ksi::dataset loadAndPrepareData(const std::filesystem::path& file_path, double missing_ratio) const;
+        std::pair<ksi::dataset, ksi::dataset> loadCompleteDataAndPrepareData(const std::filesystem::path& file_path, double missing_ratio) const;
 
     	std::vector<std::unique_ptr<ksi::data_modifier>> makeClassicalImputers() const;
 
-        ksi::exp_227::ResultRow applyImputer(const ksi::dataset& base, ksi::data_modifier* imputer, const std::filesystem::path& outDir, std::string_view ratio_str) const;
+        ksi::exp_227::ResultRow applyImputer(const ksi::dataset& data, ksi::data_modifier* imputer, const std::filesystem::path& datasetResultDir, std::string_view ratio_str) const;
 
-        ksi::exp_227::ResultRow applyGranularImputer(const ksi::dataset& base, int granules, int iteration, const std::filesystem::path& datasetResultDir, std::string_view ratio_str) const;
+        ksi::exp_227::ResultRow applyGranularImputer(const ksi::dataset& data, int granules, int iteration, const std::filesystem::path& datasetResultDir, std::string_view ratio_str) const;
 
     	void writeDatasetToFile(const ksi::dataset& ds, const std::filesystem::path& outFilePath) const;
 
-    	void appendPairwiseFrobenius(const std::string& datasetName, std::string_view ratio_str, const std::vector<ResultRow>& results, const std::filesystem::path& csvPath);
+    	void appendPairwiseFrobenius(const ksi::dataset& completeDataset, const std::vector<ResultRow>& results, const std::string& datasetName, std::string_view ratio_str, const std::filesystem::path& csv_path);
     };
 }
 

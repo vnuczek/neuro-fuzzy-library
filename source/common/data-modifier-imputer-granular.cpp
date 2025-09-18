@@ -179,7 +179,7 @@ double ksi::data_modifier_imputer_granular::calculate_granule_membership(const s
          auto attribute_membership = 
              std::exp( - (std::pow((estimated_tuple_attributes[attr] - granule_centers[attr]), 2) / (2 * std::pow(granule_fuzzifications[attr], 2))));
 
-             /*
+
       	if (attribute_membership == 0.0)
 		 {
 			debug("-----------------");
@@ -188,17 +188,17 @@ double ksi::data_modifier_imputer_granular::calculate_granule_membership(const s
             debug(granule_fuzzifications[attr]);
             debug(std::exp( - (std::pow((estimated_tuple_attributes[attr] - granule_centers[attr]), 2) / (2 * std::pow(granule_fuzzifications[attr], 2)))));
 		 }
-		 */
+		 
       	
          total_membership = _pTnorm->tnorm(total_membership, attribute_membership);
       }
 
-	  // if (total_membership == 0.0)
-	  // {
-		 //  debug(estimated_tuple_attributes);
-		 //  debug(granule_centers);
-		 //  debug(granule_fuzzifications);
-	  // }
+	   if (total_membership == 0.0)
+	   {
+		   debug(estimated_tuple_attributes);
+		   debug(granule_centers);
+		   debug(granule_fuzzifications);
+	   }
 
       return total_membership;
    }
@@ -207,26 +207,25 @@ double ksi::data_modifier_imputer_granular::calculate_granule_membership(const s
 
 std::vector<double> ksi::data_modifier_imputer_granular::weighted_average(const std::vector < std::vector<double>>& estimated_values, const std::vector<double>& weights) 
 {
-   try
-   {
-      std::vector<double> numerator(estimated_values[0].size(), 0.0);
-      double denominator = 0.0;
+	try
+	{
+		std::vector<double> numerator(estimated_values[0].size(), 0.0);
+		double denominator = 0.0;
 
-      for (std::size_t i = 0; i < weights.size(); ++i) {
-         numerator += estimated_values[i] * weights[i];
-         denominator += weights[i];
-      }
-    
-      if (denominator == 0.0)
-      {
-         std::string problem = std::format("Sum of weights is zero! (number of complete data items {}, number of granules {})", this->complete_dataset.size(), this->cluster_numbers);
-         
-          throw ksi::exception(problem);
-      }
+		for (std::size_t i = 0; i < weights.size(); ++i) {
+			numerator += estimated_values[i] * weights[i];
+			denominator += weights[i];
+		}
 
-      return numerator / denominator;
-   }
-   CATCH;
+		if (denominator == 0.0)
+		{
+			std::string problem = std::format("Sum of weights is zero! (number of complete data items {}, number of granules {})", this->complete_dataset.size(), this->cluster_numbers);
+			throw ksi::exception(problem);
+		}
+
+		return numerator / denominator;
+	}
+	CATCH;
 }
 
 ksi::data_modifier_imputer_granular::data_modifier_imputer_granular(partitioner& Partitioner, t_norm& Tnorm)
