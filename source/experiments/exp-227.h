@@ -14,6 +14,8 @@
 #include <vector>
 #include <string>
 
+#include <optional>
+
 namespace ksi
 {
 	class data_modifier;
@@ -82,9 +84,9 @@ namespace ksi
 
     	std::vector<std::unique_ptr<ksi::data_modifier>> makeClassicalImputers() const;
 
-        ksi::exp_227::ResultRow applyImputer(const ksi::dataset& data, ksi::data_modifier* imputer, const std::filesystem::path& datasetResultDir, std::string_view ratio_str) const;
+        ResultRow applyImputer(const ksi::dataset& data, ksi::data_modifier* imputer, const std::filesystem::path& datasetResultDir, std::string_view ratio_str) const;
 
-        ksi::exp_227::ResultRow applyGranularImputer(const ksi::dataset& data, int granules, int iteration, const std::filesystem::path& datasetResultDir, std::string_view ratio_str) const;
+        std::optional<ResultRow> applyGranularImputer(const ksi::dataset& data, int granules, int iteration, const std::filesystem::path& datasetResultDir, std::string_view ratio_str) const;
 
     	void writeDatasetToFile(const ksi::dataset& ds, const std::filesystem::path& outFilePath) const;
 

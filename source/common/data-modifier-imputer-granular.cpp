@@ -220,7 +220,7 @@ std::vector<double> ksi::data_modifier_imputer_granular::weighted_average(const 
 		if (denominator == 0.0)
 		{
 			std::string problem = std::format("Sum of weights is zero! (number of complete data items {}, number of granules {})", this->complete_dataset.size(), this->cluster_numbers);
-			throw ksi::exception(problem);
+            throw ksi::exception(__FILE__, __FUNCTION__, __LINE__, problem);
 		}
 
 		return numerator / denominator;

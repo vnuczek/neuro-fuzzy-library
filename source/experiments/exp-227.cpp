@@ -182,7 +182,10 @@ void ksi::exp_227::runMissingRatio(
 			{
             /*std::string info = std::format("dataset: {}, missing ratio: {}, granular imputer: {}, iteration: {}", datasetName, ratio_str, granules, iteration);
             thdebug(info);*/
-				results.push_back(applyGranularImputer(data, granules, iteration, datasetResultDir, ratio_str));
+				if (auto row = applyGranularImputer(data, granules, iteration, datasetResultDir, ratio_str))
+				{
+					results.push_back(std::move(*row));
+				}
 			}
 		}
 
@@ -246,7 +249,7 @@ ksi::exp_227::ResultRow ksi::exp_227::applyImputer(
 	return ResultRow{ std::move(experimentSet), imputer->getName(), 0,  0};
 }
 
-ksi::exp_227::ResultRow ksi::exp_227::applyGranularImputer(
+std::optional<ksi::exp_227::ResultRow> ksi::exp_227::applyGranularImputer(
 	const ksi::dataset& data,
 	int granules,
 	int iteration,
@@ -254,18 +257,37 @@ ksi::exp_227::ResultRow ksi::exp_227::applyGranularImputer(
 	std::string_view ratio_str
 ) const
 {
-	ksi::t_norm_product tnorm;
-	ksi::fcm partitioner(granules, NUMBER_OF_CLUSTERING_ITERATIONS);
-	std::unique_ptr<ksi::data_modifier> imputer = std::make_unique<data_modifier_imputer_granular>(partitioner, tnorm);
+	try
+	{
+		ksi::t_norm_product tnorm;
+		ksi::fcm partitioner(granules, NUMBER_OF_CLUSTERING_ITERATIONS);
+		std::unique_ptr<ksi::data_modifier> imputer = std::make_unique<data_modifier_imputer_granular>(partitioner, tnorm);
 
-	auto experimentSet = data;
-	imputer->modify(experimentSet);
+		auto experimentSet = data;
+		imputer->modify(experimentSet);
 
-	const std::string outputName = std::format("{}-{}-g-{}-r-{}.txt", imputer->getName(), ratio_str, granules, iteration);
-	const auto outFilePath = datasetResultDir / outputName;
-	writeDatasetToFile(experimentSet, outFilePath);
+		const std::string outputName = std::format("{}-{}-g-{}-r-{}.txt", imputer->getName(), ratio_str, granules, iteration);
+		const auto outFilePath = datasetResultDir / outputName;
+		writeDatasetToFile(experimentSet, outFilePath);
 
-	return ResultRow{ std::move(experimentSet), imputer->getName(), granules,  iteration };
+		return ResultRow{ std::move(experimentSet), imputer->getName(), granules,  iteration };
+	}
+	catch (const ksi::exception& e)
+	{
+		std::cerr << "[exp-227] Skipping granular case (ratio=" << ratio_str
+			<< ", granules=" << granules
+			<< ", iteration=" << iteration
+			<< ") due to error: " << e.what() << std::endl;
+		return std::nullopt;
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "[exp-227] Skipping granular case (ratio=" << ratio_str
+			<< ", granules=" << granules
+			<< ", iteration=" << iteration
+			<< ") due to std::error: " << e.what() << std::endl;
+		return std::nullopt;
+	}
 }
 
 void ksi::exp_227::writeDatasetToFile(
@@ -325,4 +347,3 @@ void ksi::exp_227::appendPairwiseFrobenius(
 	}
 	CATCH;
 }
-
