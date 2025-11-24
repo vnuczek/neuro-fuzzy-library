@@ -71,7 +71,7 @@ int main (int argc, char ** params)
 	                experiment.execute();
 	                break;
                 }case 227: {
-                    ksi::exp_227 experiment(5, 10,100);
+                    ksi::exp_227 experiment(5, 1,100);
                     experiment.execute();
                     break;
                 }

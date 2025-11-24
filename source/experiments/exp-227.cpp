@@ -122,6 +122,13 @@ void ksi::exp_227::processDataset(const std::filesystem::directory_entry& entry)
 		const std::filesystem::path file_path = entry.path();
 		const std::string datasetName = file_path.stem().string();
 
+		std::cout << "[exp-227] Processing dataset: " << datasetName << std::endl;
+
+		if (datasetName != "beijing")
+		{
+			return;
+		}
+
 		const std::filesystem::path datasetResultDir = resultDir / datasetName;
 		std::filesystem::create_directories(datasetResultDir);
 
@@ -171,21 +178,40 @@ void ksi::exp_227::runMissingRatio(
 
 		for (const auto& imputer : imputers)
 		{
+			auto start = std::chrono::high_resolution_clock::now();
 			/*std::string info = std::format("dataset: {}, missing ratio: {}, imputer: {}", datasetName, ratio_str, imputer->getName());
 			thdebug(info);*/
 			results.push_back(applyImputer(data, imputer.get(), datasetResultDir, ratio_str));
+
+			auto end = std::chrono::high_resolution_clock::now();
+
+			std::chrono::duration<double> elapsed = end - start;
+			std::cout << "[exp-227] Imputer " << imputer->getName()
+				<< " on dataset " << datasetName
+				<< " with missing ratio " << ratio_str
+				<< " took " << elapsed.count() << " seconds." << std::endl;
 		}
 
 		for (const auto granules : num_granules)
 		{
 			for (int iteration = 0; iteration < ITERATIONS; iteration++)
 			{
+				auto start = std::chrono::high_resolution_clock::now();
+
             /*std::string info = std::format("dataset: {}, missing ratio: {}, granular imputer: {}, iteration: {}", datasetName, ratio_str, granules, iteration);
             thdebug(info);*/
 				if (auto row = applyGranularImputer(data, granules, iteration, datasetResultDir, ratio_str))
 				{
 					results.push_back(std::move(*row));
 				}
+
+				auto end = std::chrono::high_resolution_clock::now();
+				std::chrono::duration<double> elapsed = end - start;
+				std::cout << "[exp-227] Granular imputer with " << granules << " granules"
+					<< " on dataset " << datasetName
+					<< " with missing ratio " << ratio_str
+					<< " iteration " << iteration
+					<< " took " << elapsed.count() << " seconds." << std::endl;
 			}
 		}
 
