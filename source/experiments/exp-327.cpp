@@ -13,6 +13,7 @@
 #include "../tnorms/t-norm-min.h"
 #include "../snorms/s-norm-max.h"
 #include "../common/dataset.h"
+#include "../common/data-modifier-outlier-remove-sigma.h"
 
 
 void ksi::exp_327::execute()
@@ -50,6 +51,7 @@ void ksi::exp_327::process_file(const std::filesystem::path& filePath)
 	try
 	{
 		std::string outputDir_ = "../results/" + this->name;
+        std::filesystem::create_directories(outputDir_);
 
         ksi::reader_complete reader;
         const auto originalData = reader.read(filePath.string());
@@ -85,6 +87,25 @@ void ksi::exp_327::process_file(const std::filesystem::path& filePath)
                 }
             }
         }
+
+        ksi::data_modifier_outlier_remove_sigma remover(this->n);
+		auto data = originalData;
+        std::string base_name = filePath.stem().string() + "_n_" + std::to_string((this->n)) + "_";
+
+        remover.modify(data);
+        {
+            std::ofstream cleaned_file(
+                outputDir_ + "/" + (base_name + "cleaned_sigma")
+            );
+            cleaned_file << data;
+        }
+        ksi::dataset outliers = extract_outliers(originalData, data);
+         {
+            std::ofstream outliers_file(
+                outputDir_ + "/" + (base_name + "outliers_sigma")
+            );
+            outliers_file << outliers;
+		}
 	}
     CATCH;
 }
