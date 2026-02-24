@@ -90,6 +90,8 @@ void ksi::exp_327::process_file(const std::filesystem::path& filePath)
 
         ksi::data_modifier_outlier_remove_sigma remover(this->n);
 		auto data = originalData;
+        debug(n)
+
         std::string base_name = filePath.stem().string() + "_n_" + std::to_string(this->n) + "_";
 
         remover.modify(data);
