@@ -12,7 +12,7 @@
 #include "./experiments/exp-004.h"
 #include "./experiments/exp-005.h"
 #include "./experiments/exp-lab.h"
-#include "experiments/exp-327.h"
+#include "./experiments/exp-327.h"
 
 
 int main (int argc, char ** params)
