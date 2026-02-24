@@ -4,6 +4,9 @@
 #include "../neuro-fuzzy/neuro-fuzzy-system.h"
 #include "../neuro-fuzzy/abstract-annbfis.h"
 #include "../neuro-fuzzy/weighted_annbfis.h"
+
+#include <numeric>
+
 #include "../neuro-fuzzy/logicalrule.h"
 #include "../neuro-fuzzy/consequence-CL.h"
 #include "../tnorms/t-norm-product.h"
