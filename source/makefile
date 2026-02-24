@@ -956,6 +956,8 @@ $(release_folder)/owas-plowa.o : owas/plowa.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/owas-plowa.o : owas/plowa.cpp
 	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
+$(debug_folder)/experiments-exp-327.o : experiments/exp-327.cpp
+	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
 
 # [PL] linkowanie:
 # [EN] linking:
