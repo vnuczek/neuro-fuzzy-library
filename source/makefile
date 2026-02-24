@@ -708,6 +708,10 @@ $(release_folder)/experiments-exp-001.o : experiments/exp-001.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/experiments-exp-001.o : experiments/exp-001.cpp
 	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
+$(debug_folder)/experiments-exp-327.o : experiments/exp-327.cpp
+    $(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
+$(release_folder)/experiments-exp-327.o : experiments/exp-327.cpp
+	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(release_folder)/experiments-exp-000.o : experiments/exp-000.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/experiments-exp-000.o : experiments/exp-000.cpp
