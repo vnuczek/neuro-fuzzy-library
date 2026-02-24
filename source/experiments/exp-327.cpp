@@ -90,19 +90,19 @@ void ksi::exp_327::process_file(const std::filesystem::path& filePath)
 
         ksi::data_modifier_outlier_remove_sigma remover(this->n);
 		auto data = originalData;
-        std::string base_name = filePath.stem().string() + "_n_" + std::to_string((this->n)) + "_";
+        std::string base_name = filePath.stem().string() + "_n_" + std::to_string(this->n) + "_";
 
         remover.modify(data);
         {
             std::ofstream cleaned_file(
-                outputDir_ + "/" + (base_name + "cleaned_sigma")
+                outputDir_ + "/" + (base_name + "cleaned_sigma" + this->extention)
             );
             cleaned_file << data;
         }
         ksi::dataset outliers = extract_outliers(originalData, data);
          {
             std::ofstream outliers_file(
-                outputDir_ + "/" + (base_name + "outliers_sigma")
+                outputDir_ + "/" + (base_name + "outliers_sigma" + this->extention)
             );
             outliers_file << outliers;
 		}
