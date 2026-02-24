@@ -27,6 +27,7 @@ namespace ksi {
         const std::vector<int> granules = { 2, 3 , 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100 };
         const std::vector<int> iterations = { 10, 100, 1000 };
         const double threshold = 0.001;
+		const int n = 3;
 
     public:
 
