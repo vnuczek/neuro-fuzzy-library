@@ -67,9 +67,6 @@ __ : $(release_folder) $(release_folder)/main
 lab : $(release_folder) $(release_folder)/main
 	./$(release_folder)/main  0
 
-327 : $(release_folder) $(release_folder)/main
-	./$(release_folder)/main  327
-
 #-----------------------
 
 release : $(release_folder) $(release_folder)/main
@@ -704,14 +701,14 @@ $(release_folder)/snorms-s-norm-lukasiewicz.o : snorms/s-norm-lukasiewicz.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/snorms-s-norm-lukasiewicz.o : snorms/s-norm-lukasiewicz.cpp
 	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
+$(release_folder)/experiments-exp-327.o : experiments/exp-327.cpp
+	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
+$(debug_folder)/experiments-exp-327.o : experiments/exp-327.cpp
+	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
 $(release_folder)/experiments-exp-001.o : experiments/exp-001.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/experiments-exp-001.o : experiments/exp-001.cpp
 	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
-$(debug_folder)/experiments-exp-327.o : experiments/exp-327.cpp
-    $(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
-$(release_folder)/experiments-exp-327.o : experiments/exp-327.cpp
-	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(release_folder)/experiments-exp-000.o : experiments/exp-000.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/experiments-exp-000.o : experiments/exp-000.cpp
@@ -959,8 +956,6 @@ $(debug_folder)/owas-owa.o : owas/owa.cpp
 $(release_folder)/owas-plowa.o : owas/plowa.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/owas-plowa.o : owas/plowa.cpp
-	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
-$(debug_folder)/experiments-exp-327.o : experiments/exp-327.cpp
 	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
 
 # [PL] linkowanie:
@@ -1402,7 +1397,7 @@ $(debug_folder)/auxiliary-vector-operators.o \
 $(debug_folder)/neuro-fuzzy-fac_prototype_mahalanobis_classification.o \
 $(debug_folder)/neuro-fuzzy-granular_ma_classification.o \
 $(debug_folder)/descriptors-descriptor-semitriangular.o \
-$(debug_folder)/experiments-exp-327.o \
+$(release_folder)/experiments-exp-327.o \
 
 	$(compiler) $(standard) $(debug) $(optDebug) $(parallel) $(errors) $(sanitizer) $(libasan) -o $@ $^
 
