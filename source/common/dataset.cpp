@@ -447,6 +447,32 @@ ksi::DatasetStatistics ksi::dataset::calculateDatasetStatistics()
     return statistics;
 }
 
+std::unordered_set<const ksi::datum*> ksi::dataset::collect_pointers(const ksi::dataset& ds)
+{
+    std::unordered_set<const ksi::datum*> ptrs;
+    for (std::size_t i = 0; i < ds.size(); ++i)
+        ptrs.insert(ds.getDatum(i));
+    return ptrs;
+}
+
+ksi::dataset ksi::dataset::extract_outliers(const ksi::dataset& original, const ksi::dataset& cleaned)
+{
+    auto original_ptrs = collect_pointers(original);
+    auto cleaned_ptrs = collect_pointers(cleaned);
+
+    ksi::dataset outliers;
+
+    for (const auto* d : original_ptrs)
+    {
+        if (cleaned_ptrs.find(d) == cleaned_ptrs.end())
+        {
+			outliers.addDatum(*d);  // copy the datum to the outliers dataset
+        }
+    }
+
+    return outliers;
+}
+
 
 std::pair< ksi::dataset, ksi::dataset > ksi::dataset::splitDataSetVertically(
    std::size_t last_index) const

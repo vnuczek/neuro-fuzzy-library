@@ -67,6 +67,9 @@ __ : $(release_folder) $(release_folder)/main
 lab : $(release_folder) $(release_folder)/main
 	./$(release_folder)/main  0
 
+327 : $(release_folder) $(release_folder)/main
+	./$(release_folder)/main  327
+
 #-----------------------
 
 release : $(release_folder) $(release_folder)/main

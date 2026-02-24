@@ -12,8 +12,9 @@
 #include "./experiments/exp-004.h"
 #include "./experiments/exp-005.h"
 #include "./experiments/exp-lab.h"
+#include "experiments/exp-327.h"
 
- 
+
 int main (int argc, char ** params)
 {
     if (argc == 1)
@@ -60,6 +61,11 @@ int main (int argc, char ** params)
                     experiment.execute();
                     break;
                 }
+                case 327: { 
+                    ksi::exp_327 experiment;
+                    experiment.execute();
+                    break;
+				}
                 default: {
                     std::cout << "unknown experiment" << std::endl;
                 }
