@@ -1178,6 +1178,7 @@ $(release_folder)/auxiliary-vector-operators.o \
 $(release_folder)/neuro-fuzzy-fac_prototype_mahalanobis_classification.o \
 $(release_folder)/neuro-fuzzy-granular_ma_classification.o \
 $(release_folder)/descriptors-descriptor-semitriangular.o \
+$(release_folder)/experiments-exp-327.o \
 
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -o $@ $^
 
@@ -1397,6 +1398,7 @@ $(debug_folder)/auxiliary-vector-operators.o \
 $(debug_folder)/neuro-fuzzy-fac_prototype_mahalanobis_classification.o \
 $(debug_folder)/neuro-fuzzy-granular_ma_classification.o \
 $(debug_folder)/descriptors-descriptor-semitriangular.o \
+$(debug_folder)/experiments-exp-327.o \
 
 	$(compiler) $(standard) $(debug) $(optDebug) $(parallel) $(errors) $(sanitizer) $(libasan) -o $@ $^
 
