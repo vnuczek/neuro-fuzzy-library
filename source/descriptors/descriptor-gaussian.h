@@ -118,8 +118,13 @@ namespace ksi
       /** @return The method returs the name of the descriptor.
        *       @ date 2024-02-21 */                
       virtual std::string getName() const override;
-      
-      
+
+	  /** The method returns parameters of the descriptor, for this descriptor it is a vector of two values: mean and stddev.
+	   *
+	   * @author Konrad Wnuk
+	   * @date 2026-02-24
+	   */
+	  virtual std::vector<double> getParameters() const override;
    };
 }
 

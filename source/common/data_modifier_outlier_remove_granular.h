@@ -12,6 +12,9 @@ namespace ksi
 {
    class data_modifier_outlier_remove_granular : public data_modifier
    {
+   private:
+       ksi::partition _partition;
+
     public:
       data_modifier_outlier_remove_granular (const ksi::partitioner & Partitioner, const ksi::t_norm & Tnorm, const ksi::s_norm & Snorm, const double threshold);
       data_modifier_outlier_remove_granular (const data_modifier_outlier_remove_granular & other);
@@ -30,7 +33,8 @@ namespace ksi
       // virtual std::shared_ptr<data_modifier> clone () const;  // prototype design pattern
       virtual data_modifier * clone () const override;  // prototype design pattern
       
-      
+      ksi::partition get_partition() const;
+
       void modify(dataset & ds) override;
       
    protected:
@@ -38,7 +42,7 @@ namespace ksi
       std::shared_ptr<t_norm> _pTnorm = nullptr;
       std::shared_ptr<s_norm> _pSnorm = nullptr;
       
-      double _threshold {0.0};
+      double _threshold {0.0};   
    };
 }
 

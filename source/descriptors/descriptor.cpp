@@ -85,3 +85,8 @@ double ksi::descriptor::getFuzzification() const
     }
     CATCH;
 }
+
+std::vector<double> ksi::descriptor::getParameters() const
+{
+    return std::vector<double>();
+}

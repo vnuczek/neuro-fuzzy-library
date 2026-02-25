@@ -16,7 +16,7 @@ void ksi::data_modifier_outlier_remove_granular::modify(dataset& ds)
 {
    // tutaj sprawa jest prosta:
    // 1. najpierw wyznaczam granule (np. FCM)
-   auto partition = _pPartitioner->doPartition(ds);
+   _partition = _pPartitioner->doPartition(ds);
 
    class set_of_granules
    {
@@ -247,6 +247,11 @@ ksi::data_modifier * ksi::data_modifier_outlier_remove_granular::clone () const
 {
    // prototype design pattern
    return new ksi::data_modifier_outlier_remove_granular(*this);
+}
+
+ksi::partition ksi::data_modifier_outlier_remove_granular::get_partition() const
+{
+    return _partition;
 }
 
 

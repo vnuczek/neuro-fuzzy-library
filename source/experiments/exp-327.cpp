@@ -9,6 +9,9 @@
 #include "../service/exception.h"
 #include "../readers/reader-complete.h"
 #include "../partitions/fcm.h"
+#include "../partitions/partition.h"
+#include "../partitions/cluster.h"
+#include "../descriptors/descriptor.h"
 #include "../common/data_modifier_outlier_remove_granular.h"
 #include "../tnorms/t-norm-min.h"
 #include "../snorms/s-norm-max.h"
@@ -50,74 +53,159 @@ void ksi::exp_327::process_file(const std::filesystem::path& filePath)
 {
 	try
 	{
-		std::string outputDir_ = "../results/" + this->name;
-        std::filesystem::create_directories(outputDir_);
+		std::string outputDir = "../results/" + this->name;
+        std::filesystem::create_directories(outputDir);
 
         ksi::reader_complete reader;
         const auto originalData = reader.read(filePath.string());
 
-        for (const int g : this->granules)
-        {
-            for (const int it : this->iterations)
-            {
-                auto data = originalData;
-
-                ksi::fcm partitioner(g, it);
-                ksi::data_modifier_outlier_remove_granular remover(
-                    partitioner,
-                    ksi::t_norm_min(),
-                    ksi::s_norm_max(),
-                    this->threshold
-                );
-
-                remover.modify(data);
-                {
-                    std::ofstream cleaned_file(
-                        outputDir_ + "/" + make_output_name(filePath, g, it, "cleaned")
-                    );
-                    cleaned_file << data;
-                }
-
-                ksi::dataset outliers = extract_outliers(originalData, data);
-                {
-                    std::ofstream outliers_file(
-                        outputDir_ + "/" + make_output_name(filePath, g, it, "outliers")
-                    );
-                    outliers_file << outliers;
-                }
-            }
-        }
-
-        ksi::data_modifier_outlier_remove_sigma remover(this->n);
-		auto data = originalData;
-        debug(n)
-
-        std::string base_name = filePath.stem().string() + "_n_" + std::to_string(this->n) + "_";
-
-        remover.modify(data);
-        {
-            std::ofstream cleaned_file(
-                outputDir_ + "/" + (base_name + "cleaned_sigma" + this->extention)
-            );
-            cleaned_file << data;
-        }
-        ksi::dataset outliers = extract_outliers(originalData, data);
-         {
-            std::ofstream outliers_file(
-                outputDir_ + "/" + (base_name + "outliers_sigma" + this->extention)
-            );
-            outliers_file << outliers;
-		}
+        process_granular(outputDir, filePath, originalData);
+        process_sigma(outputDir, filePath, originalData);
 	}
     CATCH;
 }
 
-std::string ksi::exp_327::make_output_name(const std::filesystem::path& input, int granules, int iterations, const std::string& suffix)
+void ksi::exp_327::process_granular(const std::string& outputDir, const std::filesystem::path& filePath, const ksi::dataset& originalData)
+{
+    try
+    {
+        for (const int g : this->granules)
+        {
+            for (const int it : this->iterations)
+            {
+                for (const auto th : this->thresholds)
+                {
+                    auto data = originalData;
+
+                    ksi::fcm partitioner(g, it);
+                    ksi::data_modifier_outlier_remove_granular remover(
+                        partitioner,
+                        ksi::t_norm_min(),
+                        ksi::s_norm_max(),
+                        th
+                    );
+                    remover.modify(data);
+
+                    auto part = remover.get_partition();
+                    save_granular_results(outputDir, filePath, g, it, th, originalData, data, part);
+                }
+            }
+        }
+    }
+    CATCH;
+}
+
+void ksi::exp_327::save_granular_results(
+    const std::string& outputDir,
+    const std::filesystem::path& filePath,
+    int g, int it, double th,
+    const ksi::dataset& originalData,
+    ksi::dataset& data,
+    const ksi::partition& part)
+{
+    try
+    {
+        {
+            std::ofstream cleaned_file(
+                outputDir + "/" + make_granular_output_name(filePath, g, it, th, "cleaned")
+            );
+            cleaned_file << data;
+        }
+
+        ksi::dataset outliers = extract_outliers(originalData, data);
+        {
+            std::ofstream outliers_file(
+                outputDir + "/" + make_granular_output_name(filePath, g, it, th, "outliers")
+            );
+            outliers_file << outliers;
+        }
+
+        {
+            std::string granulesPath = outputDir + "/" + make_granular_output_name(filePath, g, it, th, "granules");
+            save_granules(granulesPath, part);
+        }
+    }
+    CATCH;
+}
+
+void ksi::exp_327::save_granules(const std::string& filePath, const ksi::partition& part)
+{
+    try
+    {
+        std::ofstream file(filePath);
+
+        auto nClusters = part.getNumberOfClusters();
+        for (std::size_t c = 0; c < nClusters; ++c)
+        {
+            auto* cl = part.getCluster(c);
+            if (!cl)
+                continue;
+
+            auto nDescriptors = cl->get_number_of_desciptors();
+            for (std::size_t d = 0; d < nDescriptors; ++d)
+            {
+                auto* desc = cl->getAddressOfDescriptor(d);
+                if (!desc)
+                    continue;
+
+                auto params = desc->getParameters();
+                for (std::size_t p = 0; p < params.size(); ++p)
+                {
+                    if (p > 0)
+                        file << "\t";
+                    file << params[p];
+                }
+                file << "\t";
+            }
+            file << "\n";
+        }
+    }
+    CATCH;
+}
+
+void ksi::exp_327::process_sigma(const std::string& outputDir, const std::filesystem::path& filePath, const ksi::dataset& originalData)
+{
+    try
+    {
+        for (const auto n : this->sigmas)
+        {
+            auto data = originalData;
+
+            ksi::data_modifier_outlier_remove_sigma remover(n);
+            remover.modify(data);
+            {
+                std::ofstream cleaned_file(
+                    outputDir + "/" + make_sigma_output_name(filePath, n, "cleaned")
+                );
+                cleaned_file << data;
+            }
+
+            ksi::dataset outliers = extract_outliers(originalData, data);
+            {
+                std::ofstream outliers_file(
+                    outputDir + "/" + make_sigma_output_name(filePath, n, "outliers")
+                );
+                outliers_file << outliers;
+            }
+        }
+    }
+    CATCH;
+}
+
+std::string ksi::exp_327::make_granular_output_name(const std::filesystem::path& input, const int granules, const int iterations, const double threshold, const std::string& suffix)
 {
     return input.stem().string()
         + "_g" + std::to_string(granules)
         + "_it" + std::to_string(iterations)
-        + "_thr" + std::to_string(this->threshold)
+        + "_thr" + std::to_string(threshold)
+        + "_" + suffix
+        + this->extention;
+}
+
+std::string ksi::exp_327::make_sigma_output_name(const std::filesystem::path& input, const int n, const std::string& suffix)
+{
+    return input.stem().string()
+        + "_n" + std::to_string(n)
         + "_" + suffix
         + this->extention;
 }

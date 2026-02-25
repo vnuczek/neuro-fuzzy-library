@@ -18,6 +18,11 @@ std::string ksi::descriptor_gaussian::getName() const
    return std::string {"gaussian"};
 }
 
+std::vector<double> ksi::descriptor_gaussian::getParameters() const
+{
+    return {_mean, _stddev};
+}
+
 const std::array<std::string, 7> ksi::descriptor_gaussian::gaussianLocationDescription
 {
    "micro",

@@ -112,7 +112,13 @@ namespace ksi
      /** @return The method returs the name of the descriptor.
          @date 2024-02-21 */
      virtual std::string getName() const = 0;
-     
+
+	 /** The method returns parameters of the descriptor. Default behaviour: empty vector.
+	  *
+	  * @author Konrad Wnuk
+	  * @date 2026-02-24
+	  */
+	 virtual std::vector<double> getParameters() const;
    };
 }
 
