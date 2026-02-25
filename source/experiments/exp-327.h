@@ -67,8 +67,6 @@ namespace ksi {
 
         inline std::string make_sigma_output_name(const std::filesystem::path& input, const int n, const std::string& suffix);
 
-        std::unordered_set<const ksi::datum*> collect_pointers(const ksi::dataset& ds);
-
     public:
         ksi::dataset extract_outliers(
             const ksi::dataset& original,

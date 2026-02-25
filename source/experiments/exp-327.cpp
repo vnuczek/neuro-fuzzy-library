@@ -210,26 +210,35 @@ std::string ksi::exp_327::make_sigma_output_name(const std::filesystem::path& in
         + this->extention;
 }
 
-std::unordered_set<const ksi::datum*> ksi::exp_327::collect_pointers(const ksi::dataset& ds)
-{
-    std::unordered_set<const ksi::datum*> ptrs;
-    for (std::size_t i = 0; i < ds.size(); ++i)
-        ptrs.insert(ds.getDatum(i));
-    return ptrs;
-}
-
 ksi::dataset ksi::exp_327::extract_outliers(const ksi::dataset& original, const ksi::dataset& cleaned)
 {
-    auto original_ptrs = collect_pointers(original);
-    auto cleaned_ptrs = collect_pointers(cleaned);
-
-    ksi::dataset outliers;
-
-    for (const auto* d : original_ptrs)
+    // Build a set of string representations of cleaned data items
+    std::unordered_set<std::string> cleanedStrings;
+    for (std::size_t i = 0; i < cleaned.size(); ++i)
     {
-        if (cleaned_ptrs.find(d) == cleaned_ptrs.end())
+        const auto* d = cleaned.getDatum(i);
+        if (d)
+            cleanedStrings.insert(d->to_string());
+    }
+
+    // Collect original data items whose string representation is not in the cleaned set
+    ksi::dataset outliers;
+    for (std::size_t i = 0; i < original.size(); ++i)
+    {
+        const auto* d = original.getDatum(i);
+        if (d)
         {
-            outliers.addDatum(*d);  // copy the datum to the outliers dataset
+            auto repr = d->to_string();
+            auto it = cleanedStrings.find(repr);
+            if (it != cleanedStrings.end())
+            {
+                // This datum survived cleaning — remove one occurrence to handle duplicates correctly
+                cleanedStrings.erase(it);
+            }
+            else
+            {
+                outliers.addDatum(*d);
+            }
         }
     }
 
