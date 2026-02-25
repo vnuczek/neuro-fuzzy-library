@@ -1,4 +1,3 @@
-
 #include <utility>
 #include <memory>
 #include <format>
@@ -51,7 +50,6 @@ void ksi::data_modifier_outlier_remove_granular::modify(dataset& ds)
                   auto X = d.getVector();
                   for (std::size_t i = 0; i < nAttributes; ++i)
                   {
-                     
                      auto memb = _descriptors[i]->getMembership(X[i]);
                      membership = tnorm.tnorm(membership, memb);
                   }
@@ -142,7 +140,7 @@ void ksi::data_modifier_outlier_remove_granular::modify(dataset& ds)
             return memb;
          }
 
-   } granules (partition, *_pTnorm, *_pSnorm);
+   } granules (_partition, *_pTnorm, *_pSnorm);
 
    // 2. nastepnie wyznaczam stopnie przynalezności wszystkich danych do granul 
 
@@ -253,6 +251,3 @@ ksi::partition ksi::data_modifier_outlier_remove_granular::get_partition() const
 {
     return _partition;
 }
-
-
-
