@@ -17,6 +17,9 @@
 #include "../snorms/s-norm-max.h"
 #include "../common/dataset.h"
 #include "../common/data-modifier-outlier-remove-sigma.h"
+#include "../dissimilarities/dis-log.h"
+#include "../owas/sowa.h"
+#include "../partitions/fcom.h"
 
 
 void ksi::exp_327::execute()
@@ -61,6 +64,7 @@ void ksi::exp_327::process_file(const std::filesystem::path& filePath)
 
         process_granular(outputDir, filePath, originalData);
         process_sigma(outputDir, filePath, originalData);
+		process_FCOM(outputDir, filePath, originalData);
 	}
     CATCH;
 }
@@ -124,6 +128,16 @@ void ksi::exp_327::save_granular_results(
             std::string granulesPath = outputDir + "/" + make_granular_output_name(filePath, g, it, th, "granules");
             save_granules(granulesPath, part);
         }
+
+        {
+            std::string cleanedSimPath = outputDir + "/" + make_granular_output_name(filePath, g, it, th, "cleaned_similarity");
+            save_similarities(cleanedSimPath, data, part);
+        }
+
+        {
+            std::string outliersSimPath = outputDir + "/" + make_granular_output_name(filePath, g, it, th, "outliers_similarity");
+            save_similarities(outliersSimPath, outliers, part);
+        }
     }
     CATCH;
 }
@@ -163,6 +177,63 @@ void ksi::exp_327::save_granules(const std::string& filePath, const ksi::partiti
     CATCH;
 }
 
+void ksi::exp_327::save_similarities(const std::string& filePath, const ksi::dataset& data, const ksi::partition& part)
+{
+    try
+    {
+        std::ofstream file(filePath);
+
+        ksi::t_norm_min tnorm;
+        ksi::s_norm_max snorm;
+
+        auto nClusters = part.getNumberOfClusters();
+        auto nData = data.size();
+
+        for (std::size_t i = 0; i < nData; ++i)
+        {
+            const auto* d = data.getDatum(i);
+            if (!d)
+                continue;
+
+            auto X = d->getVector();
+
+            // s-norm across all granules (max membership)
+            double similarity = 0.0;
+            for (std::size_t c = 0; c < nClusters; ++c)
+            {
+                auto* cl = part.getCluster(c);
+                if (!cl)
+                    continue;
+
+                // t-norm across all descriptors in a granule (min membership)
+                double granuleMembership = 1.0;
+                auto nDescriptors = cl->get_number_of_desciptors();
+                for (std::size_t a = 0; a < nDescriptors; ++a)
+                {
+                    auto* desc = cl->getAddressOfDescriptor(a);
+                    if (!desc)
+                        continue;
+
+                    auto* mutableDesc = const_cast<ksi::descriptor*>(desc);
+                    double memb = mutableDesc->getMembership(X[a]);
+                    granuleMembership = tnorm.tnorm(granuleMembership, memb);
+                }
+                similarity = snorm.snorm(similarity, granuleMembership);
+            }
+
+            // write: attribute values followed by similarity
+            for (std::size_t a = 0; a < X.size(); ++a)
+            {
+                if (a > 0)
+                    file << "\t";
+                file << X[a];
+            }
+            file << "\t" << similarity << "\n";
+        }
+    }
+    CATCH;
+}
+
 void ksi::exp_327::process_sigma(const std::string& outputDir, const std::filesystem::path& filePath, const ksi::dataset& originalData)
 {
     try
@@ -192,6 +263,42 @@ void ksi::exp_327::process_sigma(const std::string& outputDir, const std::filesy
     CATCH;
 }
 
+void ksi::exp_327::process_FCOM(const std::string& outputDir, const std::filesystem::path& filePath, const ksi::dataset& originalData)
+{
+	try
+	{
+		for(const auto number_of_clusters: granules)
+		{
+            auto data = originalData;
+            auto number_of_items = data.getNumberOfData();
+
+            ksi::dis_log dissimilarity;
+            ksi::sowa owa(number_of_items, this->PC, this->PA);
+
+            ksi::fcom algorithm(dissimilarity, owa);
+            algorithm.setEpsilonForFrobeniusNorm(EPSILON);
+            algorithm.setNumberOfClusters(number_of_clusters);
+
+			auto partition = algorithm.doPartition(data);
+
+            {
+                std::ofstream partition_file(
+                    outputDir + "/" + make_FCOM_output_name(filePath, number_of_clusters, "partition")
+                );
+                partition_file << partition;
+            }
+
+            {
+                std::ofstream typicalities_file(
+                    outputDir + "/" + make_FCOM_output_name(filePath, number_of_clusters, "typicalities")
+                );
+                typicalities_file << data;
+            }
+		}
+	}
+    CATCH;
+}
+
 std::string ksi::exp_327::make_granular_output_name(const std::filesystem::path& input, const int granules, const int iterations, const double threshold, const std::string& suffix)
 {
     return input.stem().string()
@@ -206,6 +313,14 @@ std::string ksi::exp_327::make_sigma_output_name(const std::filesystem::path& in
 {
     return input.stem().string()
         + "_n" + std::to_string(n)
+        + "_" + suffix
+        + this->extention;
+}
+
+std::string ksi::exp_327::make_FCOM_output_name(const std::filesystem::path& input, const int number_of_clusters, const std::string& suffix)
+{
+    return input.stem().string()
+        + "_fcom_c" + std::to_string(number_of_clusters)
         + "_" + suffix
         + this->extention;
 }
