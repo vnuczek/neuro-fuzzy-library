@@ -130,6 +130,11 @@ void ksi::exp_327::save_granular_results(
         }
 
         {
+            std::string cleanedSimPath = outputDir + "/" + make_granular_output_name(filePath, g, it, th, "data_similarity");
+            save_similarities(cleanedSimPath, originalData, part);
+        }
+
+        /*{
             std::string cleanedSimPath = outputDir + "/" + make_granular_output_name(filePath, g, it, th, "cleaned_similarity");
             save_similarities(cleanedSimPath, data, part);
         }
@@ -137,7 +142,7 @@ void ksi::exp_327::save_granular_results(
         {
             std::string outliersSimPath = outputDir + "/" + make_granular_output_name(filePath, g, it, th, "outliers_similarity");
             save_similarities(outliersSimPath, outliers, part);
-        }
+        }*/
     }
     CATCH;
 }
