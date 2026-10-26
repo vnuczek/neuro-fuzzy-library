@@ -1455,6 +1455,20 @@ doxygen:
 	doxygen doxyfile
 
 
+# GrIMP regression tests reuse the library objects, excluding example entry points.
+# Set test_folder=_debug and test_flags for a sanitizer-instrumented build.
+test_folder=$(release_folder)
+test_flags=$(release) $(optRelease)
+
+.PHONY: test-grimp grimp-test-library
+grimp-test-library:
+	$(MAKE) $(test_folder)
+	$(MAKE) $(test_folder)/main
+
+test-grimp: grimp-test-library ../tests/grimp.cpp common/data-modifier-imputer-granular.h
+	$(compiler) $(standard) $(test_flags) $(parallel) $(errors) -o $(test_folder)/test-grimp ../tests/grimp.cpp $(filter-out $(test_folder)/main.o $(test_folder)/experiments-%.o,$(wildcard $(test_folder)/*.o))
+	$(test_folder)/test-grimp
+
 .PHONY: example-grimp grimp-example-library
 grimp-example-library:
 	$(MAKE) $(release_folder)
