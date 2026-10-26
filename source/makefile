@@ -784,6 +784,11 @@ $(release_folder)/common-data_modifier_incompleter.o : common/data_modifier_inco
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/common-data_modifier_incompleter.o : common/data_modifier_incompleter.cpp
 	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $^
+$(release_folder)/common-data-modifier-imputer-granular.o : common/data-modifier-imputer-granular.cpp common/data-modifier-imputer-granular.h
+	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $<
+$(debug_folder)/common-data-modifier-imputer-granular.o : common/data-modifier-imputer-granular.cpp common/data-modifier-imputer-granular.h
+	$(compiler) $(standard) $(debug) $(optyDebug) $(parallel) $(errors) $(sanitizer) -c -o $@ $<
+
 $(release_folder)/common-data-modifier-imputer-average.o : common/data-modifier-imputer-average.cpp
 	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -c -o $@ $^
 $(debug_folder)/common-data-modifier-imputer-average.o : common/data-modifier-imputer-average.cpp
@@ -1063,6 +1068,7 @@ $(release_folder)/readers-multilabel_reader_complete.o \
 $(release_folder)/partitions-fcm-T-metrics.o \
 $(release_folder)/neuro-fuzzy-granular_nfs_classification.o \
 $(release_folder)/common-data-modifier-imputer-average.o \
+$(release_folder)/common-data-modifier-imputer-granular.o \
 $(release_folder)/neuro-fuzzy-prototype_mahalanobis_regression.o \
 $(release_folder)/granules-set_of_standalone_granules.o \
 $(release_folder)/descriptors-descriptor_tanh.o \
@@ -1285,6 +1291,7 @@ $(debug_folder)/readers-multilabel_reader_complete.o \
 $(debug_folder)/partitions-fcm-T-metrics.o \
 $(debug_folder)/neuro-fuzzy-granular_nfs_classification.o \
 $(debug_folder)/common-data-modifier-imputer-average.o \
+$(debug_folder)/common-data-modifier-imputer-granular.o \
 $(debug_folder)/neuro-fuzzy-prototype_mahalanobis_regression.o \
 $(debug_folder)/granules-set_of_standalone_granules.o \
 $(debug_folder)/descriptors-descriptor_tanh.o \
@@ -1447,3 +1454,12 @@ clean :
 doxygen:
 	doxygen doxyfile
 
+
+.PHONY: example-grimp grimp-example-library
+grimp-example-library:
+	$(MAKE) $(release_folder)
+	$(MAKE) $(release_folder)/main
+
+example-grimp: grimp-example-library ../examples/grimp.cpp common/data-modifier-imputer-granular.h
+	$(compiler) $(standard) $(release) $(optRelease) $(parallel) $(errors) -o $(release_folder)/example-grimp ../examples/grimp.cpp $(filter-out $(release_folder)/main.o $(release_folder)/experiments-%.o,$(wildcard $(release_folder)/*.o))
+	$(release_folder)/example-grimp
